@@ -3,6 +3,7 @@ guest: Nir Eyal
 title: Strategies for becoming less distractible and improving focus | Nir Eyal
 youtube_url: https://www.youtube.com/watch?v=WSscIIY609c
 video_id: WSscIIY609c
+publish_date: 2023-12-29
 description: 'Nir Eyal is the author of two best-selling books, Hooked: How to Build
   Habit-Forming Products and Indistractable: How to Control Your Attention and Choose
   Your Life. He writes, consults, and...

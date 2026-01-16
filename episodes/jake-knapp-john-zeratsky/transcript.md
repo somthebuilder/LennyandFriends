@@ -4,6 +4,7 @@ title: Making time for what matters | Jake Knapp and John Zeratsky (Authors of M
   Time, Character VC)
 youtube_url: https://www.youtube.com/watch?v=cuce7zvOFHY
 video_id: cuce7zvOFHY
+publish_date: 2024-02-11
 description: 'Jake Knapp and John Zeratsky are bestselling authors of the books Sprint
   and Make Time. They have helped more than 300 teams design new products and bring
   them to market, including those at...

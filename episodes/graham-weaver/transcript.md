@@ -4,6 +4,7 @@ title: How to break out of autopilot and create the life you want | Graham Weave
   (Stanford GSB professor)
 youtube_url: https://www.youtube.com/watch?v=UpGR9P0Ufts
 video_id: UpGR9P0Ufts
+publish_date: 2025-01-16
 description: 'Graham Weaver teaches a top-rated course at Stanford’s Graduate School
   of Business (GSB), where he often unexpectedly ends up helping students figure out
   what to do with their lives. He...

@@ -3,6 +3,7 @@ guest: Jen Abel 2.0
 title: '$1M to $10M: The enterprise sales playbook with Jen Abel'
 youtube_url: https://www.youtube.com/watch?v=37fKFWdrMyA
 video_id: 37fKFWdrMyA
+publish_date: 2025-11-09
 description: Jen Abel is GM of Enterprise at State Affairs and co-founded Jellyfish,
   a consultancy that helps founders learn zero-to-one enterprise sales. She’s one
   of the smartest people I’ve ever...

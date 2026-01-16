@@ -3,6 +3,7 @@ guest: Megan Cook
 title: Lessons from Atlassian | Megan Cook (Head of Product, Jira)
 youtube_url: https://www.youtube.com/watch?v=MQQ1wohqArk
 video_id: MQQ1wohqArk
+publish_date: 2024-02-04
 description: 'Megan Cook is the head of product for Atlassian’s Jira software, which
   is used by 75% of Fortune 500 companies, has over 125,000 customers globally, over
   15 different products, and is by...

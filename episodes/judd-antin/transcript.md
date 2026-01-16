@@ -3,6 +3,7 @@ guest: Judd Antin
 title: The UX Research reckoning is here | Judd Antin (Airbnb, Meta)
 youtube_url: https://www.youtube.com/watch?v=L6RKi9ZvkT4
 video_id: L6RKi9ZvkT4
+publish_date: 2024-01-04
 description: 'Judd Antin has spent 15 years leading research and design teams at companies
   like Yahoo, Meta, and Airbnb. His direct reports have gone on to lead user research
   at Figma, Notion, Slack, Robinhood,...

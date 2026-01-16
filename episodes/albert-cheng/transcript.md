@@ -4,6 +4,7 @@ title: Finding hidden growth opportunities in your product | Albert Cheng (Duoli
   Grammarly, Chess.com)
 youtube_url: https://www.youtube.com/watch?v=2BKmNmnEj9w
 video_id: 2BKmNmnEj9w
+publish_date: 2025-10-05
 description: 'Albert Cheng has led growth at three of the world’s most successful
   consumer subscription companies: Duolingo, Grammarly, and Chess.com. A former Google
   product manager (and serious pianist!),...

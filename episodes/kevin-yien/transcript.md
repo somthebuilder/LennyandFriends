@@ -4,6 +4,7 @@ title: 'Unorthodox PM tips: Automating user insights, unselling candidates, deci
   logs, more | Kevin Yien'
 youtube_url: https://www.youtube.com/watch?v=xOTO98MXG9o
 video_id: xOTO98MXG9o
+publish_date: 2024-08-18
 description: 'Kevin Yien leads product for merchant experiences at Stripe. Before
   that, he meandered his way from being a technical designer to a product manager,
   built the restaurants business and ecosystem...

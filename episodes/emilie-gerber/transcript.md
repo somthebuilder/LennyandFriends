@@ -3,6 +3,7 @@ guest: Emilie Gerber
 title: The ultimate guide to PR | Emilie Gerber (founder of Six Eastern)
 youtube_url: https://www.youtube.com/watch?v=jW9GzaaRPxk
 video_id: jW9GzaaRPxk
+publish_date: 2024-03-21
 description: 'Emilie Gerber is the founder and CEO of Six Eastern, a top PR agency
   that’s worked with over 100 tech companies, from stealth startups to publicly traded
   companies. Before starting her own...

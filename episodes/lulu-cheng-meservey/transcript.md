@@ -3,6 +3,7 @@ guest: Lulu Cheng Meservey
 title: Gain attention as an underdog with this framework | Lulu Cheng Meservey
 youtube_url: https://www.youtube.com/watch?v=qKXIBE7KRGo
 video_id: qKXIBE7KRGo
+publish_date: 2023-03-27
 description: 'Lulu Cheng Meservey explains how to use the concentric circles framework
   to win the hearts and minds of your audience.
 

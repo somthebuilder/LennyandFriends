@@ -4,6 +4,7 @@ title: Why not asking for what you want is holding you back | Kenneth Berger (ex
   coach, first PM @Slack)
 youtube_url: https://www.youtube.com/watch?v=KSCjl_VIdak
 video_id: KSCjl_VIdak
+publish_date: 2024-05-19
 description: 'Kenneth Berger coaches startup leaders on how to prevent burnout, advocate
   for their desired lifestyle, and make a meaningful impact on the world. He’s spent
   more than  20 years in the tech...

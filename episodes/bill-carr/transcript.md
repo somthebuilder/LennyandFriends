@@ -3,6 +3,7 @@ guest: Bill Carr
 title: Unpacking Amazon’s unique ways of working | Bill Carr (author of Working Backwards)
 youtube_url: https://www.youtube.com/watch?v=S9WHQa_AJQo
 video_id: S9WHQa_AJQo
+publish_date: 2023-11-02
 description: 'Bill Carr is the co-author of Working Backwards: Insights, Stories,
   and Secrets from Inside Amazon. With a background at Amazon of over 15 years, Bill
   played a pivotal role in shaping the company...

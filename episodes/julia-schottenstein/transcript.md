@@ -3,6 +3,7 @@ guest: Julia Schottenstein
 title: M&A, competition, pricing, and investing | Julia Schottenstein (dbt Labs)
 youtube_url: https://www.youtube.com/watch?v=y9hmrMBRPDI
 video_id: y9hmrMBRPDI
+publish_date: 2023-07-13
 description: 'Julia Schottenstein is a product lead at dbt Labs, a data transformation
   company, and an active angel investor in data and infrastructure startups. She first
   got excited about dbt in 2019 when...

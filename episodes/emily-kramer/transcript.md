@@ -3,6 +3,7 @@ guest: Emily Kramer
 title: How to build a powerful marketing machine | Emily Kramer (Asana, Carta, MKT1)
 youtube_url: https://www.youtube.com/watch?v=gzs61z9Fekw
 video_id: gzs61z9Fekw
+publish_date: 2022-09-11
 description: 'Emily Kramer led and built the marketing teams at Asana, Carta, Ticketfly,
   and Astro (acquired by Slack). These days, she’s the co-founder of MKT1, where she
   helps founders and marketers...

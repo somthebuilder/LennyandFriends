@@ -3,6 +3,7 @@ guest: Claire Hughes Johnson
 title: Lessons from scaling Stripe | Claire Hughes Johnson (ex-COO of Stripe)
 youtube_url: https://www.youtube.com/watch?v=Mv0o9o4MRh0
 video_id: Mv0o9o4MRh0
+publish_date: 2023-03-05
 description: Claire Hughes Johnson is the former COO at Stripe where she helped scale
   the company from a small startup to the legendary company it is today. She also
   spent close to 10 years at Google, where...

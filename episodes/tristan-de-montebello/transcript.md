@@ -4,6 +4,7 @@ title: Why most public speaking advice is wrong—and how to finally overcome an
   | Tristan de Montebello
 youtube_url: https://www.youtube.com/watch?v=BQM3Yq93nVc
 video_id: BQM3Yq93nVc
+publish_date: 2024-10-13
 description: 'Tristan de Montebello is the co-creator of Ultraspeaking, the most effective
   method I’ve come across for rapidly improving communication and presentation skills.
   In 2017, Tristan became the...

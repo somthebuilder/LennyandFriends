@@ -4,6 +4,7 @@ title: OpenAI’s CPO on how AI changes must-have skills, moats, coding, startup
   more | Kevin Weil
 youtube_url: https://www.youtube.com/watch?v=scsW6_2SPC4
 video_id: scsW6_2SPC4
+publish_date: 2025-04-10
 description: 'Kevin Weil is the chief product officer at OpenAI, where he oversees
   the development of ChatGPT, enterprise products, and the OpenAI API. Prior to OpenAI,
   Kevin was head of product at Twitter,...

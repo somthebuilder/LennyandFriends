@@ -3,6 +3,7 @@ guest: Paul Millerd
 title: Redefining success, money, and belonging | Paul Millerd (The Pathless Path)
 youtube_url: https://www.youtube.com/watch?v=yFckwBtiCUM
 video_id: yFckwBtiCUM
+publish_date: 2023-11-19
 description: 'Paul Millerd spent several years working in strategy consulting and
   on the “default path” before deciding to walk away to work on his own in 2017. His
   book, The Pathless Path, chronicles...

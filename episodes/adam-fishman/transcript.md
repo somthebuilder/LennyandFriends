@@ -4,6 +4,7 @@ title: How to build a high-performing growth team | Adam Fishman (Patreon, Lyft,
   Foods)
 youtube_url: https://www.youtube.com/watch?v=wP8YyWH524A
 video_id: wP8YyWH524A
+publish_date: 2022-10-13
 description: 'Adam Fishman has decades of experience building and scaling some incredible
   businesses, like Lyft, Patreon, and Imperfect Foods. He is currently an Executive
   in Residence at Reforge and an...

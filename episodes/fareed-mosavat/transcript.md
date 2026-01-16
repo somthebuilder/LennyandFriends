@@ -4,6 +4,7 @@ title: How to build trust and grow as a product leader | Fareed Mosavat (Reforge
   Slack, Instacart, Pixar)
 youtube_url: https://www.youtube.com/watch?v=oo0jSep7pzc
 video_id: oo0jSep7pzc
+publish_date: 2022-10-23
 description: 'Fareed Mosavat is Chief Development Officer at Reforge, where he leads
   production, content, and new-product experiences. Previously, he led growth and
   product teams at Slack and Instacart,...

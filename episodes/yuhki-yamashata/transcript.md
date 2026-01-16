@@ -3,6 +3,7 @@ guest: Yuhki Yamashata
 title: An inside look at how Figma builds product | Yuhki Yamashita (CPO of Figma)
 youtube_url: https://www.youtube.com/watch?v=NepFo4zXyK4
 video_id: NepFo4zXyK4
+publish_date: 2023-01-08
 description: Yuhki Yamashita is Chief Product Officer at Figma. Prior to Figma, he
   was Head of Design of Uber’s New Mobility efforts, and before that a product manager
   at Google and Microsoft. Adding...

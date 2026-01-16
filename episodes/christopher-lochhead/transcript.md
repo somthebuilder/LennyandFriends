@@ -4,6 +4,7 @@ title: How to become a category pirate | Christopher Lochhead (Author of Play Bi
   Niche Down, more)
 youtube_url: https://www.youtube.com/watch?v=mS4B541m9xg
 video_id: mS4B541m9xg
+publish_date: 2023-09-17
 description: 'Christopher Lochhead is a 14-time #1 bestselling author, top podcaster,
   and former 3x public tech company CMO and has been an advisor to over 50 VC-backed
   tech startups. He is best known as...

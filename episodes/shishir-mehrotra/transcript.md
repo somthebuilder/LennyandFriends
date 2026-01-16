@@ -3,6 +3,7 @@ guest: Shishir Mehrotra
 title: The rituals of great teams | Shishir Mehrotra, Coda, YouTube, Microsoft
 youtube_url: https://www.youtube.com/watch?v=7uSuMIJhONA
 video_id: 7uSuMIJhONA
+publish_date: 2022-08-14
 description: 'Shishir Mehrotra is the co-founder and CEO of Coda, and formerly head
   of product and engineering at YouTube. In this episode, he shares his insights on
   growth strategy, how he evaluates talent,...

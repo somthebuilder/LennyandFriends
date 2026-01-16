@@ -3,6 +3,7 @@ guest: Garrett Lord
 title: Inside the expert network training every frontier AI model | Garrett Lord
 youtube_url: https://www.youtube.com/watch?v=0qdR-XwHJ9o
 video_id: 0qdR-XwHJ9o
+publish_date: 2025-08-24
 description: 'Garrett Lord is co-founder and CEO of Handshake, which started as a
   career network for college students and new grads but recently discovered something
   extraordinary: they were sitting on the...

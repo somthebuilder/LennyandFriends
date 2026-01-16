@@ -4,6 +4,7 @@ title: How to build your product strategy stack | Ravi Mehta (Tinder, Facebook, 
   Outpace)
 youtube_url: https://www.youtube.com/watch?v=tncs0m5pmQg
 video_id: tncs0m5pmQg
+publish_date: 2023-01-19
 description: 'Ravi was previously CPO at Tinder, Product Director at Facebook, and
   VP of Product at Tripadvisor. Currently, he’s co-founder and CEO of Outpace, a coaching
   platform designed to help people...

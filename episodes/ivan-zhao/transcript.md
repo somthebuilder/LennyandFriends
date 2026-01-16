@@ -4,6 +4,7 @@ title: Notion's lost years, near collapse during COVID, staying small to move fa
   building horizontal
 youtube_url: https://www.youtube.com/watch?v=IIPKMixTMfE
 video_id: IIPKMixTMfE
+publish_date: 2025-03-06
 description: Ivan Zhao is the co-founder and CEO of Notion. Ivan shares the untold
   story of Notion, from nearly running out of database space during Covid to finding
   product-market fit.

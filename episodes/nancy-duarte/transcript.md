@@ -4,6 +4,7 @@ title: 'Storytelling with Nancy Duarte: How to craft compelling presentations an
   tell a story that sticks'
 youtube_url: https://www.youtube.com/watch?v=-kHkWgjGD7U
 video_id: -kHkWgjGD7U
+publish_date: 2023-06-01
 description: Nancy Duarte is the CEO of Duarte Inc. and has helped create over 250,000
   presentations for influential business leaders across the globe, including Apple,
   TED, the World Bank, and Al Gore’s...

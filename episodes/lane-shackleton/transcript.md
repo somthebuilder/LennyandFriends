@@ -3,6 +3,7 @@ guest: Lane Shackleton
 title: What sets great teams apart | Lane Shackleton (CPO of Coda)
 youtube_url: https://www.youtube.com/watch?v=XmgetFMgQZ0
 video_id: XmgetFMgQZ0
+publish_date: 2023-10-01
 description: 'Lane Shackleton is CPO of Coda, where he’s been leading the product
   and design team for over eight years. Lane started his career as an Alaskan climbing
   guide and then as a manual reviewer...

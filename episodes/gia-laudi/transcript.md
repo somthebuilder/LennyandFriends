@@ -3,6 +3,7 @@ guest: Gia Laudi
 title: Customer-led growth | Georgiana Laudi (Forget The Funnel)
 youtube_url: https://www.youtube.com/watch?v=0FgZ1VVxEBo
 video_id: 0FgZ1VVxEBo
+publish_date: 2022-09-29
 description: 'Georgiana Laudi is the co-founder and CEO of a consulting agency called
   Forget The Funnel, where she helps SaaS companies scale and improve conversion rates
   through customer-led growth. She’s...

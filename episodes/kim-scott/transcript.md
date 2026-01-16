@@ -4,6 +4,7 @@ title: 'Inside Devin: The AI engineer that''s set to write 50% of its company’
   this year | Scott Wu'
 youtube_url: https://www.youtube.com/watch?v=gI0ZNhA0rvE
 video_id: gI0ZNhA0rvE
+publish_date: 2025-05-04
 description: '*Scott Wu* is the co-founder and CEO of Cognition, the company behind
   Devin—the world’s first autonomous AI software engineer. Unlike other AI coding
   tools, Devin works like an autonomous...

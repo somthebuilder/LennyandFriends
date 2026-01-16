@@ -3,6 +3,7 @@ guest: Matthew Dicks
 title: How to tell better stories | Matthew Dicks (Storyworthy)
 youtube_url: https://www.youtube.com/watch?v=J4wguyJZI6A
 video_id: J4wguyJZI6A
+publish_date: 2023-12-15
 description: 'Matthew Dicks is a best-selling author, columnist, blogger, podcaster,
   playwright, and teacher. He wrote my all-time favorite book on storytelling, Storyworthy.
   He is an elementary school teacher...

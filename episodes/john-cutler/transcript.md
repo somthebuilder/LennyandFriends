@@ -4,6 +4,7 @@ title: What differentiates the highest-performing product teams | John Cutler (T
   Beautiful Mess)
 youtube_url: https://www.youtube.com/watch?v=Y4PdUItyXUk
 video_id: Y4PdUItyXUk
+publish_date: 2023-01-15
 description: 'John Cutler writes the popular and beloved product newsletter The Beautiful
   Mess. For many years, he was a Product Evangelist at Amplitude, where he ended up
   meeting and working with a large...

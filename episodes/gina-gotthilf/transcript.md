@@ -4,6 +4,7 @@ title: Scaling Duolingo, embracing failure, and insight into Latin America’s t
   scene | Gina Gotthilf
 youtube_url: https://www.youtube.com/watch?v=sWClFYdbkRA
 video_id: sWClFYdbkRA
+publish_date: 2023-10-19
 description: 'Gina Gotthilf is a co-founder and the COO of Latitud, a startup platform
   supporting the next generation of iconic tech startups in Latin America. Previously,
   Gina led growth and marketing at...

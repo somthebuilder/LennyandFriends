@@ -3,6 +3,7 @@ guest: Nikhyl Singhal
 title: Building a long and meaningful career | Nikhyl Singhal (Meta, Google)
 youtube_url: https://www.youtube.com/watch?v=U_WQuUIYnJg
 video_id: U_WQuUIYnJg
+publish_date: 2023-06-11
 description: 'Nikhyl Singhal is VP of Product at Meta, overseeing teams building messaging,
   groups, stories, and the main Facebook feed. Before that, he served as the Chief
   Product Officer at Credit Karma...

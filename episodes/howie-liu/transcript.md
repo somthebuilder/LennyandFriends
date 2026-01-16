@@ -4,6 +4,7 @@ title: How we restructured Airtable's entire org for AI | Howie Liu (co-founder 
   CEO)
 youtube_url: https://www.youtube.com/watch?v=GT0jtVjRy2E
 video_id: GT0jtVjRy2E
+publish_date: 2025-08-31
 description: 'Howie Liu is the co-founder and CEO of Airtable, the no-code platform
   valued at around $12 billion. After a viral tweet declared “Airtable is dead” based
   on incorrect data, Howie led a...

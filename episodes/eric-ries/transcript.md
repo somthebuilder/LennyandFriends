@@ -3,6 +3,7 @@ guest: Eric Ries
 title: Reflections on a movement | Eric Ries (creator of the Lean Startup methodology)
 youtube_url: https://www.youtube.com/watch?v=xzebbzIntFc
 video_id: xzebbzIntFc
+publish_date: 2023-10-29
 description: 'Eric Ries is the creator of the Lean Startup methodology, author of
   the New York Times bestseller The Lean Startup, and founder of the Long-Term Stock
   Exchange (LTSE). He’s also a multi-time...

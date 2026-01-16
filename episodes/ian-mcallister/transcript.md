@@ -3,6 +3,7 @@ guest: Ian McAllister
 title: What it takes to become a top 1% PM | Ian McAllister (Uber, Amazon, Airbnb)
 youtube_url: https://www.youtube.com/watch?v=7gaPPrAd7nc
 video_id: 7gaPPrAd7nc
+publish_date: 2022-11-20
 description: 'Ian McAllister is the Senior Director of Product for Vehicles at Uber.
   Before moving to Uber, Ian spent over a decade directing teams at Amazon, where
   he created and led Amazon Smile. He was...

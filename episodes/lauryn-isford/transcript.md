@@ -3,6 +3,7 @@ guest: Lauryn Isford
 title: Mastering onboarding | Lauryn Isford (Head of Growth at Airtable)
 youtube_url: https://www.youtube.com/watch?v=dLku0AiGPVA
 video_id: dLku0AiGPVA
+publish_date: 2023-02-12
 description: 'Lauryn Isford is a product growth leader and practitioner, who most
   recently led Growth at Airtable, and is about to start something new 🤫.  In today’s
   episode, we get into the many tactics...

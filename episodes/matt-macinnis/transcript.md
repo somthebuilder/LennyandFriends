@@ -4,6 +4,7 @@ title: '"I deliberately understaff every project" | Leadership lessons from Ripp
   $16B journey'
 youtube_url: https://www.youtube.com/watch?v=O_W76LR77Vw
 video_id: O_W76LR77Vw
+publish_date: 2025-12-28
 description: Matt MacInnis is the chief product officer and former longtime COO at
   Rippling, a unified workforce management platform valued at over $16 billion.
 duration_seconds: 5777.0

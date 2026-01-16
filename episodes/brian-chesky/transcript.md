@@ -3,6 +3,7 @@ guest: Brian Chesky
 title: Brian Chesky’s new playbook
 youtube_url: https://www.youtube.com/watch?v=4ef0juAMqoE
 video_id: 4ef0juAMqoE
+publish_date: 2023-11-12
 description: 'Brian Chesky is the co-founder and CEO of Airbnb. Under Brian’s leadership,
   Airbnb has grown into a community of over 4 million hosts who have welcomed more
   than 1.5 billion guests across...

@@ -4,6 +4,7 @@ title: Geoffrey Moore on finding your beachhead, crossing the chasm, and dominat
   a market
 youtube_url: https://www.youtube.com/watch?v=RBbINB5HSHk
 video_id: RBbINB5HSHk
+publish_date: 2024-01-25
 description: 'Geoffrey Moore is an author, speaker, and advisor, widely known for
   his seminal book Crossing the Chasm: Marketing and Selling Disruptive Products to
   Mainstream Customers, which many consider...'

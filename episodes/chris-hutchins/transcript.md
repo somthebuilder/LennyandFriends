@@ -4,6 +4,7 @@ title: Launching and growing a podcast | Chris Hutchins (All the Hacks, Wealthfr
   Google)
 youtube_url: https://www.youtube.com/watch?v=kc1XhB4k0Eg
 video_id: kc1XhB4k0Eg
+publish_date: 2022-12-18
 description: 'Chris Hutchins recently left his position as Head of New Product Strategy
   at Wealthfront to focus full-time on his podcast, All the Hacks. If you’re thinking
   about starting your own podcast...

@@ -3,6 +3,7 @@ guest: Eeke de Milliano
 title: How to foster innovation and big thinking | Eeke de Milliano (Retool, Stripe)
 youtube_url: https://www.youtube.com/watch?v=2ezz4KJe7kA
 video_id: 2ezz4KJe7kA
+publish_date: 2023-02-02
 description: 'Eeke de Milliano is the Head of Product at Retool and a former product
   lead at Stripe. In this episode, we discuss how any team can become an innovation
   machine. We talk about how a culture...

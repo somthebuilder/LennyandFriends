@@ -4,6 +4,7 @@ title: 'Inside Google''s AI turnaround: AI Mode, AI Overviews, and vision for AI
   search | Robby Stein'
 youtube_url: https://www.youtube.com/watch?v=kOnsqqVbIeY
 video_id: kOnsqqVbIeY
+publish_date: 2025-10-10
 description: 'Robby Stein is VP of Product at Google, where he oversees the core products
   of Google Search—including the new AI Overviews, AI Mode, search ranking, Google
   Lens, and more. Previously, he...

@@ -3,6 +3,7 @@ guest: Hamilton Helmer
 title: Business strategy with Hamilton Helmer (author of 7 Powers)
 youtube_url: https://www.youtube.com/watch?v=hKq1_KPSqy0
 video_id: hKq1_KPSqy0
+publish_date: 2024-05-05
 description: 'Hamilton Helmer is one of the world’s leading experts on business strategy
   and the author of the seminal book 7 Powers: The Foundations of Business Strategy,
   which provides a comprehensive...'

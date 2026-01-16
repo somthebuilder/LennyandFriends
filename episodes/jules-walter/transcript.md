@@ -3,6 +3,7 @@ guest: Jules Walter
 title: Leveraging mentors to uplevel your career | Jules Walter (YouTube, Slack)
 youtube_url: https://www.youtube.com/watch?v=zn2JNbZwf00
 video_id: zn2JNbZwf00
+publish_date: 2023-01-05
 description: 'Jules Walter is a product leader at YouTube and co-founder of both the
   Black Product Managers Network and Codepath.org. Previously, he led monetization
   and mobile growth teams at Slack. He’s...

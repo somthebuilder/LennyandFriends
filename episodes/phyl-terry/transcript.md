@@ -4,6 +4,7 @@ title: 'Land your dream job in today’s market: negotiation tactics, job search
   more | Phyl Terry'
 youtube_url: https://www.youtube.com/watch?v=OH3nzRdwYPA
 video_id: OH3nzRdwYPA
+publish_date: 2024-09-12
 description: 'Phyl Terry is the author of Never Search Alone, which I’ve seen so many
   people reference as the most impactful guide they read for finding a job. Phyl was
   on the founding team of the first...

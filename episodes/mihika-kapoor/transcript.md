@@ -4,6 +4,7 @@ title: 'Vision, conviction, and hype: How to build 0 to 1 inside a company | Mih
   Kapoor (Product, Figma)'
 youtube_url: https://www.youtube.com/watch?v=uDq6_CPaRjM
 video_id: uDq6_CPaRjM
+publish_date: 2024-04-21
 description: Mihika Kapoor is a design-engineer-PM hybrid at Figma, where she was
   an early PM on FigJam and is now spearheading development on a new product at the
   company that’s coming out this June....

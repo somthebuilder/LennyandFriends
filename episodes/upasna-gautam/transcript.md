@@ -3,6 +3,7 @@ guest: Upasna Gautam
 title: An inside look at how CNN builds product | Upasna Gautam
 youtube_url: https://www.youtube.com/watch?v=gRiCzfFEd7c
 video_id: gRiCzfFEd7c
+publish_date: 2023-02-23
 description: 'Upasna Gautam is a product manager at CNN Digital, where she works closely
   with editorial staff and journalists to build their internal content management
   system. She is also a longtime meditation...

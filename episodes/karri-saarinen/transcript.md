@@ -4,6 +4,7 @@ title: 'Inside Linear: Building with taste, craft, and focus | Karri Saarinen (c
   designer, CEO)'
 youtube_url: https://www.youtube.com/watch?v=4muxFVZ4XfM
 video_id: 4muxFVZ4XfM
+publish_date: 2023-10-08
 description: 'Karri Saarinen is the co-founder and CEO of Linear, an issue-tracking
   tool that has quickly become the fastest-growing and most beloved in the world.
   Before Linear, Karri was the principal...

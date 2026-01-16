@@ -4,6 +4,7 @@ title: Picking sharp problems, increasing virality, and unique product framework
   | Oji Udezue (Typeform)
 youtube_url: https://www.youtube.com/watch?v=T8TQGbJhv6Q
 video_id: T8TQGbJhv6Q
+publish_date: 2023-09-14
 description: 'Oji Udezue is Chief Product Officer at Typeform and has held leadership
   roles at Twitter (Head of Product for Creation and Conversation), Calendly (CPO),
   and Atlassian (Head of Product for...

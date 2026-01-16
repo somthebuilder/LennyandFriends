@@ -4,6 +4,7 @@ title: Succeeding as an introvert, building zero-to-one, and PM’ing your caree
   a product | Deb Liu
 youtube_url: https://www.youtube.com/watch?v=MajB5CQUKDA
 video_id: MajB5CQUKDA
+publish_date: 2024-08-22
 description: 'Deb Liu is the CEO of Ancestry and former longtime VP of Product at
   Facebook. At Facebook, Deb led the creation of Facebook Marketplace, developed the
   first mobile ad product for apps, built...

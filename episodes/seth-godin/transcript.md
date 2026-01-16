@@ -4,6 +4,7 @@ title: Seth Godin's best tactics for building remarkable products, strategies, b
   and more
 youtube_url: https://www.youtube.com/watch?v=UyWTDmDjNy4
 video_id: UyWTDmDjNy4
+publish_date: 2024-12-08
 description: Seth Godin is a legend. He’s a marketer, teacher, entrepreneur, and author
   of more than 20 books, including Purple Cow, Permission Marketing, and Linchpin.
   He also writes one of the most...

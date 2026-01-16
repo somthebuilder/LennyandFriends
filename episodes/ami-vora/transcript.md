@@ -4,6 +4,7 @@ title: Making an impact through authenticity and curiosity | Ami Vora (CPO at Fa
   ex-WhatsApp, FB, IG)
 youtube_url: https://www.youtube.com/watch?v=6UHAop9fhNU
 video_id: 6UHAop9fhNU
+publish_date: 2024-06-23
 description: 'Ami Vora is the Chief Product Officer of Faire, which connects independent
   retailers and brands around the world. Before Faire, Ami spent over 15 years at
   Meta, including as VP of Product and...

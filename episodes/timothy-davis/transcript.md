@@ -3,6 +3,7 @@ guest: Timothy Davis
 title: The ultimate guide to paid growth | Timothy Davis (Shopify)
 youtube_url: https://www.youtube.com/watch?v=zNJyb3R_Pnc
 video_id: zNJyb3R_Pnc
+publish_date: 2024-07-28
 description: 'Timothy Davis has led performance marketing for all of Shopify for the
   past 2.5 years, and as a consultant has helped companies like Pinterest, LinkedIn,
   Redfin, and Eventbrite kickstart and...

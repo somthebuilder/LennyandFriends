@@ -3,6 +3,7 @@ guest: Dan Hockenmaier
 title: Developing a growth model + marketplace growth strategy | Dan Hockenmaier
 youtube_url: https://www.youtube.com/watch?v=AlTQ6O2qooI
 video_id: AlTQ6O2qooI
+publish_date: 2022-10-09
 description: 'Dan Hockenmaier is an expert on marketplace strategy and growth. He
   was previously the Director of Growth at Thumbtack as well as a partner at Reforge,
   where he co-created the monetization...

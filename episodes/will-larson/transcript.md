@@ -3,6 +3,7 @@ guest: Will Larson
 title: The engineering mindset | Will Larson (Carta, Stripe, Uber, Calm, Digg)
 youtube_url: https://www.youtube.com/watch?v=Z9ftpRhRiJE
 video_id: Z9ftpRhRiJE
+publish_date: 2024-01-07
 description: 'Will Larson is the chief technology officer at Carta. Prior to joining
   Carta, he was the CTO at Calm and held engineering leadership roles at Stripe, Uber,
   and Digg. He is the author of two...

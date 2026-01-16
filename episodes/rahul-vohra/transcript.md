@@ -3,6 +3,7 @@ guest: Rahul Vohra
 title: Superhuman's secret to success | Rahul Vohra (CEO and founder)
 youtube_url: https://www.youtube.com/watch?v=0igjSRZyX-w
 video_id: 0igjSRZyX-w
+publish_date: 2025-03-23
 description: 'Rahul Vohra is the founder and CEO of Superhuman. Prior to Superhuman,
   Rahul founded Rapportive, the first Gmail plug-in to scale to millions of users,
   which he sold to LinkedIn in 2012. He...

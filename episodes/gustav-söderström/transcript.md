@@ -4,6 +4,7 @@ title: The science of product, big bets, and how AI is impacting the future of m
   | Gustav Söderström
 youtube_url: https://www.youtube.com/watch?v=QtJoYFyrdPI
 video_id: QtJoYFyrdPI
+publish_date: 2023-05-21
 description: 'Gustav Söderström is the Co-President and Chief Product and Technology
   Officer at Spotify. He is responsible for Spotify’s global product and technology
   strategy, overseeing the product,...

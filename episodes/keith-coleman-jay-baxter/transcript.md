@@ -3,6 +3,7 @@ guest: Keith Coleman & Jay Baxter
 title: An inside look at X’s Community Notes | Keith Coleman & Jay Baxter
 youtube_url: https://www.youtube.com/watch?v=8dgyqYHLcCI
 video_id: 8dgyqYHLcCI
+publish_date: 2025-02-27
 description: Keith Coleman (VP of Product) and Jay Baxter (founding ML engineer),
   the minds behind Community Notes, reveal how a small, scrappy team inside Twitter/X
   built the most trusted crowdsourced...

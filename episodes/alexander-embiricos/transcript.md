@@ -3,6 +3,7 @@ guest: Alexander Embiricos
 title: How to drive word of mouth | Nilan Peiris (CPO of Wise)
 youtube_url: https://www.youtube.com/watch?v=xZifSLGOrrw
 video_id: xZifSLGOrrw
+publish_date: 2023-09-24
 description: 'Nilan Peiris is Chief Product Officer at Wise, one of the fastest-growing
   (and profitable) tech companies in the world. Wise allows anyone to send money in
   more than 60 currencies to over 160...

@@ -4,6 +4,7 @@ title: 'Thinking like a gardener, slime mold, the adjacent possible: Product adv
   from Alex Komoroske'
 youtube_url: https://www.youtube.com/watch?v=PoWRYBWSqpU
 video_id: PoWRYBWSqpU
+publish_date: 2024-10-03
 description: 'Alex Komoroske is a strategic leader who merges the practice, theory,
   and mindset necessary to tackle complex problems. He spent 13 years at Google, where
   he worked on Search and DoubleClick...

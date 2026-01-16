@@ -3,6 +3,7 @@ guest: Marily Nika
 title: AI and product management | Marily Nika (Meta, Google)
 youtube_url: https://www.youtube.com/watch?v=qNPPoj1qUG0
 video_id: qNPPoj1qUG0
+publish_date: 2023-02-05
 description: 'Marily is a computer scientist and an AI Product Leader currently working
   for Meta’s reality labs, and previously at Google for 8 years. In 2014 she completed
   a PhD in Machine Learning. She...

@@ -4,6 +4,7 @@ title: 'How marketplaces win: Liquidity, growth levers, quality, more | Benjamin
   (Lyft, Thumbtack)'
 youtube_url: https://www.youtube.com/watch?v=CYwgStMln6U
 video_id: CYwgStMln6U
+publish_date: 2024-09-29
 description: Benjamin Lauzier has been building and scaling marketplaces for almost
   15 years. He was the VP of product and growth at Thumbtack, where he rebuilt the
   product team and Thumbtack’s growth...

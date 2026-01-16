@@ -4,6 +4,7 @@ title: An inside look at how the New York Times builds product | Alex Hardiman (
   the New York Times)
 youtube_url: https://www.youtube.com/watch?v=y3-cwoHMwQs
 video_id: y3-cwoHMwQs
+publish_date: 2022-11-13
 description: 'Alex Hardiman is Chief Product Officer at the New York Times, where
   she oversees the company’s news, cooking, games, audio and advertising products.
   Previously, Alex was Chief Product Officer...

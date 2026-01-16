@@ -4,6 +4,7 @@ title: How to be more innovative | Sam Schillace (Microsoft deputy CTO, creator 
   Google Docs)
 youtube_url: https://www.youtube.com/watch?v=IOWDoDpQ7Xg
 video_id: IOWDoDpQ7Xg
+publish_date: 2024-01-11
 description: 'Sam Schillace is deputy CTO and corporate vice president at Microsoft.
   Prior to working at Microsoft, Sam started a company called Writely, which was acquired
   by Google and became the foundation...

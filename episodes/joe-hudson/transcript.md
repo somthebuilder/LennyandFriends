@@ -4,6 +4,7 @@ title: How embracing your emotions will accelerate your career | Joe Hudson (Art
   Accomplishment)
 youtube_url: https://www.youtube.com/watch?v=DYkE1gf37ts
 video_id: DYkE1gf37ts
+publish_date: 2024-08-08
 description: 'Joe Hudson is one of the most sought-after executive coaches in Silicon
   Valley. He is the founder of Art of Accomplishment, a transformational coaching
   program that has helped tens of thousands...

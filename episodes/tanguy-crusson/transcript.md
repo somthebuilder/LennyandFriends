@@ -4,6 +4,7 @@ title: Hard-won lessons building 0 to 1 inside Atlassian | Tanguy Crusson (Head 
   Jira Product Discovery)
 youtube_url: https://www.youtube.com/watch?v=cZqpqb5qR5A
 video_id: cZqpqb5qR5A
+publish_date: 2024-06-16
 description: 'Tanguy Crusson is the product lead for Jira Product Discovery at Atlassian.
   In his more than 10 years at the company, he has been instrumental in taking several
   new products from zero to one,...

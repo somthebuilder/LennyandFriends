@@ -4,6 +4,7 @@ title: The things engineers are desperate for PMs to understand | Camille Fourni
   (“The Manager’s Path”)
 youtube_url: https://www.youtube.com/watch?v=hZSh0rs20uI
 video_id: hZSh0rs20uI
+publish_date: 2024-09-15
 description: 'Camille Fournier is the author of The Manager’s Path, which many consider
   the definitive guide for navigating one’s career path in tech. Camille was previously
   the CTO of Rent the Runway,...

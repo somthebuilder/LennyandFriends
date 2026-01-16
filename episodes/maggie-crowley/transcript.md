@@ -4,6 +4,7 @@ title: Mastering product strategy and growing as a PM | Maggie Crowley (Toast, D
   TripAdvisor)
 youtube_url: https://www.youtube.com/watch?v=4LjddcccYIo
 video_id: 4LjddcccYIo
+publish_date: 2023-11-05
 description: 'Maggie Crowley is VP of product at Toast and previously vice president
   and head of product at Charlie Health, senior director of product management at
   Drift, and a PM at TripAdvisor. She’s...

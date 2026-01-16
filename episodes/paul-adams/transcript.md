@@ -3,6 +3,7 @@ guest: Paul Adams
 title: What AI means for your product strategy | Paul Adams (CPO of Intercom)
 youtube_url: https://www.youtube.com/watch?v=R-Geamq9xc0
 video_id: R-Geamq9xc0
+publish_date: 2023-10-26
 description: 'Paul Adams is the longtime chief product officer at Intercom, where
   he leads the product management, product design, data science, and research teams.
   Before Intercom, Paul was the global head...

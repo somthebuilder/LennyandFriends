@@ -4,6 +4,7 @@ title: 'Taxi mafias, cash vaults & 100% MoM growth: The story of SEA’s biggest
   | Kevin Aluwi (Gojek)'
 youtube_url: https://www.youtube.com/watch?v=HVB-dqjUJks
 video_id: HVB-dqjUJks
+publish_date: 2023-03-26
 description: 'Kevin Aluwi is the co-founder and former CEO of Gojek. With over 2.7
   million drivers and over 3 billion orders completed, Gojek is the biggest startup
   in Indonesia and all of Southeast Asia....

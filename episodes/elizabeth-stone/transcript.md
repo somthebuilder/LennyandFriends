@@ -3,6 +3,7 @@ guest: Elizabeth Stone
 title: How Netflix builds a culture of excellence | Elizabeth Stone (CTO)
 youtube_url: https://www.youtube.com/watch?v=2XgU6T4DalY
 video_id: 2XgU6T4DalY
+publish_date: 2024-02-22
 description: 'Elizabeth Stone is the chief technology officer of Netflix. She previously
   served as vice president of product data science and engineering, and as vice president
   of data and insights, at Netflix....

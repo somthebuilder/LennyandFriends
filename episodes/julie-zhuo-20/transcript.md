@@ -4,6 +4,7 @@ title: How To Win Friends & Influence Decisions (Julie Zhuo) | Lenny & Friends S
   2024
 youtube_url: https://www.youtube.com/watch?v=0Z5FCYDeZXs
 video_id: 0Z5FCYDeZXs
+publish_date: 2024-12-12
 description: Julie Zhuo shares her approach to influencing decisions in product leadership,
   moving beyond the traditional right-vs-wrong mindset to create collaborative, data-informed
   choices that benefit...

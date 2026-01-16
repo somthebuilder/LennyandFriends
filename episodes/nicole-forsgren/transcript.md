@@ -3,6 +3,7 @@ guest: Nicole Forsgren
 title: How to measure AI developer productivity in 2025 | Nicole Forsgren
 youtube_url: https://www.youtube.com/watch?v=SWcDfPVTizQ
 video_id: SWcDfPVTizQ
+publish_date: 2025-10-19
 description: 'Nicole Forsgren created the most widely used frameworks for measuring
   developer productivity—DORA and SPACE. She wrote the foundational book Accelerate
   and is about to release her newest...

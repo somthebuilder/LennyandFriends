@@ -3,6 +3,7 @@ guest: Christine Itwaru
 title: Understanding the role of product ops | Christine Itwaru (Pendo)
 youtube_url: https://www.youtube.com/watch?v=tGS-NhxrN_Q
 video_id: tGS-NhxrN_Q
+publish_date: 2023-02-16
 description: 'Christine Itwaru is a longtime product operations leader at Pendo and
   more recently has taken on the larger role of Principal Strategist there. Before
   leading product ops, Christine spent 12...

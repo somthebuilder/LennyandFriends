@@ -3,6 +3,7 @@ guest: Claire Butler
 title: An inside look at Figma’s unique GTM motion | Claire Butler (first GTM hire)
 youtube_url: https://www.youtube.com/watch?v=UmirRfy-gzA
 video_id: UmirRfy-gzA
+publish_date: 2023-09-07
 description: 'Claire Butler was Figma’s first GTM hire and their 10th employee. She
   led Figma’s early GTM strategy from stealth through monetization. She also helped
   the team through the journey to find...

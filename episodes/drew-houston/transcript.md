@@ -3,6 +3,7 @@ guest: Drew Houston
 title: Behind the founder | Drew Houston (Dropbox)
 youtube_url: https://www.youtube.com/watch?v=egdYKLBswgk
 video_id: egdYKLBswgk
+publish_date: 2025-01-09
 description: Drew Houston is the co-founder and CEO of Dropbox. Under his leadership, Dropbox has grown from a simple idea to a service used by over 700 million registered users globally, with a valuation exceeding $9 billion. Drew has led Dropbox through multiple phases, from explosive viral growth, to battling all the tech giants at once, to reinventing the company for the future of work. 
 duration_seconds: 6450.0
 duration: '1:47:30'

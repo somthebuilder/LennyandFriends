@@ -3,6 +3,7 @@ guest: Patrick Campbell
 title: 10 lessons on bootstrapping a $200m business | Patrick Campbell (ProfitWell)
 youtube_url: https://www.youtube.com/watch?v=FjLSCrSg5QY
 video_id: FjLSCrSg5QY
+publish_date: 2023-02-19
 description: 'Patrick Campbell is the founder and CEO of ProfitWell, which he bootstrapped
   and sold for over $200 million. In this special episode, we explore 10 big ideas
   from Patrick, including tips for...

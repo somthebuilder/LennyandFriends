@@ -4,6 +4,7 @@ title: Becoming more strategic, navigating difficult colleagues, founder mode, m
   | Anneka Gupta
 youtube_url: https://www.youtube.com/watch?v=E3dUveqt9Bw
 video_id: E3dUveqt9Bw
+publish_date: 2024-10-17
 description: 'Anneka Gupta is the Chief Product Officer at Rubrik, a leading B2B cybersecurity
   company. She previously spent 11 years at LiveRamp, where she was the President
   and Head of Product and Platforms...

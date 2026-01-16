@@ -3,6 +3,7 @@ guest: Alisa Cohn
 title: Scripts for navigating difficult conversations | Alisa Cohn (executive coach)
 youtube_url: https://www.youtube.com/watch?v=bvF0ZM8DjuI
 video_id: bvF0ZM8DjuI
+publish_date: 2025-01-05
 description: 'Alisa Cohn is an executive coach who has worked with C-suite executives
   at startups like Venmo, Etsy, Wirecutter, and DraftKings, and Fortune 500 companies
   like Microsoft, Google, Pfizer, Dell,...

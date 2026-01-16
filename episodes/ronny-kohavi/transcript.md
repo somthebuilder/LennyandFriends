@@ -3,6 +3,7 @@ guest: Ronny Kohavi
 title: The ultimate guide to A/B testing | Ronny Kohavi (Airbnb, Microsoft, Amazon)
 youtube_url: https://www.youtube.com/watch?v=hEzpiDuYFoE
 video_id: hEzpiDuYFoE
+publish_date: 2023-07-27
 description: 'Ronny Kohavi, PhD, is a consultant, teacher, and leading expert on the
   art and science of A/B testing. Previously, Ronny was Vice President and Technical
   Fellow at Airbnb, Technical Fellow...

@@ -3,6 +3,7 @@ guest: Nan Yu
 title: Linear’s secret to building beloved B2B products | Nan Yu (Head of Product)
 youtube_url: https://www.youtube.com/watch?v=nTr21kgCFF4
 video_id: nTr21kgCFF4
+publish_date: 2025-01-30
 description: Nan Yu is the head of product at Linear, one of the most beloved and
   fastest-growing B2B SaaS products out there today, and the gold standard for high-performing
   tech teams. In our conversation,...

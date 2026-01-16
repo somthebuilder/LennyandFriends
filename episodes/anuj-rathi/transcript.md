@@ -3,6 +3,7 @@ guest: Anuj Rathi
 title: The full-stack PM | Anuj Rathi (Swiggy, Jupiter Money, Flipkart)
 youtube_url: https://www.youtube.com/watch?v=1sClhfuCxP0
 video_id: 1sClhfuCxP0
+publish_date: 2023-12-07
 description: 'Anuj Rathi is the Chief Product and Marketing Officer at Jupiter Money,
   where he leads product management, marketing, design, growth, and analytics. Before
   Jupiter Money, Anuj served as the...

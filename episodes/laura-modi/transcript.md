@@ -4,6 +4,7 @@ title: Career frameworks, A/B testing, onboarding tips, selling to engineers |  
   Schaffer (Amplitude)
 youtube_url: https://www.youtube.com/watch?v=UMAmj1bciww
 video_id: UMAmj1bciww
+publish_date: 2023-03-09
 description: Laura Schaffer is the brand-new VP of Growth at Amplitude. Prior to this
   role, she spent over 10 years leading product management and growth teams at Twilio,
   Bandwidth, and Rapid. In today’s...

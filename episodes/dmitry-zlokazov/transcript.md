@@ -20,6 +20,7 @@ title: 'How Revolut trains world-class PMs: The "Local CEO" model, raw intellect
   building wow products'
 youtube_url: https://www.youtube.com/watch?v=-kPpd21bFrE
 video_id: -kPpd21bFrE
+publish_date: 2025-05-15
 description: Dmitry Zlokazov is the head of product at Revolut, the $45 billion fintech
   giant operating in over 50 countries, serving more than 50 million customers.
 duration_seconds: 4202.0

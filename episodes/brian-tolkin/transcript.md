@@ -4,6 +4,7 @@ title: Lessons from scaling Uber and Opendoor | Brian Tolkin (Head of Product at
   ex-Uber)
 youtube_url: https://www.youtube.com/watch?v=sRukk520Fds
 video_id: sRukk520Fds
+publish_date: 2024-08-04
 description: 'Brian Tolkin is the Head of Product at Opendoor. Previously, he was
   one of the early employees at Uber, where he was instrumental in launching and growing
   UberPool, UberHop, and UberExpress...

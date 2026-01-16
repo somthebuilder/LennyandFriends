@@ -4,6 +4,7 @@ title: Why experts writing AI evals is creating the fastest-growing companies in
   | Brendan Foody
 youtube_url: https://www.youtube.com/watch?v=ja6fWTDPQl4
 video_id: ja6fWTDPQl4
+publish_date: 2025-09-18
 description: 'Brendan Foody is the CEO and co-founder of Mercor, the fastest-growing
   company in history to go from $1M to $500M in revenue (in just 17 months!). At 22,
   he is also the youngest American unicorn...

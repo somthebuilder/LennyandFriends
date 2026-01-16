@@ -4,6 +4,7 @@ title: 5 essential questions to craft a winning strategy | Roger Martin (author,
   speaker)
 youtube_url: https://www.youtube.com/watch?v=y7SN4FK8noY
 video_id: y7SN4FK8noY
+publish_date: 2024-07-25
 description: 'Roger Martin is one of the world’s leading experts on strategy and the
   author of Playing to Win, one of the most beloved books on strategy. He’s written
   extensively for the Harvard Business...

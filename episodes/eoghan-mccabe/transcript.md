@@ -4,6 +4,7 @@ title: How Intercom rose from the ashes by betting everything on AI | Eoghan McC
   (founder and CEO)
 youtube_url: https://www.youtube.com/watch?v=0_opWSfmN8M
 video_id: 0_opWSfmN8M
+publish_date: 2025-08-21
 description: Eoghan McCabe is the founder and CEO of Intercom, a customer service
   platform that has successfully pivoted to become an AI-first company with its agent
   product, Fin. After stepping away from...

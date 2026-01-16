@@ -4,6 +4,7 @@ title: Meta’s head of product on working with Mark Zuckerberg, early growth ta
   and more | Naomi Gleit
 youtube_url: https://www.youtube.com/watch?v=sTYuKgzZoL8
 video_id: sTYuKgzZoL8
+publish_date: 2024-10-27
 description: 'Naomi Gleit is head of product at Meta, joined as employee #29, and
   is the longest-serving executive at Meta other than Mark Zuckerberg. She’s been
   at the center of some of the company’s...

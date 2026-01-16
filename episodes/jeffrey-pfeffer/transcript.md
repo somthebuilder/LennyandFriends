@@ -4,6 +4,7 @@ title: 'The paths to power: How to grow your influence and advance your career |
   Pfeffer (Stanford)'
 youtube_url: https://www.youtube.com/watch?v=etVCBDRXUH8
 video_id: etVCBDRXUH8
+publish_date: 2024-06-13
 description: 'Jeffrey Pfeffer teaches the single most popular (and somewhat controversial)
   class at Stanford’s Graduate School of Business: The Paths to Power. He’s also the
   author of 16 books, including...

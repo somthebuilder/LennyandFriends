@@ -4,6 +4,7 @@ title: The art and science of pricing | Madhavan Ramanujam (Monetizing Innovatio
   Simon-Kucher)
 youtube_url: https://www.youtube.com/watch?v=A6veeCbKIzw
 video_id: A6veeCbKIzw
+publish_date: 2022-12-08
 description: Madhavan Ramanujam is a senior partner at Simon-Kucher, where he works
   with tier-one tech companies like Uber, Asana, and LinkedIn to help them develop
   their pricing and monetization strategies....

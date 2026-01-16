@@ -4,6 +4,7 @@ title: I’ve run 75+ businesses. Here’s why you’re probably chasing the wro
   | Andrew Wilkinson
 youtube_url: https://www.youtube.com/watch?v=VxAwUb86MUE
 video_id: VxAwUb86MUE
+publish_date: 2025-07-03
 description: 'Andrew Wilkinson is the co‑founder of Tiny, a holding company that quietly
   owns more than three dozen profitable internet and consumer brands, including Dribbble
   and the AeroPress coffee...

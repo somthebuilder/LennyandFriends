@@ -4,6 +4,7 @@ title: Lessons in product leadership and AI strategy from Glean, Google, Amazon,
   Slack | Tamar Yehoshua
 youtube_url: https://www.youtube.com/watch?v=ZoSeOltKqQk
 video_id: ZoSeOltKqQk
+publish_date: 2024-09-26
 description: 'Tamar Yehoshua is the president of product and technology at Glean.
   Prior to joining Glean, Tamar was chief product officer at Slack, where she led
   product, design, and research as the company...

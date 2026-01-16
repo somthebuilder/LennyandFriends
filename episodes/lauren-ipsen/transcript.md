@@ -4,6 +4,7 @@ title: Lessons from one of the world’s top executive recruiters | Lauren Ipsen
   Partners, GC)
 youtube_url: https://www.youtube.com/watch?v=v3pofqabzhs
 video_id: v3pofqabzhs
+publish_date: 2022-11-03
 description: 'Lauren Ipsen is one of the most well-known and respected executive recruiters
   in the industry, having placed over 90 senior product leaders at companies including
   Twitter, Reddit, Opendoor,...

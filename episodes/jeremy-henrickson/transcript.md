@@ -3,6 +3,7 @@ guest: Jeremy Henrickson
 title: Moving fast and navigating uncertainty | Jeremy Henrickson (Rippling, Coinbase)
 youtube_url: https://www.youtube.com/watch?v=CsruQYKISYI
 video_id: CsruQYKISYI
+publish_date: 2023-06-04
 description: 'Jeremy Henrickson is Rippling’s SVP of Product, responsible for scaling
   their product and design team across three continents. Previously, as Chief Product
   Officer at Coinbase, he oversaw...

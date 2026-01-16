@@ -4,6 +4,7 @@ title: 'Pattern Breakers: How to find a breakthrough startup idea | Mike Maples,
   (Partner at Floodgate)'
 youtube_url: https://www.youtube.com/watch?v=h9o6gPQA6LA
 video_id: h9o6gPQA6LA
+publish_date: 2024-07-07
 description: 'Mike Maples, Jr. is a legendary early-stage startup investor and a co-founder
   and partner at Floodgate. He’s made early bets on transformative companies like
   Twitter, Lyft, Twitch, Okta,...

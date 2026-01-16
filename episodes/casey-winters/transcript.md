@@ -4,6 +4,7 @@ title: Why most product managers are unprepared for the demands of a real startu
   | Casey Winters
 youtube_url: https://www.youtube.com/watch?v=WlRfyEpAKxw
 video_id: WlRfyEpAKxw
+publish_date: 2023-04-14
 description: 'Casey Winters explains why so many product managers are falling short.
 
   🎙️Find the full episode here: https://youtu.be/QMFvz8utx-Q

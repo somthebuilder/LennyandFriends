@@ -4,6 +4,7 @@ title: The original growth hacker reveals his secrets | Sean Ellis (author of �
   Growth”)
 youtube_url: https://www.youtube.com/watch?v=VjJ6xcv7e8s
 video_id: VjJ6xcv7e8s
+publish_date: 2024-09-05
 description: 'Sean Ellis is one of the earliest and most influential thinkers and
   operators in growth. He coined the term “growth hacking,” invented the ICE prioritization
   framework, was one of the earliest...

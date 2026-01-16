@@ -4,6 +4,7 @@ title: Lessons on product sense, AI, the first mile experience, and the messy mi
   | Scott Belsky (Adobe)
 youtube_url: https://www.youtube.com/watch?v=HCKosdV1J-8
 video_id: HCKosdV1J-8
+publish_date: 2023-05-18
 description: 'Scott Belsky is an entrepreneur, author, investor, and currently Adobe’s
   Chief Strategy Officer and EVP of Design and Emerging Products. He founded Behance,
   an online platform for creative...

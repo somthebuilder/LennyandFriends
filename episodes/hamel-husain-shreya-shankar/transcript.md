@@ -4,6 +4,7 @@ title: Why AI evals are the hottest new skill for product builders | Hamel Husai
   & Shreya Shankar
 youtube_url: https://www.youtube.com/watch?v=BsWxPI9UM4c
 video_id: BsWxPI9UM4c
+publish_date: 2025-09-25
 description: Hamel Husain and Shreya Shankar teach the world’s most popular course
   on AI evals and have trained over 2,000 PMs and engineers (including many teams
   at OpenAI and Anthropic). In this conversatio...

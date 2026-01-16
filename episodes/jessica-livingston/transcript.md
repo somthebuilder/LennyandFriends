@@ -4,6 +4,7 @@ title: 'The social radar: Y Combinator’s secret weapon | Jessica Livingston (c
   of YC, author)'
 youtube_url: https://www.youtube.com/watch?v=h9MUuhsDJOM
 video_id: h9MUuhsDJOM
+publish_date: 2024-06-27
 description: 'Jessica Livingston is a co-founder of Y Combinator, the first and most
   successful startup accelerator. Y Combinator has funded over 5,000 companies, 200
   of which are now unicorns, including...

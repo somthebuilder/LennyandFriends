@@ -4,6 +4,7 @@ title: Twitter’s ex-Head of Product on Elon, consumer products, culture, more 
   Beykpour
 youtube_url: https://www.youtube.com/watch?v=MKDnDueTvKk
 video_id: MKDnDueTvKk
+publish_date: 2024-04-28
 description: 'Kayvon Beykpour was the longest-serving head of product at Twitter and
   was GM of Twitter’s consumer division until the platform was acquired by Elon Musk.
   He originally joined Twitter in...

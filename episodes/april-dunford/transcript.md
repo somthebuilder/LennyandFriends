@@ -4,6 +4,7 @@ title: A step-by-step guide to crafting a sales pitch that wins | April Dunford 
   of Sales Pitch)
 youtube_url: https://www.youtube.com/watch?v=-VqmFI9vY7w
 video_id: -VqmFI9vY7w
+publish_date: 2023-10-22
 description: 'April Dunford is a speaker, mentor, podcaster, best-selling author,
   and beloved returning guest to the show. Last year, she joined me on the pod to
   discuss product positioning and differentiated...

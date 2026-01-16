@@ -3,6 +3,7 @@ guest: Heidi Helfand
 title: The art and wisdom of changing teams | Heidi Helfand (Author of Dynamic Reteaming)
 youtube_url: https://www.youtube.com/watch?v=0wN5wSImUdY
 video_id: 0wN5wSImUdY
+publish_date: 2024-01-18
 description: 'Heidi Helfand is the author of Dynamic Reteaming, which outlines practical
   strategies for orchestrating successful team and company org changes. Her work is
   informed by more than 20 years in...

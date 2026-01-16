@@ -4,6 +4,7 @@ title: 'Pricing your AI product: Lessons from 400+ companies and 50 unicorns | M
   Ramanujam'
 youtube_url: https://www.youtube.com/watch?v=NR85H55eYkM
 video_id: NR85H55eYkM
+publish_date: 2025-07-27
 description: 'Madhavan Ramanujam is the world’s foremost expert on pricing and monetization
   strategy. As managing partner at Simon-Kucher, he helped over 250 companies, including
   30 unicorns, architect...

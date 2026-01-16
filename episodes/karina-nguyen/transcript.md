@@ -3,6 +3,7 @@ guest: Karina Nguyen
 title: OpenAI researcher on why soft skills are the future of work | Karina Nguyen
 youtube_url: https://www.youtube.com/watch?v=DeskgjrLxxs
 video_id: DeskgjrLxxs
+publish_date: 2025-02-09
 description: 'Karina Nguyen leads research at OpenAI, where she’s been pivotal in
   developing groundbreaking products like Canvas, Tasks, and the o1 language model.
   Before OpenAI, Karina was at Anthropic,...

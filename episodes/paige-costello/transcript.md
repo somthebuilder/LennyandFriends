@@ -4,6 +4,7 @@ title: How to ask the right questions, project confidence, and win over skeptics
   Paige Costello (Asana)
 youtube_url: https://www.youtube.com/watch?v=N7S6nSmOsUI
 video_id: N7S6nSmOsUI
+publish_date: 2023-07-09
 description: 'Paige Costello is a beloved product leader with a reputation as a remarkable
   coach and mentor. She is currently the Head of Core Product at Asana, where she
   leads the group responsible for...

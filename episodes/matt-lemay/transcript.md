@@ -3,6 +3,7 @@ guest: Matt LeMay
 title: The one question that saves product careers | Matt LeMay
 youtube_url: https://www.youtube.com/watch?v=ts9ZvlkeWGs
 video_id: ts9ZvlkeWGs
+publish_date: 2025-08-14
 description: 'Matt LeMay spent 13 years as a music critic at Pitchfork before becoming
   one of product management’s most influential voices. He’s consulted with companies
   from startups to Fortune 500s...

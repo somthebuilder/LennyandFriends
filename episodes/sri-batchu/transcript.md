@@ -3,6 +3,7 @@ guest: Sri Batchu
 title: Lessons from scaling Ramp | Sri Batchu (Ramp, Instacart, Opendoor)
 youtube_url: https://www.youtube.com/watch?v=RcYCU5UAZOk
 video_id: RcYCU5UAZOk
+publish_date: 2023-06-25
 description: 'Sri Batchu currently leads growth at Ramp, the fastest-growing SaaS
   business (and fintech business) in history. Previously, he led growth strategy and
   operations at Instacart and was one of...

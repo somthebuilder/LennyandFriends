@@ -3,6 +3,7 @@ guest: Chip Huyen
 title: Al Engineering 101 with Chip Huyen (Nvidia, Stanford, Netflix)
 youtube_url: https://www.youtube.com/watch?v=qbvY0dQgSJ4
 video_id: qbvY0dQgSJ4
+publish_date: 2025-10-23
 description: Chip Huyen is a core developer on Nvidia’s Nemo platform, a former AI
   researcher at Netflix, and taught machine learning at Stanford. She’s a two-time
   founder and the author of two widely...

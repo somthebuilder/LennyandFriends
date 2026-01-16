@@ -4,6 +4,7 @@ title: LinkedIn’s product evolution and the art of building complex systems | 
   Srinivasan (LinkedIn)
 youtube_url: https://www.youtube.com/watch?v=ZUwkTs_QWqg
 video_id: ZUwkTs_QWqg
+publish_date: 2023-07-16
 description: 'Hari Srinivasan is VP of Product at LinkedIn Talent Solutions, where
   he oversees LinkedIn Recruiter, LinkedIn Jobs, and LinkedIn Learning. He’s also
   a frequent guest lecturer at Stanford...

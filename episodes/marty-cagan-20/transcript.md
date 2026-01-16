@@ -3,6 +3,7 @@ guest: Marty Cagan 2.0
 title: The disease of process people | Marty Cagan
 youtube_url: https://www.youtube.com/watch?v=gXDg88rSG8U
 video_id: gXDg88rSG8U
+publish_date: 2023-02-06
 description: 'Lenny Rachitsky interviews world-class product leaders and growth experts
   to uncover concrete, actionable, and tactical advice to help you build, launch,
   and grow your own product.

@@ -4,6 +4,7 @@ title: Category creation and brand building | Barbra Gago (Pando, Miro, Greenhou
   Culture Amp)
 youtube_url: https://www.youtube.com/watch?v=gCEaUfZUuI0
 video_id: gCEaUfZUuI0
+publish_date: 2022-10-27
 description: 'Barbra Gago is the founder and CEO of Pando, where she’s democratizing
   career progression. Previously she worked as the Chief Marketing Officer and Global
   Head of Marketing at Miro, where...

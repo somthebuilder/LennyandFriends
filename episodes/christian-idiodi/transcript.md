@@ -3,6 +3,7 @@ guest: Christian Idiodi
 title: The essence of product management | Christian Idiodi (SVPG)
 youtube_url: https://www.youtube.com/watch?v=SXYc5RoU3Lg
 video_id: SXYc5RoU3Lg
+publish_date: 2023-12-21
 description: 'Christian Idiodi is a partner at Silicon Valley Product Group. After
   a long product career and founding multiple companies, Christian now spends his
   time working closely with product leaders...

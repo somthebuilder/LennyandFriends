@@ -4,6 +4,7 @@ title: The happiness and pain of product management | Noam Lovinsky (Grammarly, 
   Thumbtack, YT)
 youtube_url: https://www.youtube.com/watch?v=a_W5Rn0bJWE
 video_id: a_W5Rn0bJWE
+publish_date: 2024-03-17
 description: 'Noam Lovinsky has had a distinguished career in product, leaving an
   indelible mark at Facebook, YouTube, Thumbtack, and currently as the chief product
   officer at Grammarly. At Facebook, Noam...

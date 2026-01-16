@@ -4,6 +4,7 @@ title: How to build a team that can “take a punch” | Hilary Gridley (Head of
   Product, Whoop)
 youtube_url: https://www.youtube.com/watch?v=xm5QAzAlqEY
 video_id: xm5QAzAlqEY
+publish_date: 2025-06-15
 description: 'Hilary Gridley is the Head of Core Product at WHOOP and a passionate
   thought leader in leveraging AI to elevate product teams and management practices.
   With extensive experience tackling challengin...

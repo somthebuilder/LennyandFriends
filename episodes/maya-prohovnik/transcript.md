@@ -4,6 +4,7 @@ title: Building Anchor, selling to Spotify, and lessons learned | Maya Prohovnik
   of Podcast Product)
 youtube_url: https://www.youtube.com/watch?v=1gXNOJEWajU
 video_id: 1gXNOJEWajU
+publish_date: 2023-09-28
 description: 'Maya Prohovnik is currently Spotify’s Head of Podcast Product. She was
   employee #1 at Anchor, which was acquired by Spotify in 2019 and now powers more
   than 80% of all new podcasts created...

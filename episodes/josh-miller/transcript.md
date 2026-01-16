@@ -4,6 +4,7 @@ title: 'Competing with giants: An inside look at how The Browser Company builds 
   | Josh Miller (CEO)'
 youtube_url: https://www.youtube.com/watch?v=AZpo5785v8A
 video_id: AZpo5785v8A
+publish_date: 2023-03-19
 description: 'Josh Miller is the CEO and co-founder of The Browser Company, where
   he helped build Arc, my go-to web browser. In today’s episode, we get an inside
   look at the unique structure and values...

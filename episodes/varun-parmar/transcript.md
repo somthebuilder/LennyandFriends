@@ -3,6 +3,7 @@ guest: Varun Parmar
 title: An inside look at how Miro builds product | Varun Parmar (CPO of Miro)
 youtube_url: https://www.youtube.com/watch?v=furNg4njlsg
 video_id: furNg4njlsg
+publish_date: 2023-04-20
 description: 'Varun Parmar is the Chief Product Officer of Miro and has over two decades
   of experience in the tech industry. Prior to joining Miro, Varun held executive
   positions as Chief Product Officer...

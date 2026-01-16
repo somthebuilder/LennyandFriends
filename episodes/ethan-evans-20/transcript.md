@@ -3,6 +3,7 @@ guest: Ethan Evans 2.0
 title: Taking control of your career | Ethan Evans (Amazon)
 youtube_url: https://www.youtube.com/watch?v=GB0P0_nFPTA
 video_id: GB0P0_nFPTA
+publish_date: 2024-01-14
 description: Ethan Evans is a writer, career coach, course instructor, and retired
   VP at Amazon. During his 15 years at Amazon, he helped invent Prime Video, Amazon
   Video, the Amazon Appstore, Prime Gaming...

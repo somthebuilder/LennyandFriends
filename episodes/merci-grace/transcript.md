@@ -4,6 +4,7 @@ title: How to work through fear, give hard feedback, and doing layoffs with grac
   | Matt Mochary
 youtube_url: https://www.youtube.com/watch?v=bCel0X2Ta7U
 video_id: bCel0X2Ta7U
+publish_date: 2022-11-10
 description: Matt Mochary, CEO of Mochary Method, is a full-time executive coach who
   has worked with some of the biggest names in tech and finance, including investor
   Naval Ravikant and the CEOs of Notion,...

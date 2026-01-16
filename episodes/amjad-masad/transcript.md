@@ -3,6 +3,7 @@ guest: Amjad Masad
 title: 'Behind the product: Replit | Amjad Masad (co-founder and CEO)'
 youtube_url: https://www.youtube.com/watch?v=Bp_h674oIhw
 video_id: Bp_h674oIhw
+publish_date: 2024-11-21
 description: Amjad Masad is the co-founder and CEO of Replit, a browser-based coding
   environment that allows anyone to write and deploy code. Replit has 34 million users
   globally and is one of the fastest-growi...

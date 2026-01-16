@@ -3,6 +3,7 @@ guest: Shaun Clowes
 title: Why great AI products are all about the data | Shaun Clowes (CPO at Confluent)
 youtube_url: https://www.youtube.com/watch?v=yVS1gTAQYSU
 video_id: yVS1gTAQYSU
+publish_date: 2024-12-29
 description: 'Shaun Clowes is the chief product officer at Confluent and former CPO
   at Salesforce’s MuleSoft and at Metromile. He was also the first head of growth
   at Atlassian, where he led product for...

@@ -3,6 +3,7 @@ guest: Ken Norton
 title: How to unlock your product leadership skills | Ken Norton, Ex-Google
 youtube_url: https://www.youtube.com/watch?v=6P0Es02vIF4
 video_id: 6P0Es02vIF4
+publish_date: 2022-07-24
 description: 'Advancing as a product leader requires new skills and a new mindset.
   Ken Norton is an executive coach who works with some of the top people in product
   to help them get unstuck and find creativity...

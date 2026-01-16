@@ -3,6 +3,7 @@ guest: Vikrama Dhiman
 title: A framework for PM skill development | Vikrama Dhiman (Gojek)
 youtube_url: https://www.youtube.com/watch?v=ImSvm11GR0Y
 video_id: ImSvm11GR0Y
+publish_date: 2024-05-12
 description: 'Vikrama Dhiman heads all things product at Gojek, including product
   management, design, program management, and research, across Indonesia, Singapore
   and India. He has over 16 years of experience...

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a static content archive containing 269 episode transcripts from Lenny's Podcast, with an AI-generated topic index for easy discovery.
+This is a static content archive containing 303 episode transcripts from Lenny's Podcast, with an AI-generated topic index for easy discovery.
 
 ## Structure
 
@@ -16,14 +16,16 @@ This is a static content archive containing 269 episode transcripts from Lenny's
 │   ├── README.md            # Main entry point with topic links
 │   └── {topic}.md           # Individual topic files (e.g., product-management.md)
 └── scripts/
-    └── build-index.sh       # Script to regenerate the index
+    └── build-index.sh       # Script to regenerate the topic index
 ```
 
 ## Transcript Format
 
 Each transcript.md contains:
-- **YAML frontmatter**: guest, title, youtube_url, video_id, description, duration_seconds, duration, view_count, channel
+- **YAML frontmatter**: guest, title, youtube_url, video_id, publish_date, description, duration_seconds, duration, view_count, channel, keywords
 - **Transcript content**: Timestamped speaker dialogue
+
+The `publish_date` field is in YYYY-MM-DD format and represents the YouTube upload date.
 
 ## Index
 
@@ -74,3 +76,15 @@ Read that file to access the full content.
 ```
 
 This calls Claude CLI for each episode to generate keywords. The script is idempotent - it skips episodes already present in keyword files, so it can be run multiple times safely.
+
+## Adding Publication Dates
+
+All episodes should include `publish_date` in ISO 8601 format (YYYY-MM-DD). To fetch the publication date for a new episode:
+
+1. Use the `video_id` from the transcript's frontmatter
+2. Call the YouTube Data API v3:
+   ```
+   https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={API_KEY}
+   ```
+3. Extract `snippet.publishedAt` from the response
+4. Add `publish_date: YYYY-MM-DD` to the frontmatter after `video_id`

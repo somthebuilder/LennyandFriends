@@ -4,6 +4,7 @@ title: 'He saved OpenAI, invented the “Like” button, and built Google Maps: 
   (Sierra)'
 youtube_url: https://www.youtube.com/watch?v=qImgGtnNbx0
 video_id: qImgGtnNbx0
+publish_date: 2025-07-31
 description: Bret Taylor’s legendary career includes being CTO of Meta, co-CEO of
   Salesforce, chairman of the board at OpenAI (yes, during that drama), co-creating
   both Google Maps and the Like button,...

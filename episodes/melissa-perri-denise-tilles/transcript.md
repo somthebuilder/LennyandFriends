@@ -3,6 +3,7 @@ guest: Melissa Perri + Denise Tilles
 title: The ultimate guide to product operations | Melissa Perri and Denise Tilles
 youtube_url: https://www.youtube.com/watch?v=9VdixM9KPN4
 video_id: 9VdixM9KPN4
+publish_date: 2023-11-16
 description: 'Melissa Perri is the CEO of Produx Labs, a product management training
   organization; author of the seminal PM book The Build Trap; and a former Harvard
   Business School professor of product...

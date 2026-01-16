@@ -4,6 +4,7 @@ title: 'From managing people to managing AI: The leadership skills everyone need
   now | Julie Zhuo'
 youtube_url: https://www.youtube.com/watch?v=c_w0LaFahxk
 video_id: c_w0LaFahxk
+publish_date: 2025-09-21
 description: 'Julie Zhuo is the former VP and Head of Design at Facebook (now Meta),
   author of the bestselling book The Making of a Manager, and co-founder of Sundial,
   an AI-powered data analysis company....

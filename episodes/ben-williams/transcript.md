@@ -4,6 +4,7 @@ title: How Snyk built a product-led growth juggernaut | Ben Williams (VP of Prod
   at Snyk)
 youtube_url: https://www.youtube.com/watch?v=21sFTZzIfUk
 video_id: 21sFTZzIfUk
+publish_date: 2022-11-06
 description: 'Ben Williams is VP of Product at Snyk, an industry-leading security
   platform for developers, last valued at $8.5b. He’s also a product and growth advisor
   with over 20 years of experience...

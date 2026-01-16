@@ -4,6 +4,7 @@ title: Be fundamentally different, not incrementally better | Jag Duggal (Nubank
   Facebook, Google)
 youtube_url: https://www.youtube.com/watch?v=8A7wXK2MncQ
 video_id: 8A7wXK2MncQ
+publish_date: 2024-05-16
 description: Jag Duggal is chief product officer at Nubank, a decacorn neobank founded
   in Brazil. It’s valued at over $30 billion, is bigger than Coinbase, Robinhood,
   Affirm, and SoFi combined, has 100...

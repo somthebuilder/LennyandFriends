@@ -4,6 +4,7 @@ title: 'Building Wiz: the fastest-growing startup in history | Raaz Herzberg (CM
   and VP Product Strategy)'
 youtube_url: https://www.youtube.com/watch?v=vnW3zIkrOvY
 video_id: vnW3zIkrOvY
+publish_date: 2024-11-17
 description: 'Raaz Herzberg is the chief marketing officer and VP of product strategy
   at Wiz. Wiz hit $100 million ARR within 18 months (the fastest growth in startup
   history) and, five years in, is generating...

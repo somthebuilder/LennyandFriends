@@ -3,6 +3,7 @@ guest: Zoelle Egner
 title: Lessons from Airtable’s unconventional growth strategy | Zoelle Egner
 youtube_url: https://www.youtube.com/watch?v=0P8LMyeYl1U
 video_id: 0P8LMyeYl1U
+publish_date: 2023-01-29
 description: 'Zoelle Egner is best known for her time at Airtable (currently valued
   at $11 billion), where she was the 11th employee and built and led the initial marketing
   and customer success teams. Currently...

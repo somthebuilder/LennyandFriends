@@ -4,6 +4,7 @@ title: Billion dollar failures, and billion dollar success | Tom Conrad (Quibi, 
   Pets.com, Zero)
 youtube_url: https://www.youtube.com/watch?v=maK0XD9ARoI
 video_id: maK0XD9ARoI
+publish_date: 2023-11-26
 description: 'Tom Conrad is the CEO of Zero and on the board of Sonos. He began his
   career in engineering at Apple, where he helped build key features that remain in
   iOS today. Tom was previously the VP...

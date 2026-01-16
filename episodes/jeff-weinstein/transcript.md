@@ -4,6 +4,7 @@ title: 'Building product at Stripe: craft, metrics, and customer obsession | Jef
   Weinstein (Product lead)'
 youtube_url: https://www.youtube.com/watch?v=qbZQjprTnrU
 video_id: qbZQjprTnrU
+publish_date: 2024-07-11
 description: Jeff Weinstein is a product lead at Stripe, where he helped grow their
   payment APIs to hundreds of billions in volume and transformed the way founders
   start companies into a few simple clicks...

@@ -4,6 +4,7 @@ title: 'Conscious leadership: Unlocking vision, strategy and purpose | JM Nickel
   (Uber, Waymo, DoorDash)'
 youtube_url: https://www.youtube.com/watch?v=W7o40qcYHlM
 video_id: W7o40qcYHlM
+publish_date: 2024-10-06
 description: 'JM Nickels is a Senior Director of Product Management at Uber. Previously,
   he was Head of Product for Commercialization at Waymo and led product teams at DoorDash.
   JM is also a coach and advisor...

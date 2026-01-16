@@ -3,6 +3,7 @@ guest: Tobi Lutke
 title: "Tobi Lütke's leadership playbook: First principles, infinite games, and maximizing human potential"
 youtube_url: https://www.youtube.com/watch?v=tq6vdDJQXvs
 video_id: tq6vdDJQXvs
+publish_date: 2025-02-02
 description: "Tobi Lütke is the founder and CEO of Shopify, a $130 billion business that powers over 10% of all U.S. e-commerce. Starting as a snowboard shop in 2004, Shopify has become the leading commerce..."
 duration_seconds: 6103.0
 duration: '1:41:43'

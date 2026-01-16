@@ -3,6 +3,7 @@ guest: Sahil Mansuri
 title: How to hit revenue targets in a recession | Sahil Mansuri (Bravado)
 youtube_url: https://www.youtube.com/watch?v=pYZ0S7a72po
 video_id: pYZ0S7a72po
+publish_date: 2022-12-04
 description: 'Sahil Mansuri is the CEO of Bravado, the world’s largest online sales
   community. Sahil is passionate about sales, and his experience dates all the way
   back to 2008, working for Obama’s...

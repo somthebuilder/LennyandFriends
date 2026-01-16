@@ -4,6 +4,7 @@ title: Relentless curiosity, radical accountability, and HubSpot’s winning gro
   formula | Chris Miller
 youtube_url: https://www.youtube.com/watch?v=SzKKJwuRFZI
 video_id: SzKKJwuRFZI
+publish_date: 2023-08-10
 description: 'Christopher Miller serves as the VP of Product for Growth and AI at
   HubSpot. Having spent the past seven years at HubSpot, Chris has been at the center
   of one of the biggest B2B growth stories...

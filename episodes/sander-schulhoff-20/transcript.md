@@ -4,6 +4,7 @@ title: Why securing AI is harder than anyone expected and guardrails are failing
   HackAPrompt CEO
 youtube_url: https://www.youtube.com/watch?v=J9982NLmTXg
 video_id: J9982NLmTXg
+publish_date: 2025-12-21
 description: Sander Schulhoff is an AI researcher specializing in AI security, prompt
   injection, and red teaming. He wrote the first comprehensive guide on prompt engineering.
 duration_seconds: 5561.0

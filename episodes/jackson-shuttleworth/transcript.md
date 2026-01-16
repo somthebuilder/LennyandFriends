@@ -4,6 +4,7 @@ title: 'Behind the product: Duolingo streaks | Jackson Shuttleworth (Group PM, R
   Team)'
 youtube_url: https://www.youtube.com/watch?v=_CCwoQZH5hI
 video_id: _CCwoQZH5hI
+publish_date: 2024-12-15
 description: 'Jackson Shuttleworth is a Group PM at Duolingo, where he leads the retention
   team and the powerful streak feature. The streak feature, which gamifies consecutive
   days of learning, has been...

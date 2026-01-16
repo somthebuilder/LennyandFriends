@@ -4,6 +4,7 @@ title: How to build deeper, more robust relationships | Carole Robin (Stanford p
   “Touchy Feely”)
 youtube_url: https://www.youtube.com/watch?v=Cew9-GlC_yk
 video_id: Cew9-GlC_yk
+publish_date: 2024-04-25
 description: 'Carole Robin spent over 20 years teaching the Stanford Graduate School
   of Business course Interpersonal Dynamics, affectionately known as “Touchy Feely.”
   After leaving Stanford, she founded...

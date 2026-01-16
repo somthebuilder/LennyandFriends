@@ -4,6 +4,7 @@ title: Everything you’ve ever wanted to know about SAFe and the product owner 
   | Melissa Perri
 youtube_url: https://www.youtube.com/watch?v=wbi9chsAHp4
 video_id: wbi9chsAHp4
+publish_date: 2024-11-10
 description: 'Melissa Perri is the founder of Product Institute, author of Escaping
   the Build Trap, and host of the Product Thinking Podcast. She has worked with startups, Fortune
   50 companies, and everything...

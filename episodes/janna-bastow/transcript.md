@@ -3,6 +3,7 @@ guest: Janna Bastow
 title: Building better roadmaps | Janna Bastow (Mind the Product, ProdPad)
 youtube_url: https://www.youtube.com/watch?v=W3cvqPCGcck
 video_id: W3cvqPCGcck
+publish_date: 2022-10-16
 description: 'Janna Bastow is a former product manager, and currently the CEO and
   co-founder of ProdPad. She also co-founded Mind the Product, a community for PMs,
   which has grown to 300,000 members across...

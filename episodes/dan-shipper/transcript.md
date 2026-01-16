@@ -4,6 +4,7 @@ title: 'The AI-native startup: 5 products, 7-figure revenue, 100% AI-written cod
   | Dan Shipper (Every)'
 youtube_url: https://www.youtube.com/watch?v=crMrVozp_h8
 video_id: crMrVozp_h8
+publish_date: 2025-07-17
 description: 'Dan Shipper is the co-founder and CEO of Every. With just 15 people,
   Every publishes a daily AI newsletter, ships multiple AI products, and operates
   a million-dollar-a-year consulting arm—all...

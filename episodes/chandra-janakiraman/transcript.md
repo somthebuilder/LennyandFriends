@@ -4,6 +4,7 @@ title: An operator’s guide to product strategy | Chandra Janakiraman (CPO at V
   ex-Meta, Headspace)
 youtube_url: https://www.youtube.com/watch?v=WFLH8Af2f30
 video_id: WFLH8Af2f30
+publish_date: 2025-01-26
 description: 'Chandra Janakiraman is the chief product officer, executive vice president,
   and a board member at VRChat. Previously, he was a product leader at Meta, where
   he led Facebook’s social experience...

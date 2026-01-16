@@ -3,6 +3,7 @@ guest: Elena Verna 3.0
 title: The ultimate guide to product-led sales | Elena Verna
 youtube_url: https://www.youtube.com/watch?v=bxghtN-OlJQ
 video_id: bxghtN-OlJQ
+publish_date: 2023-04-23
 description: Elena Verna is a leading growth expert with over 15 years of experience
   in tech. She was SVP of Growth at SurveyMonkey and interim CMO at Miro, where she
   built high-performing teams that drove...

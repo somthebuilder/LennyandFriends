@@ -4,6 +4,7 @@ title: 'How to see like a designer: The hidden power of typography and logos | J
   Hische'
 youtube_url: https://www.youtube.com/watch?v=tLLqE6Ia8-U
 video_id: tLLqE6Ia8-U
+publish_date: 2024-10-20
 description: 'Jessica Hische is a lettering artist and New York Times bestselling
   author based in Oakland, California. She specializes in typographical work for logos,
   film, books, and other commercial applicati...

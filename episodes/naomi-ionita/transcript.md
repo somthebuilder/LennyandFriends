@@ -3,6 +3,7 @@ guest: Naomi Ionita
 title: How to price your product | Naomi Ionita (Menlo Ventures)
 youtube_url: https://www.youtube.com/watch?v=xvQadImf568
 video_id: xvQadImf568
+publish_date: 2023-01-12
 description: 'Naomi Ionita is a Partner at the venture capital firm, Menlo Ventures.
   She started her career in engineering in 2002, shifted to product in 2006, and built
   product growth and monetization teams...

@@ -3,6 +3,7 @@ guest: Melissa Tan
 title: Building high-performing teams | Melissa Tan (Webflow, Dropbox, Canva)
 youtube_url: https://www.youtube.com/watch?v=DoEfXj1b_ko
 video_id: DoEfXj1b_ko
+publish_date: 2023-06-18
 description: 'Melissa Tan is an advisor, investor, and growth expert. She’s worked
   with fast-growing startups like Dropbox, Canva, Grammarly, and Miro, and for the
   past 2.5 years has been the Head of Growth...

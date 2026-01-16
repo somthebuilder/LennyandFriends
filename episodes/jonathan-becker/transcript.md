@@ -3,6 +3,7 @@ guest: Jonathan Becker
 title: The crazy story of landing Uber as a client | Jonathan Becker (Thrive Digital)
 youtube_url: https://www.youtube.com/watch?v=rG4zxf0CAv0
 video_id: rG4zxf0CAv0
+publish_date: 2023-05-12
 description: 'Jonathan explains how he went from exploiting Uber''s marketing loophole
   to landing them as a client.
 

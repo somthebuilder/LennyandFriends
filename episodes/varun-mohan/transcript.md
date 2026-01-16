@@ -4,6 +4,7 @@ title: 'Building a magical AI code editor used by over 1m developers in 4 months
   Inside Windsurf'
 youtube_url: https://www.youtube.com/watch?v=5Z0RCxDZdrE
 video_id: 5Z0RCxDZdrE
+publish_date: 2025-04-20
 description: Varun Mohan is the co-founder and CEO of Windsurf (formerly Codeium),
   an AI-powered development environment (IDE) that has been used by over 1 million
   developers.

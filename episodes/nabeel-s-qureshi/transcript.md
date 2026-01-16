@@ -4,6 +4,7 @@ title: How Palantir built the ultimate founder factory | Nabeel S. Qureshi (foun
   writer, ex-Palantir)
 youtube_url: https://www.youtube.com/watch?v=xQkSenlJvwA
 video_id: xQkSenlJvwA
+publish_date: 2025-05-11
 description: '*Nabeel Qureshi* is an entrepreneur, writer, researcher, and visiting
   scholar of AI policy at the Mercatus Center (alongside Tyler Cowen). Previously,
   he spent nearly eight years at Palantir,...

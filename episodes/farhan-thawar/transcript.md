@@ -4,6 +4,7 @@ title: How Shopify builds a high-intensity culture | Farhan Thawar (VP and Head 
   Eng)
 youtube_url: https://www.youtube.com/watch?v=C_lhMOjG7PE
 video_id: C_lhMOjG7PE
+publish_date: 2024-12-19
 description: 'Farhan Thawar is the head of engineering at Shopify, where he oversees
   more than 1,000 engineers and a platform that powers over 10% of all U.S. e-commerce.
   Before Shopify, he was VP of engineering...

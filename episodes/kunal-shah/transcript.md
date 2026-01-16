@@ -3,6 +3,7 @@ guest: Kunal Shah
 title: Kunal Shah on winning in India, second-order thinking, the philosophy of startups, and more
 youtube_url: https://www.youtube.com/watch?v=EgBOVDzUUAA
 video_id: EgBOVDzUUAA
+publish_date: 2024-03-24
 description: Kunal Shah is one of the most well-known and admired product leaders in India. He is the CEO and founder of CRED, an Indian-based fintech startup valued at over $6 billion. Prior to CRED, he founded three other startups, including Freecharge, which he sold for over $400 million to Snapdeal. He has also been an advisor to India’s most influential organizations.
 duration_seconds: 4737.0
 duration: '1:18:57'

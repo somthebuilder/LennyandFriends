@@ -20,6 +20,7 @@ title: 'Why most AI products fail: Lessons from 50+ AI deployments at OpenAI, Go
   & Amazon'
 youtube_url: https://www.youtube.com/watch?v=z7T1pCxgvlA
 video_id: z7T1pCxgvlA
+publish_date: 2026-01-11
 description: Aishwarya Naresh Reganti and Kiriti Badam have helped build and launch
   more than 50 enterprise AI products across companies like OpenAI, Google, Amazon.
 duration_seconds: 5183.0

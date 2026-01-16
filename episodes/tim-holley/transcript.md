@@ -4,6 +4,7 @@ title: Inside Etsy’s product, growth, and marketplace evolution | Tim Holley (
   Product)
 youtube_url: https://www.youtube.com/watch?v=n4hRs2FsRug
 video_id: n4hRs2FsRug
+publish_date: 2023-09-03
 description: 'Tim Holley is VP of Product at Etsy where he leads the Etsy buyer experience.
   With a tenure spanning more than a decade, Tim has seen the company through many
   transitions (both in culture,...

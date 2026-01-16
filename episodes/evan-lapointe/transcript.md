@@ -4,6 +4,7 @@ title: Improve strategy, influence, and decision-making by understanding your br
   | Evan LaPointe
 youtube_url: https://www.youtube.com/watch?v=GECtyEj9UPA
 video_id: GECtyEj9UPA
+publish_date: 2024-08-11
 description: 'Evan LaPointe is the founder of CORE Sciences, which teaches companies
   and individuals how our brains work and how that translates to improved collaboration,
   better products, faster decision-makin...

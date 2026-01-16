@@ -4,6 +4,7 @@ title: 'Everyone’s an engineer now: Inside v0’s mission to create 100 millio
   | Guillermo Rauch'
 youtube_url: https://www.youtube.com/watch?v=-QsTmu2CqhA
 video_id: -QsTmu2CqhA
+publish_date: 2025-04-13
 description: Guillermo Rauch is the founder and CEO of Vercel, creators of v0 (one
   of the most popular AI app building tools), and the mind behind foundational JavaScript
   frameworks like Next.js and Socket.io....

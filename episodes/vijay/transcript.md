@@ -3,6 +3,7 @@ guest: Vijay
 title: An inside look at Mixpanel’s product journey | Vijay Iyengar
 youtube_url: https://www.youtube.com/watch?v=t-2oXtZrlEc
 video_id: t-2oXtZrlEc
+publish_date: 2023-01-26
 description: 'Vijay Iyengar is Head of Product at Mixpanel, and similar to myself,
   came from an engineering background before transitioning to product. In today’s
   episode, he explains how Mixpanel has...

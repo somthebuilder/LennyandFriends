@@ -4,6 +4,7 @@ title: 10 growth tactics that never work | Elena Verna (Amplitude, Miro, Dropbox
   SurveyMonkey)
 youtube_url: https://www.youtube.com/watch?v=IHwS2By9UKM
 video_id: IHwS2By9UKM
+publish_date: 2025-01-19
 description: 'Elena Verna is one of Silicon Valley’s most sought-after growth advisors
   and operators. She previously led growth at companies like Amplitude, Miro, Dropbox,
   and SurveyMonkey and is currently...

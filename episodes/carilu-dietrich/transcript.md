@@ -3,6 +3,7 @@ guest: Carilu Dietrich
 title: How to achieve hypergrowth in your business and career | Carilu Dietrich (Atlassian)
 youtube_url: https://www.youtube.com/watch?v=Pm7QSWDIEUc
 video_id: Pm7QSWDIEUc
+publish_date: 2023-04-30
 description: 'Carilu Dietrich is a former CMO, most notably the Head of Marketing
   who took Atlassian public. These days she’s an advisor to CEOs and CMOs of hypergrowth
   B2B companies and has worked with...

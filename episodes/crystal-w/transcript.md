@@ -4,6 +4,7 @@ title: How to scrappily hire for, measure, and unlock growth | Crystal Widjaja, 
   and Kumu
 youtube_url: https://www.youtube.com/watch?v=lYaiyi2ZX6Q
 video_id: lYaiyi2ZX6Q
+publish_date: 2022-07-31
 description: You don't need lots of employees to achieve impressive growth, but you
   do need a unique approach to hiring and measuring what matters most. Crystal Widjaja
   has used scrappy tactics to unlock...

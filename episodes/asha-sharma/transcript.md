@@ -4,6 +4,7 @@ title: 'How 80,000 companies build with AI: Products as organisms and the death 
   org charts | Asha Sharma'
 youtube_url: https://www.youtube.com/watch?v=J9UWaltU-7Q
 video_id: J9UWaltU-7Q
+publish_date: 2025-08-28
 description: 'Asha Sharma leads AI product strategy at Microsoft, where she works
   with thousands of companies building AI products and has unique visibility into
   what’s working (and what’s not) across...

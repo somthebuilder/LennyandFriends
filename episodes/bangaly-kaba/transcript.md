@@ -4,6 +4,7 @@ title: Unorthodox frameworks for growing your product, career, and impact | Bang
   Kaba (YT, IG, FB)
 youtube_url: https://www.youtube.com/watch?v=Ub9UkWByFIQ
 video_id: Ub9UkWByFIQ
+publish_date: 2024-05-26
 description: 'Bangaly Kaba was an early growth PM at Facebook, head of growth at Instagram,
   and VP of Product at Instacart and is currently Director of Product at YouTube overseeing
   a global team working...

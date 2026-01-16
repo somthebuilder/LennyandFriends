@@ -4,6 +4,7 @@ title: What world-class GTM looks like in 2026 | Jeanne DeWitt Grosser (Vercel, 
   Google)
 youtube_url: https://www.youtube.com/watch?v=RmnWHz8HD74
 video_id: RmnWHz8HD74
+publish_date: 2025-11-30
 description: 'Jeanne DeWitt Grosser built world-class GTM teams at Stripe, Google,
   and, most recently, Vercel, where she serves as COO and oversees marketing, sales,
   customer success, revenue operations,...

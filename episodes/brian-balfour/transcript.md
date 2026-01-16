@@ -4,6 +4,7 @@ title: Why ChatGPT will be the next big growth channel (and how to capitalize on
   | Brian Balfour
 youtube_url: https://www.youtube.com/watch?v=cX4cL6B-_aU
 video_id: cX4cL6B-_aU
+publish_date: 2025-08-17
 description: 'Brian Balfour is the founder of Reforge, the former VP of Growth at
   HubSpot, and a student (and teacher) of product growth. Brian has studied every
   major platform shift—from Facebook to Apple...

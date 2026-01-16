@@ -3,6 +3,7 @@ guest: Sriram and Aarthi
 title: Hot takes and techno-optimism from tech’s top power couple | Sriram and Aarthi
 youtube_url: https://www.youtube.com/watch?v=HsD5ycT_umw
 video_id: HsD5ycT_umw
+publish_date: 2023-03-12
 description: 'Aarthi Ramamurthy and Sriram Krishnan are founders, angel investors,
   and product leaders who host the podcast Aarthi and Sriram’s Good Time Show. They
   have both held leadership roles at major...

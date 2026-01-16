@@ -3,6 +3,7 @@ guest: Richard Rumelt
 title: Good Strategy, Bad Strategy | Richard Rumelt
 youtube_url: https://www.youtube.com/watch?v=4uWKEG0s9Kc
 video_id: 4uWKEG0s9Kc
+publish_date: 2024-01-21
 description: 'Richard Rumelt is a legend in the world of strategy. He’s the author
   of Good Strategy/Bad Strategy and The Crux: How Leaders Become Strategists, both
   of which are often recommended by guests...

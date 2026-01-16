@@ -4,6 +4,7 @@ title: 'Inside Bolt: From near-death to one of the fastest-growing products in h
   | Eric Simons'
 youtube_url: https://www.youtube.com/watch?v=L22DtAHLmzs
 video_id: L22DtAHLmzs
+publish_date: 2025-03-13
 description: 'Eric Simons is the founder and CEO of StackBlitz, the company behind
   Bolt—the #1 web-based AI coding agent and one of the fastest-growing products in
   history. After nearly shutting down,...

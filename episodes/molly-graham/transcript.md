@@ -4,6 +4,7 @@ title: '“I like being scared”: Molly Graham’s frameworks for rapid career 
   Molly Graham'
 youtube_url: https://www.youtube.com/watch?v=twzLDx9iers
 video_id: twzLDx9iers
+publish_date: 2026-01-04
 description: 'Molly Graham has worked for some of tech’s most effective leaders, including
   Mark Zuckerberg, Sheryl Sandberg, Chamath Palihapitiya, and Bret Taylor. Today she
   leads Glue Club, a community...

@@ -3,6 +3,7 @@ guest: Hila Qu
 title: The ultimate guide to adding a PLG motion | Hila Qu (Reforge, GitLab)
 youtube_url: https://www.youtube.com/watch?v=7l1fIxk7SnA
 video_id: 7l1fIxk7SnA
+publish_date: 2023-04-02
 description: 'Hila Qu is an Executive in Residence at Reforge as well as a renowned
   growth advisor, angel investor, and published author (her book about growth was
   named one of the top 10 business books...

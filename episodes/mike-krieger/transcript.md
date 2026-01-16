@@ -3,6 +3,7 @@ guest: Mike Krieger
 title: Anthropic's CPO on what comes next | Mike Krieger (co-founder of Instagram)
 youtube_url: https://www.youtube.com/watch?v=DKrBGOFs0GY
 video_id: DKrBGOFs0GY
+publish_date: 2025-06-05
 description: 'Mike Krieger is the chief product officer of Anthropic and the co-founder
   of Instagram. After leaving Meta, he co-founded Artifact, an AI-powered news app
   that I absolutely loved, and joined...

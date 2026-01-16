@@ -4,6 +4,7 @@ title: The art of building legendary brands | Arielle Jackson (Google, Square, F
   Round Capital)
 youtube_url: https://www.youtube.com/watch?v=mJEWns2hyDs
 video_id: mJEWns2hyDs
+publish_date: 2022-08-18
 description: 'What makes a great brand? After working at Google and Square, Arielle
   Jackson has spent the past eight years consulting startups on how to create powerful
   messaging that works. In this jam-packed...

@@ -4,6 +4,7 @@ title: Building minimum lovable products, stories from WeWork & Airbnb, and thri
   as a PM | Jiaona Zhang
 youtube_url: https://www.youtube.com/watch?v=gLFZNzeylCc
 video_id: gLFZNzeylCc
+publish_date: 2023-07-02
 description: 'Jiaona Zhang (JZ) is a product leader with a strong background in consumer
   products and extensive hiring and management experience. She is currently SVP of
   Product at Webflow as well as a lecturer...

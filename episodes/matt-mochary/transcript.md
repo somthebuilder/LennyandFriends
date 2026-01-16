@@ -3,6 +3,7 @@ guest: Matt Mochary
 title: Are your fears giving you terrible advice? | Matt Mochary
 youtube_url: https://www.youtube.com/watch?v=qOrwVtZvdaE
 video_id: qOrwVtZvdaE
+publish_date: 2023-01-17
 description: 'From episode: (https://youtu.be/bCel0X2Ta7U) How to fire people with
   grace, work through fear, and nurture innovation | Matt Mochary (CEO coach)
 

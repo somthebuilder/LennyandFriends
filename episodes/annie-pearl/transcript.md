@@ -3,6 +3,7 @@ guest: Annie Pearl
 title: Behind the scenes of Calendly’s rapid growth | Annie Pearl (CPO)
 youtube_url: https://www.youtube.com/watch?v=-tUIGpgmsZw
 video_id: -tUIGpgmsZw
+publish_date: 2023-02-26
 description: 'Annie Pearl is the Chief Product Officer at Calendly. Previously, she
   was Chief Product Officer at Glassdoor, as well as Director of Product Management
   at Box. She was named one of the most...

@@ -3,6 +3,7 @@ guest: Shweta Shriva
 title: Product lessons from Waymo | Shweta Shrivastava (Waymo, Amazon, Cisco)
 youtube_url: https://www.youtube.com/watch?v=VtNmAjNF3Tc
 video_id: VtNmAjNF3Tc
+publish_date: 2023-04-09
 description: 'Shweta Shrivastava is a Senior Product Leader at Waymo, an autonomous
   driving technology company backed by Alphabet. Prior to joining Waymo, she was the
   CPO of Nauto, where she also worked...

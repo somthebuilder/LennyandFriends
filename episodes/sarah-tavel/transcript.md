@@ -3,6 +3,7 @@ guest: Sarah Tavel
 title: The hierarchy of engagement | Sarah Tavel (Benchmark, Greylock, Pinterest)
 youtube_url: https://www.youtube.com/watch?v=H9g4pzcz6Tk
 video_id: H9g4pzcz6Tk
+publish_date: 2023-12-27
 description: 'Sarah Tavel is a General Partner at Benchmark and sits on the boards
   of Chainalysis, Hipcamp, Rekki, Cambly, and Medely. She is a founding member of
   All Raise, the nonprofit organization working...

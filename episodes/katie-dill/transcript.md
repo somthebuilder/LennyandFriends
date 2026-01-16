@@ -4,6 +4,7 @@ title: Building beautiful products with Stripe’s Head of Design | Katie Dill (
   Airbnb, Lyft)
 youtube_url: https://www.youtube.com/watch?v=gfEEcssu304
 video_id: gfEEcssu304
+publish_date: 2023-10-15
 description: 'Katie Dill is the Head of Design at Stripe. Previously, she was Head
   of Experience Design at Airbnb and Head of Design at Lyft. Katie has been named
   one of Business Insider’s 10 People Changing...

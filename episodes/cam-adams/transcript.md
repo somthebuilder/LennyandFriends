@@ -4,6 +4,7 @@ title: 'Inside Canva: Coaches not managers, giving away your Legos, and embracin
   AI | Cameron Adams'
 youtube_url: https://www.youtube.com/watch?v=wgrJNHlYUA8
 video_id: wgrJNHlYUA8
+publish_date: 2024-06-02
 description: 'Cameron Adams is the co-founder and chief product officer of Canva.
   Canva is one of the world’s most valuable private software companies, used by 95%
   of Fortune 500 companies. Since its...

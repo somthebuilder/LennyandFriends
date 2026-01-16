@@ -4,6 +4,7 @@ title: 'The surprising truth about what closes deals: Insights from 2.5m sales c
   | Matt Dixon'
 youtube_url: https://www.youtube.com/watch?v=cUzEgRetmC4
 video_id: cUzEgRetmC4
+publish_date: 2024-05-30
 description: 'Matt Dixon is one of the world’s foremost experts in sales and the author
   of The Challenger Sale, which sold over a million copies worldwide and was a #1
   Amazon and Wall Street Journal bestseller...

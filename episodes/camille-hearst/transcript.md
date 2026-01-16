@@ -4,6 +4,7 @@ title: Monetizing passions, scaling marketplaces, and stories from a creator eco
   vet | Camille Hearst
 youtube_url: https://www.youtube.com/watch?v=oB-BjEjxHNw
 video_id: oB-BjEjxHNw
+publish_date: 2023-08-20
 description: 'Camille Hearst is Head of Fan Monetization at Spotify, where she finds
   new ways for fans to connect and for artists to monetize. Previously she was Head
   of Product for Creators at Patreon,...

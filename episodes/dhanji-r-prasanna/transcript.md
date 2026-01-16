@@ -4,6 +4,7 @@ title: How Block is becoming the most AI-native enterprise in the world | Dhanji
   Prasanna
 youtube_url: https://www.youtube.com/watch?v=JMeXWVw0r3E
 video_id: JMeXWVw0r3E
+publish_date: 2025-10-26
 description: 'Dhanji R. Prasanna is the chief technology officer at Block (formerly
   Square), where he’s managed more than 4,000 engineers over the past two years. Under
   his leadership, Block has become...

@@ -3,6 +3,7 @@ guest: Casey Winters
 title: How to sell your ideas and rise within your company | Casey Winters, Eventbrite
 youtube_url: https://www.youtube.com/watch?v=6XMUDEYf2OE
 video_id: 6XMUDEYf2OE
+publish_date: 2022-07-21
 description: The people who rise fastest in product know how to sell their ideas to
   customers, and also to their coworkers. Casey Winters, the Chief Product Officer
   at Eventbrite (previously at Grubhub,...

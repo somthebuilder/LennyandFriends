@@ -4,6 +4,7 @@ title: '$46B of hard truths: Why founders fail and why you need to run toward fe
   | Ben Horowitz (a16z)'
 youtube_url: https://www.youtube.com/watch?v=KPxTekxQjzc
 video_id: KPxTekxQjzc
+publish_date: 2025-09-11
 description: 'Ben Horowitz is the co-founder of Andreessen Horowitz, Silicon Valley’s
   largest and most influential venture capital firm, with over $46B in committed capital
   across multiple funds. He took...

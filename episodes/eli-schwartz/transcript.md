@@ -3,6 +3,7 @@ guest: Eli Schwartz
 title: Rethinking SEO in the age of AI | Eli Schwartz (SEO advisor, author)
 youtube_url: https://www.youtube.com/watch?v=Z71yGshPTwk
 video_id: Z71yGshPTwk
+publish_date: 2024-09-19
 description: 'Eli Schwartz is a leading SEO consultant and the author of Product-Led
   SEO. He has worked with industry giants like Zapier, Tinder, Coinbase, Quora, LinkedIn,
   and WordPress to build and execute...

@@ -4,6 +4,7 @@ title: Frameworks for product differentiation, team building, and first principl
   thinking | Ayo Omojola
 youtube_url: https://www.youtube.com/watch?v=EW6K8ZOWoIs
 video_id: EW6K8ZOWoIs
+publish_date: 2023-05-14
 description: 'Ayo Omojola is Chief Product Officer at Carbon Health, one of the fastest-growing
   and most innovative health tech companies in the world. Previously, he was a PM
   leader at Cash App, where he...

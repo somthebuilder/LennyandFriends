@@ -4,6 +4,7 @@ title: How to get press for your product | Jason Feifer (editor in chief of Entr
   magazine)
 youtube_url: https://www.youtube.com/watch?v=LZLdoAq3R7Y
 video_id: LZLdoAq3R7Y
+publish_date: 2023-10-12
 description: 'Jason Feifer is the editor in chief of Entrepreneur magazine and a former
   editor at Fast Company. He’s also a podcast host, book author, keynote speaker,
   and startup advisor. Every week,...

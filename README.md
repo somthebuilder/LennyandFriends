@@ -39,6 +39,7 @@ Each episode has its own folder named after the guest(s), containing a `transcri
    - `title`: Full episode title
    - `youtube_url`: Link to the YouTube video
    - `video_id`: YouTube video ID
+   - `publish_date`: Publication date (YYYY-MM-DD)
    - `description`: Episode description
    - `duration_seconds`: Episode length in seconds
    - `duration`: Human-readable duration

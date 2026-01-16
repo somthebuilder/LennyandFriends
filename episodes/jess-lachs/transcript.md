@@ -4,6 +4,7 @@ title: Building a world-class data org | Jessica Lachs (VP of Analytics and Data
   at DoorDash)
 youtube_url: https://www.youtube.com/watch?v=D4PDb_C8Dww
 video_id: D4PDb_C8Dww
+publish_date: 2024-07-14
 description: 'Jessica Lachs is the global head of analytics and data science at DoorDash,
   where she’s built one of the largest and most respected data organizations in tech.
   In her more than 10 years at...

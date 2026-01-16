@@ -4,6 +4,7 @@ title: 'Microsoft CPO: If you aren’t prototyping with AI you’re doing it wro
   Chennapragada'
 youtube_url: https://www.youtube.com/watch?v=HbbfXAWcuUo
 video_id: HbbfXAWcuUo
+publish_date: 2025-05-18
 description: Aparna Chennapragada is the chief product officer of experiences and
   devices at Microsoft, where she oversees AI product strategy for their productivity
   tools and work on agents. Previously,...

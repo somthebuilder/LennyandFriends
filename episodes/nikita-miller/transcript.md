@@ -4,6 +4,7 @@ title: Driving alignment within teams, work-life balance, and the changing PM la
   | Nikita Miller
 youtube_url: https://www.youtube.com/watch?v=4PhfAbRQpbI
 video_id: 4PhfAbRQpbI
+publish_date: 2023-04-06
 description: 'Nikita Miller is a product leader, angel investor, and advisor. She
   has built and led product teams at companies ranging from early-stage startups to
   multinationals, and she is currently SVP...

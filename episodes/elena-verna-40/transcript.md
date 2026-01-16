@@ -3,6 +3,7 @@ guest: Elena Verna 4.0
 title: The new AI growth playbook for 2026 | How Lovable hit $200M ARR in one year
 youtube_url: https://www.youtube.com/watch?v=6qAB6aUMIeA
 video_id: 6qAB6aUMIeA
+publish_date: 2025-12-18
 description: Elena Verna is the head of growth at Lovable, the leading AI-powered
   app builder that hit $200 million in annual recurring revenue in under a year.
 duration_seconds: 5516.0

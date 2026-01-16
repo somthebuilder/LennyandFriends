@@ -4,6 +4,7 @@ title: 'Dylan Field live at Figma''s Config: Intuition, simplicity, and the futu
   of design'
 youtube_url: https://www.youtube.com/watch?v=yJQYBjto41s
 video_id: yJQYBjto41s
+publish_date: 2024-06-30
 description: "Dylan Field is the co-founder and CEO of Figma, the collaborative design\
   \ platform that has revolutionized how product teams work. \nIn my first-ever live\
   \ podcast, recorded at Figma Config, Dylan..."

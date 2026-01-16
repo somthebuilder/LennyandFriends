@@ -4,6 +4,7 @@ title: 35 years of product design wisdom from Apple, Disney, Pinterest and beyon
   | Bob Baxley
 youtube_url: https://www.youtube.com/watch?v=X-83gvgVaWc
 video_id: X-83gvgVaWc
+publish_date: 2025-06-12
 description: 'Bob Baxley is a design leader who has shaped products used by billions
   at Apple, Pinterest, Yahoo, and ThoughtSpot. During his eight years at Apple, he
   led design for the online store and the...

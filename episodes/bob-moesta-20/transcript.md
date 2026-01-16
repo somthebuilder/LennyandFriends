@@ -3,6 +3,7 @@ guest: Bob Moesta 2.0
 title: The ultimate guide to JTBD | Bob Moesta (co-creator of the framework)
 youtube_url: https://www.youtube.com/watch?v=xQV7HVyAJjc
 video_id: xQV7HVyAJjc
+publish_date: 2023-08-24
 description: Bob Moesta is the co-creator of the Jobs To Be Done (JTBD) framework,
   a close collaborator of Clay Christensen, and CEO and founder of The Re-Wired Group.
   He has helped launch more than 3,500...

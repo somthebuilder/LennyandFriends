@@ -4,6 +4,7 @@ title: The role of AI in new product development | Ryan J. Salva (VP of Product 
   GitHub)
 youtube_url: https://www.youtube.com/watch?v=awcd3P1DnX4
 video_id: awcd3P1DnX4
+publish_date: 2022-09-04
 description: 'Ryan J. Salva is the VP of Product at GitHub, where he led the incubation
   and launch of Copilot, which uses OpenAI to suggest code and entire functions in
   real time, right from your editor,...

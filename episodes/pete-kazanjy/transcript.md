@@ -3,6 +3,7 @@ guest: Pete Kazanjy
 title: Founder-led sales | Pete Kazanjy (Founding Sales, Atrium)
 youtube_url: https://www.youtube.com/watch?v=cZd5234Eem0
 video_id: cZd5234Eem0
+publish_date: 2022-12-15
 description: 'Pete Kazanjy is the author of Founding Sales: The Early Stage Go-to-Market
   Handbook and the founder of Modern Sales Pros, an invite-only peer learning community
   focused on sales operations...

@@ -3,6 +3,7 @@ guest: Ebi Atawodi
 title: Crafting a compelling product vision | Ebi Atawodi (YouTube, Netflix, Uber)
 youtube_url: https://www.youtube.com/watch?v=tBPTwUmaxDs
 video_id: tBPTwUmaxDs
+publish_date: 2023-12-03
 description: 'Ebi Atawodi is Director of Product Management for the Creator Experience
   at YouTube, former Head of Product at Uber, and a former Director of Product (Payments
   and EMEA) at Netflix. Known for...

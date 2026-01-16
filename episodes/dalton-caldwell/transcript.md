@@ -4,6 +4,7 @@ title: 'Lessons from 1,000+ YC startups: Resilience, tar pit ideas, pivoting, mo
   | Dalton Caldwell (YC)'
 youtube_url: https://www.youtube.com/watch?v=m7LvNTbaqSI
 video_id: m7LvNTbaqSI
+publish_date: 2024-04-18
 description: 'Dalton Caldwell is Managing Director and Group Partner at Y Combinator.
   Prior to YC, he was the co-founder and CEO of imeem (acquired by MySpace in 2009)
   and the co-founder and CEO of App.net....

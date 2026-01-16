@@ -4,6 +4,7 @@ title: '“Dumbest idea I’ve heard” to $100M ARR: Inside the rise of Gamma |
   (co-founder)'
 youtube_url: https://www.youtube.com/watch?v=3H0ngGU5pbM
 video_id: 3H0ngGU5pbM
+publish_date: 2025-11-13
 description: 'Grant Lee is the co-founder of Gamma, the AI-powered presentation tool
   that’s one of the hottest and most interesting AI startups in the world right now.
   They’re valued at over $2 billion,...

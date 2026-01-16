@@ -4,6 +4,7 @@ title: The $1B Al company training ChatGPT, Claude & Gemini on the path to respo
   AGI | Edwin Chen
 youtube_url: https://www.youtube.com/watch?v=dduQeaqmpnI
 video_id: dduQeaqmpnI
+publish_date: 2025-12-07
 description: 'Edwin Chen is the founder and CEO of Surge AI, the company that teaches
   AI what’s good vs. what’s bad, powering frontier labs with elite data, environments,
   and evaluations. Surge surpassed...

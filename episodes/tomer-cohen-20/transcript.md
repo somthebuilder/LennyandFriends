@@ -4,6 +4,7 @@ title: Why AI is disrupting traditional product management | Tomer Cohen (Linked
   CPO)
 youtube_url: https://www.youtube.com/watch?v=R-zCfLQD_84
 video_id: R-zCfLQD_84
+publish_date: 2025-12-04
 description: Tomer Cohen is the longtime chief product officer at LinkedIn, where
   he’s pioneering the Full Stack Builder program, a radical new approach to product
   development that fully embraces what...

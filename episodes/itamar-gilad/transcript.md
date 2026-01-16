@@ -3,6 +3,7 @@ guest: Itamar Gilad
 title: Becoming evidence-guided | Itamar Gilad (Gmail, YouTube, Microsoft)
 youtube_url: https://www.youtube.com/watch?v=aJWSn-tz3jQ
 video_id: aJWSn-tz3jQ
+publish_date: 2023-09-21
 description: 'Itamar Gilad is a product coach, author, and speaker with over two decades
   of experience in senior product roles at Google, Microsoft, and various startups.
   He is also the author of Evidence-Guided...

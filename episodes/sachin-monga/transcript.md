@@ -3,6 +3,7 @@ guest: Sachin Monga
 title: Building Substack | Sachin Monga (Substack, Facebook)
 youtube_url: https://www.youtube.com/watch?v=zKP2HrMc23s
 video_id: zKP2HrMc23s
+publish_date: 2022-10-30
 description: 'Sachin Monga is the Head of Product at Substack, a platform that I personally
   use every day, and love. Before Substack, Sachin co-founded an app called Cocoon,
   which he ended up selling to...

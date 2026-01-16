@@ -4,6 +4,7 @@ title: 'Figma’s CEO: Why AI makes design, craft, and quality the new moat for 
   | Dylan Field'
 youtube_url: https://www.youtube.com/watch?v=WyJV6VwEGA8
 video_id: WyJV6VwEGA8
+publish_date: 2025-10-16
 description: 'Dylan Field is co-founder and CEO of Figma, a beloved tool used by every
   modern product team. Founded in 2012, Figma has expanded from a single design tool
   to a comprehensive platform including...

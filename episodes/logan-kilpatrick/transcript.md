@@ -3,6 +3,7 @@ guest: Logan Kilpatrick
 title: Inside OpenAI | Logan Kilpatrick (head of developer relations)
 youtube_url: https://www.youtube.com/watch?v=XkMbkWG2ca4
 video_id: XkMbkWG2ca4
+publish_date: 2024-02-08
 description: 'Logan Kilpatrick leads developer relations at OpenAI, supporting developers
   building with the OpenAI API and ChatGPT. He is also on the board of directors at
   NumFOCUS, the nonprofit organization...

@@ -3,6 +3,7 @@ guest: Yuriy Timen
 title: How to grow a subscription business | Yuriy Timen (Grammarly, Canva, Airtable)
 youtube_url: https://www.youtube.com/watch?v=8-iN7sweFBM
 video_id: 8-iN7sweFBM
+publish_date: 2022-09-01
 description: 'Yuriy Timen was Global Head of Marketing and Growth at Grammarly, and
   is now a full-time growth advisor, having worked with more than a dozen companies,
   including Canva, Airtable, Whimsical,...

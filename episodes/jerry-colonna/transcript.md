@@ -4,6 +4,7 @@ title: How have I been complicit in creating the conditions I say I don’t want
   Jerry Colonna
 youtube_url: https://www.youtube.com/watch?v=PJE7etZQ9us
 video_id: PJE7etZQ9us
+publish_date: 2025-05-08
 description: '*Jerry Colonna* is a world-renowned executive coach, a former venture
   capitalist, and the co-founder and CEO of Reboot, an executive coaching firm that
   combines practical leadership development...

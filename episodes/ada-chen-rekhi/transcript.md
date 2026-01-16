@@ -4,6 +4,7 @@ title: Feeling stuck? Here's how to know when it's time to leave your job | Ada 
   Rekhi
 youtube_url: https://www.youtube.com/watch?v=l-T8sNRcWQk
 video_id: l-T8sNRcWQk
+publish_date: 2023-04-21
 description: 'Ada Chen Rekhi explains when it''s time to leave your job and what to
   consider before doing so.
 

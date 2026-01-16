@@ -4,6 +4,7 @@ title: Leveraging growth advisors, mastering SEO, and honing your craft | Luc Le
   (Shopify, Meta)
 youtube_url: https://www.youtube.com/watch?v=Xf_ZXIGCQb0
 video_id: Xf_ZXIGCQb0
+publish_date: 2023-06-15
 description: 'Luc Levesque is Chief Growth Officer at Shopify and has advised companies
   like Canva, Twitter, Pinterest, and Patreon on growth and product strategy. Previously
   he served as an executive at...

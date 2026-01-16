@@ -4,6 +4,7 @@ title: Marketplace lessons from Uber, Airbnb, Bumble, and more | Ramesh Johari (
   professor)
 youtube_url: https://www.youtube.com/watch?v=BVzTfsUMaK8
 video_id: BVzTfsUMaK8
+publish_date: 2023-11-09
 description: 'Ramesh Johari is a professor at Stanford University focusing on data
   science methods and practice, as well as the design and operation of online markets
   and platforms. Beyond academia, Ramesh...

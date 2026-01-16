@@ -4,6 +4,7 @@ title: A founder’s guide to crisis management | Uri Levine (Waze co-founder, s
   entrepreneur)
 youtube_url: https://www.youtube.com/watch?v=lQdogVBHMdA
 video_id: lQdogVBHMdA
+publish_date: 2025-02-16
 description: 'Uri Levine is a co-founder of Waze (which was acquired by Google for
   $1.3 billion in 2013), along with nine other companies (including another company
   he sold for over $1 billion). He’s also...

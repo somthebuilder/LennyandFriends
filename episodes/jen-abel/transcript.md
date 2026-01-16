@@ -3,6 +3,7 @@ guest: Jen Abel
 title: The ultimate guide to founder-led sales | Jen Abel (co-founder of JJELLYFISH)
 youtube_url: https://www.youtube.com/watch?v=969dwgu98qc
 video_id: 969dwgu98qc
+publish_date: 2024-11-24
 description: 'Jen Abel is the co-founder of JJELLYFISH, where she and her team have
   worked with over 300 early-stage founders to learn how to sell, do early customer
   discovery, and set up a repeatable sales...

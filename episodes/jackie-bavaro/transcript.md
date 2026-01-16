@@ -4,6 +4,7 @@ title: Bending the universe in your favor | Claire Vo (LaunchDarkly, Color, Opti
   ChatPRD)
 youtube_url: https://www.youtube.com/watch?v=aXGo1o_baBo
 video_id: aXGo1o_baBo
+publish_date: 2024-04-07
 description: 'Claire Vo is the chief product officer at LaunchDarkly and the founder
   of ChatPRD, likely the most popular PM-specific AI product out there. Before LaunchDarkly,
   she was a longtime chief product...

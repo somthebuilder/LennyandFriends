@@ -3,6 +3,7 @@ guest: Shreyas Doshi Live
 title: The art of product management | Shreyas Doshi (Stripe, Twitter, Google, Yahoo)
 youtube_url: https://www.youtube.com/watch?v=YP_QghPLG-8
 video_id: YP_QghPLG-8
+publish_date: 2022-08-25
 description: 'Shreyas Doshi is a treasure trove of wisdom and tactical insights on
   product, strategy, psychology, leadership, and life. Over the course of his career,
   he’s PM’d at Google, Twitter, Yahoo,...

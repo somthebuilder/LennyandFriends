@@ -4,6 +4,7 @@ title: Using behavioral science to improve your product | Kristen Berman (Irrati
   Labs)
 youtube_url: https://www.youtube.com/watch?v=u53fplD_C30
 video_id: u53fplD_C30
+publish_date: 2022-10-02
 description: 'Kristen Berman is the CEO and co-founder of Irrational Labs, where she
   helps companies like Google, Airbnb, PayPal, Microsoft, and LinkedIn improve their
   products and services through behavioral...

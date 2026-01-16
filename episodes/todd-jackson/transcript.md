@@ -3,6 +3,7 @@ guest: Todd Jackson
 title: A framework for finding product-market fit | Todd Jackson (First Round Capital)
 youtube_url: https://www.youtube.com/watch?v=yc1Uwhfxacs
 video_id: yc1Uwhfxacs
+publish_date: 2024-04-11
 description: 'Todd Jackson is a Partner at First Round Capital. Before moving into
   venture capital, he played a crucial role as VP of Product and Design at Dropbox,
   guiding the company until its IPO in 2018....

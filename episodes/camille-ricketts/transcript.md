@@ -3,6 +3,7 @@ guest: Camille Ricketts
 title: How Notion leveraged community to build a $10B business | Camille Ricketts
 youtube_url: https://www.youtube.com/watch?v=bY5KC9Gguz8
 video_id: bY5KC9Gguz8
+publish_date: 2022-12-11
 description: 'Camille Ricketts began her career in journalism, at the Wall Street
   Journal, in 2006. In 2010 she joined Tesla, where she worked in communications alongside
   Elon Musk. She transitioned into...

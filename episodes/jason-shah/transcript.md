@@ -3,6 +3,7 @@ guest: Jason Shah
 title: Building a meaningful career | Jason Shah (Airbnb, Amazon, Microsoft, Alchemy)
 youtube_url: https://www.youtube.com/watch?v=nMsA5VeLoOM
 video_id: nMsA5VeLoOM
+publish_date: 2022-09-18
 description: 'Jason Shah has led product teams at Amazon, Airbnb, Microsoft, and Yammer
   and currently leads the product team at Alchemy (one of the most important web3
   infrastructure companies). In addition,...

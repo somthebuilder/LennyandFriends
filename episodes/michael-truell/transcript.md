@@ -4,6 +4,7 @@ title: 'The rise of Cursor: The $300M ARR AI tool that engineers can’t stop us
   | Michael Truell'
 youtube_url: https://www.youtube.com/watch?v=En5cSXgGvZM
 video_id: En5cSXgGvZM
+publish_date: 2025-05-01
 description: '*Michael Truell* is the co-founder and CEO of Anysphere, the company
   behind Cursor—the fastest-growing AI code editor in the world, reaching $300 million
   in annual recurring revenue just...

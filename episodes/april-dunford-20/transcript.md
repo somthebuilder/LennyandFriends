@@ -3,6 +3,7 @@ guest: April Dunford 2.0
 title: How to nail your product positioning | April Dunford (Obviously Awesome)
 youtube_url: https://www.youtube.com/watch?v=hdjlCLb9Hl8
 video_id: hdjlCLb9Hl8
+publish_date: 2023-01-22
 description: April Dunford is the author of the must-read best-selling book Obviously
   Awesome, a definitive guide to product positioning. She spent 25 years leading marketing,
   product, and sales teams and...

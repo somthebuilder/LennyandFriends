@@ -4,6 +4,7 @@ title: 'Building Lovable: $10M ARR in 60 days with 15 people | Anton Osika (CEO 
   co-founder)'
 youtube_url: https://www.youtube.com/watch?v=DZtGxNs9AVg
 video_id: DZtGxNs9AVg
+publish_date: 2025-03-09
 description: 'Anton Osika is the co-founder and CEO of Lovable, which is building
   what they call “the last piece of software”—an AI-powered tool that turns descriptions
   into working products without...

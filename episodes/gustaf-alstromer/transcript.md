@@ -4,6 +4,7 @@ title: Lessons from working with 600+ YC startups | Gustaf Alströmer (Y Combina
   Airbnb)
 youtube_url: https://www.youtube.com/watch?v=ZoKLofsp8u0
 video_id: ZoKLofsp8u0
+publish_date: 2023-03-02
 description: 'Gustaf Alströmer is a Group Partner at Y Combinator, where he has worked
   with over 600 startups. He’s also a fellow Airbnb alumnus and even started the original
   Airbnb growth team. In today’s...

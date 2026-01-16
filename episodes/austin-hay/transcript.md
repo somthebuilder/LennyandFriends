@@ -3,6 +3,7 @@ guest: Austin Hay
 title: The ultimate guide to Martech | Austin Hay (Reforge, Ramp, Runway)
 youtube_url: https://www.youtube.com/watch?v=B79p85DHLkU
 video_id: B79p85DHLkU
+publish_date: 2023-08-13
 description: 'Austin Hay is currently Head of Marketing Technology at Ramp and was
   previously the VP of Business Operations at Runway, the VP of Growth at mParticle,
   and the fourth employee at the unicorn...

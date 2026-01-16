@@ -3,6 +3,7 @@ guest: Adam Grenier
 title: When to invest in new acquisition channels | Adam Grenier (Uber, MasterClass)
 youtube_url: https://www.youtube.com/watch?v=-PDsvl2WCZU
 video_id: -PDsvl2WCZU
+publish_date: 2022-09-15
 description: 'Adam Grenier is the former Head of Growth Marketing and Innovation at
   Uber, where he helped build Uber’s growth infrastructure from the ground up. He
   is also the former VP of Product and...

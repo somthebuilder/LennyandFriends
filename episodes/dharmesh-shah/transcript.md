@@ -3,6 +3,7 @@ guest: Dharmesh Shah
 title: 'Zigging vs. zagging: How HubSpot built a $30B company | Dharmesh Shah (co-founder/CTO)'
 youtube_url: https://www.youtube.com/watch?v=dpw9Ue1HU48
 video_id: dpw9Ue1HU48
+publish_date: 2024-04-04
 description: 'Dharmesh Shah is the co-founder and CTO of HubSpot (currently valued
   at $30 billion) and one of the most fascinating founders I’ve ever met. Dharmesh
   is the keeper of HubSpot’s Culture...

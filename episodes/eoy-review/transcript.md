@@ -3,12 +3,13 @@ guest: Various (Year-End Review)
 title: Countdown of the top 10 episodes of the year
 youtube_url: https://www.youtube.com/watch?v=f4cskASqAsg
 video_id: f4cskASqAsg
+publish_date: 2022-12-29
 description: 'Lenny counts down the top 10 most downloaded episodes of 2022, featuring
   clips from April Dunford, Crystal Widjaja, Julie Zhuo, Shishir Mehrotra, Kristen
   Berman, Elena Verna, and more. A compilation of the best insights from the year.'
 duration_seconds: 3660.0
 duration: '1:01:00'
-view_count: 0
+view_count: 9357
 channel: Lenny's Podcast
 keywords:
 - best-of

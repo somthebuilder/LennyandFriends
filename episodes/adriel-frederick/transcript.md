@@ -3,6 +3,7 @@ guest: Adriel Frederick
 title: Humanizing product development | Adriel Frederick (Reddit, Lyft, Facebook)
 youtube_url: https://www.youtube.com/watch?v=uMhBej6-Ey4
 video_id: uMhBej6-Ey4
+publish_date: 2022-10-20
 description: 'Adriel Frederick is VP of Product Management at Reddit X, where he helps
   incubate and scale new products. He is a former Product Lead at Facebook, as well
   as a former PM and Director of Product...

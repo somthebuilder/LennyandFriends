@@ -4,6 +4,7 @@ title: The 10 traits of great PMs, AI, and Slack’s approach to product | Noah 
   (Slack, Google)
 youtube_url: https://www.youtube.com/watch?v=XrRlVOWe5GE
 video_id: XrRlVOWe5GE
+publish_date: 2023-07-23
 description: 'Noah Weiss is Chief Product Officer at Slack, where he leads all aspects
   of the product organization, including the self-service SMB business, the team that
   launched huddles and clips, and...

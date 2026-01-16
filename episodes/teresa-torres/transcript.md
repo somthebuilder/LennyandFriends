@@ -3,6 +3,7 @@ guest: Teresa Torres
 title: Build better products with continuous product discovery | Teresa Torres
 youtube_url: https://www.youtube.com/watch?v=9RFaz9ZBXpk
 video_id: 9RFaz9ZBXpk
+publish_date: 2022-10-06
 description: 'Teresa Torres is an internationally acclaimed author, speaker, and coach.
   She teaches a structured and sustainable system for continuous discovery that helps
   product teams infuse their daily...

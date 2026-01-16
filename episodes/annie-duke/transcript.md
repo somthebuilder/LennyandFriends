@@ -4,6 +4,7 @@ title: This will make you a better decision maker | Annie Duke (Thinking In Bets
   former pro poker player)
 youtube_url: https://www.youtube.com/watch?v=svQMODvIGAE
 video_id: svQMODvIGAE
+publish_date: 2024-05-02
 description: 'Annie Duke is a former professional poker player, a decision-making
   expert, and a special partner at First Round Capital. She is the author of Thinking
   in Bets (a national bestseller) and Quit:...

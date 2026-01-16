@@ -4,6 +4,7 @@ title: 'Leaving big tech to build the #1 technology newsletter | Gergely Orosz (
   Pragmatic Engineer)'
 youtube_url: https://www.youtube.com/watch?v=CtB0O0M7YS0
 video_id: CtB0O0M7YS0
+publish_date: 2022-11-17
 description: 'Gergely Orosz writes the #1 technology newsletter at Substack, called
   The Pragmatic Engineer. He started his career as a software developer in the U.K.,
   spent three years at Skype, and followed...

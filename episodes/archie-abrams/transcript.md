@@ -4,6 +4,7 @@ title: How to speak more confidently and persuasively | Matt Abrahams (professor
   speaker, author)
 youtube_url: https://www.youtube.com/watch?v=LpbBzmXrzEY
 video_id: LpbBzmXrzEY
+publish_date: 2024-03-31
 description: 'Matt Abrahams is a renowned communication expert, with decades of teaching,
   coaching, and consulting experience. At Stanford University, he teaches a business
   school class on strategic communicatio...

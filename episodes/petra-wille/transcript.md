@@ -3,6 +3,7 @@ guest: Petra Wille
 title: How to be the best coach to product people | Petra Wille (Strong Product People)
 youtube_url: https://www.youtube.com/watch?v=4n3ybRqU5mU
 video_id: 4n3ybRqU5mU
+publish_date: 2022-11-27
 description: 'Petra Wille is an independent product leadership coach who’s been helping
   product teams expand their skill sets since 2013. She’s also the author of Strong
   Product People, which she published...

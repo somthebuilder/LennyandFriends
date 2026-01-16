@@ -3,6 +3,7 @@ guest: Inbal S
 title: The future of AI in software development | Inbal Shani (CPO of GitHub)
 youtube_url: https://www.youtube.com/watch?v=f10s3rxKaJw
 video_id: f10s3rxKaJw
+publish_date: 2023-12-01
 description: 'Inbal Shani is the chief product officer at GitHub, where she leads
   core product management, along with product strategy, marketing, open source, and
   communities, including the development...

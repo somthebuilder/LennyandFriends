@@ -4,6 +4,7 @@ title: How to find work you love | Bob Moesta (Jobs-to-be-Done co-creator, autho
   of "Job Moves”)
 youtube_url: https://www.youtube.com/watch?v=2wypVv9wZtI
 video_id: 2wypVv9wZtI
+publish_date: 2025-02-23
 description: 'Bob Moesta, co-creator of the Jobs to Be Done framework, recently published
   a new book, Job Moves. Drawing from interviews with over 1,000 people about their
   career transitions, it offers a...
