@@ -129,7 +129,7 @@ Here are some projects that have been built using this transcript archive:
 
 **[Lenny's Frameworks](https://lennys-frameworks.vercel.app/)** - A collection of frameworks and mental models extracted from Lenny's Podcast episodes.
 
-**[Lenny Listens](https://lenny-listens.vercel.app/)** - Uses Lenny’s interviewing methodology to generate AI-led interviews you can run with real customers.
+**[Lenny Listens](https://lenny-listens.vercel.app/)** - Uses Lenny's interviewing methodology to generate AI-led interviews you can run with real customers.
 
 **[Lenny's Advice Arena](https://lennysadvicearena.lovable.app/)** - An interactive experience for exploring product advice from Lenny's Podcast.
 
@@ -156,6 +156,8 @@ Here are some projects that have been built using this transcript archive:
 **[Time Capsule](https://sameerbajaj.com/tools/timecapsule)** by [@sameerbajaj](https://x.com/sameerbajaj) - Describe your situation and get a personalized letter with advice from product leaders who were in your exact moment.
 
 **[Lenny's Experts](https://www.expertand.com/lenny)** by [@joeyh](https://twitter.com/joeyh) - Make Lenny's guests your personal expert network. Browse by topic, save what resonates, come back to it later.
+
+**[Lenny Antimemes](https://lenny.antimeme.co)** by [@antimemetic_](https://x.com/antimemetic_) - An antimeme is an idea that resists spreading despite being important. The guests on Lenny's podcast have internalized them anyway - that's part of what makes them outliers. This surfaces those insights.
 
 Have you built something with these transcripts? Open a PR to add your project to this list!
 
