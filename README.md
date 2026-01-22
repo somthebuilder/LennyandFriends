@@ -129,7 +129,7 @@ Here are some projects that have been built using this transcript archive:
 
 **[Lenny's Frameworks](https://lennys-frameworks.vercel.app/)** - A collection of frameworks and mental models extracted from Lenny's Podcast episodes.
 
-**[Lenny Listens](https://lenny-listens.vercel.app/)** - Uses Lenny’s interviewing methodology to generate AI-led interviews you can run with real customers.
+**[Lenny Listens](https://lenny-listens.vercel.app/)** - Uses Lenny's interviewing methodology to generate AI-led interviews you can run with real customers.
 
 **[Lenny's Advice Arena](https://lennysadvicearena.lovable.app/)** - An interactive experience for exploring product advice from Lenny's Podcast.
 
@@ -158,6 +158,10 @@ Here are some projects that have been built using this transcript archive:
 **[Lenny's Experts](https://www.expertand.com/lenny)** by [@joeyh](https://twitter.com/joeyh) - Make Lenny's guests your personal expert network. Browse by topic, save what resonates, come back to it later.
 
 **[Lenny's Podcast on Pod Recs](https://rave.us/pod-recs)** by Pod Recs - Browse and save all the things recommended on Lenny's Podcast. Books, films, products... it's all there (and normalised!)
+
+**[Lenny Antimemes](https://lenny.antimeme.co)** by [@antimemetic_](https://x.com/antimemetic_) - An antimeme is an idea that resists spreading despite being important. The guests on Lenny's podcast have internalized them anyway - that's part of what makes them outliers. This surfaces those insights.
+
+**[Lenny's Knowledge Graph](https://lennysgraph.vercel.app/)** by [Eze Actis Grosso](https://www.linkedin.com/in/fractionaltech/) - Explore concepts, frameworks, guests, and books across 330+ episodes. Find connections, ask questions, and get answers with the exact episode and timestamp—click straight to that moment on YouTube.
 
 Have you built something with these transcripts? Open a PR to add your project to this list!
 
