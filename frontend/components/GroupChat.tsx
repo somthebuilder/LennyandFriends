@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect, useMemo } from 'react'
-import { Send, Users, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { Send, Loader2, ArrowRight, Home, Users } from 'lucide-react'
 import axios from 'axios'
+import Link from 'next/link'
 
 interface Message {
   id: string
@@ -12,6 +13,9 @@ interface Message {
   timestamp: Date
   guestId?: string
   guestName?: string
+  guestCompany?: string
+  guestRole?: string
+  episodeInfo?: string
   isStreaming?: boolean
 }
 
@@ -21,6 +25,9 @@ interface GuestResponse {
   response: string
   confidence: number
   source_chunks?: string[]
+  company?: string
+  role?: string
+  episode_info?: string
 }
 
 interface QueryResponse {
@@ -41,6 +48,8 @@ interface UserContext {
 export default function GroupChat({
   userContext,
   onGuestClick,
+  onBack,
+  podcastName = "Lenny's Podcast",
 }: {
   userContext: UserContext | null
   onGuestClick: (
@@ -49,6 +58,8 @@ export default function GroupChat({
     originalQuery: string,
     previousResponse: string
   ) => void
+  onBack?: () => void
+  podcastName?: string
 }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -56,7 +67,9 @@ export default function GroupChat({
   const [clarificationQuestions, setClarificationQuestions] = useState<string[]>([])
   const [waitingForClarification, setWaitingForClarification] = useState(false)
   const [pendingQuery, setPendingQuery] = useState('')
-  const [apiStatus, setApiStatus] = useState<'checking' | 'online' | 'offline'>('checking')
+  const [currentQuestion, setCurrentQuestion] = useState<string>('')
+  const [showMobileParticipants, setShowMobileParticipants] = useState(false)
+  const [systemStatus, setSystemStatus] = useState<string>('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -68,28 +81,12 @@ export default function GroupChat({
     scrollToBottom()
   }, [messages])
 
-  // Check API status on mount
-  useEffect(() => {
-    const checkApiStatus = async () => {
-      try {
-        await axios.get('/api/health', { timeout: 3000 })
-        setApiStatus('online')
-      } catch (error) {
-        setApiStatus('offline')
-      }
-    }
-    checkApiStatus()
-    // Check every 30 seconds
-    const interval = setInterval(checkApiStatus, 30000)
-    return () => clearInterval(interval)
-  }, [])
-
   const addMessage = (message: Omit<Message, 'id' | 'timestamp'>) => {
     setMessages((prev) => [
       ...prev,
       {
         ...message,
-        id: Date.now().toString(),
+        id: Date.now().toString() + Math.random(),
         timestamp: new Date(),
       },
     ])
@@ -99,6 +96,23 @@ export default function GroupChat({
     const query = text || input.trim()
     if (!query || isLoading) return
 
+    // If waiting for clarification, treat as clarification response
+    if (waitingForClarification) {
+      addMessage({
+        sender: userContext?.name || 'You',
+        senderType: 'user',
+        text: query,
+      })
+      setInput('')
+      setWaitingForClarification(false)
+      // Continue with the pending query
+      await processQuery(pendingQuery, query)
+      return
+    }
+
+    // Store the current question
+    setCurrentQuestion(query)
+
     // Add user message
     addMessage({
       sender: userContext?.name || 'You',
@@ -107,8 +121,12 @@ export default function GroupChat({
     })
 
     setInput('')
+    await processQuery(query)
+  }
+
+  const processQuery = async (query: string, clarification?: string) => {
     setIsLoading(true)
-    setWaitingForClarification(false)
+    setSystemStatus('Analyzing your question...')
 
     try {
       const response = await axios.post<QueryResponse>('/api/query', {
@@ -120,29 +138,33 @@ export default function GroupChat({
           interests: userContext.interests,
           goals: userContext.goals,
         } : undefined,
-        clarification: waitingForClarification ? input : null,
+        clarification: clarification || null,
       })
 
       if (response.data.needs_clarification) {
-        // Lenny needs clarification
+        setSystemStatus('')
         setClarificationQuestions(response.data.clarification_questions || [])
         setWaitingForClarification(true)
         setPendingQuery(query)
         
         addMessage({
-          sender: 'Lenny',
-          senderType: 'lenny',
-          text: `I need a bit more context. ${response.data.clarification_questions?.join(' ')}`,
+        sender: 'Lenny bot',
+        senderType: 'lenny',
+        text: `Great question! To give you the best perspectives, can you tell me:\n\n${response.data.clarification_questions?.map((q, i) => `${i + 1}. ${q}`).join('\n')}`,
         })
       } else if (response.data.guest_responses) {
-        // Add Lenny's intro message
+        setSystemStatus('')
+        
+        // Add Lenny bot's intro message
+        setTimeout(() => {
         addMessage({
-          sender: 'Lenny',
+          sender: 'Lenny bot',
           senderType: 'lenny',
-          text: `Great question! Let me bring in some guests who can help...`,
+            text: `Perfect. Let me bring in some experts who've navigated exactly this...`,
         })
+        }, 500)
 
-        // Add guest responses
+        // Add guest responses with staggered timing
         response.data.guest_responses.forEach((guestResp, index) => {
           setTimeout(() => {
             addMessage({
@@ -151,8 +173,11 @@ export default function GroupChat({
               text: guestResp.response,
               guestId: guestResp.guest_id,
               guestName: guestResp.guest_name,
+              guestCompany: guestResp.company,
+              guestRole: guestResp.role,
+              episodeInfo: guestResp.episode_info,
             })
-          }, index * 500) // Stagger responses
+          }, 1500 + (index * 600))
         })
       }
     } catch (error: any) {
@@ -164,10 +189,11 @@ export default function GroupChat({
         : 'Sorry, I encountered an error. Please try again.'
       
       addMessage({
-        sender: 'Lenny',
+        sender: 'Lenny bot',
         senderType: 'lenny',
         text: errorMessage,
       })
+      setSystemStatus('')
     } finally {
       setIsLoading(false)
     }
@@ -175,123 +201,393 @@ export default function GroupChat({
 
   const handleGuestMessageClick = (message: Message) => {
     if (message.guestId && message.guestName) {
-      // Find the original user query
-      const userMessages = messages.filter(m => m.senderType === 'user')
-      const originalQuery = userMessages[userMessages.length - 1]?.text || ''
-      
       onGuestClick(
         message.guestId,
         message.guestName,
-        originalQuery,
+        currentQuestion,
         message.text
       )
     }
   }
 
-  // Calculate member count
-  const memberCount = useMemo(() => {
-    const uniqueGuests = new Set<string>()
+  // Get active guests from messages
+  const activeGuests = useMemo(() => {
+    const guests = new Map<string, Message>()
     messages.forEach(msg => {
-      if (msg.senderType === 'guest' && msg.guestId) {
-        uniqueGuests.add(msg.guestId)
+      if (msg.senderType === 'guest' && msg.guestId && msg.guestName) {
+        if (!guests.has(msg.guestId)) {
+          guests.set(msg.guestId, msg)
+        }
       }
     })
-    return uniqueGuests.size
+    return Array.from(guests.values())
   }, [messages])
 
+  const userInitials = userContext?.name
+    ?.split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'U'
+
+  // Generate contextual questions based on podcast and user context
+  const generateExampleQuestions = () => {
+    const baseQuestions = {
+      "lennyandfriends": [
+        "Should I hire a designer or PM first?",
+        "How do I price a B2B SaaS product?",
+        "What metrics should I track at seed stage?",
+        "How do I transition from IC to manager?",
+      ],
+      "default": [
+        "What's your take on building a strong team culture?",
+        "How do you approach market validation?",
+        "What strategies work for early customer acquisition?",
+        "How do you balance growth with sustainability?",
+      ]
+    }
+
+    // Get podcast-specific questions or default
+    let questions = baseQuestions["default"]
+    
+    if (podcastName.toLowerCase().includes("lenny")) {
+      questions = baseQuestions["lennyandfriends"]
+    }
+
+    // Personalize based on user's role and interests if available
+    if (userContext?.role && userContext?.interests) {
+      const role = userContext.role.toLowerCase()
+      const interests = userContext.interests.toLowerCase()
+      
+      // Add contextual questions based on role
+      if (role.includes('founder') || role.includes('ceo')) {
+        questions = [
+          `What advice do you have for ${userContext.role}s on ${interests}?`,
+          ...questions.slice(0, 3)
+        ]
+      } else if (role.includes('product') || role.includes('pm')) {
+        questions = [
+          `How should ${userContext.role}s approach ${interests}?`,
+          ...questions.slice(0, 3)
+        ]
+      } else if (userContext.role) {
+        questions = [
+          `What strategies work best for ${userContext.role}s regarding ${interests}?`,
+          ...questions.slice(0, 3)
+        ]
+      }
+    }
+
+    return questions
+  }
+
+  const exampleQuestions = generateExampleQuestions()
+
+  const hasMessages = messages.length > 0
+  const hasGuestResponses = activeGuests.length > 0
+
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-warm-50 via-fire-50 to-flame-50">
-      {/* Header */}
-      <header className="bg-white/90 backdrop-blur-sm border-b border-fire-200 px-6 py-4 shadow-sm">
+    <div className="flex flex-col h-screen bg-cream-100">
+      {/* Redesigned Header Bar */}
+      <header className="bg-white border-b border-charcoal-200 px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          {/* Left: Logo */}
+          <Link href="/" className="hover:opacity-80 transition-opacity flex-shrink-0">
             <img 
-              src="/lennylogo.svg" 
-              alt="Lenny and Friends" 
-              className="h-8 w-auto"
+              src="/panelchat-logo.svg" 
+              alt="Panel Chat"
+              className="h-6 md:h-8 w-auto"
             />
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-fire-600 to-flame-600 bg-clip-text text-transparent">
-                Lenny & Friends
-              </h1>
-              <div className="flex items-center gap-2 text-sm text-log-500 mt-0.5">
-                <Users className="w-4 h-4" />
-                <span>
-                  Members: You, Lenny{memberCount > 0 ? ` and ${memberCount} other${memberCount !== 1 ? 's' : ''}` : ''}
-                </span>
-              </div>
-            </div>
+          </Link>
+
+          {/* Center: Podcast Name and Experts (Centrally Aligned) */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
+            <h1 className="text-base md:text-lg font-semibold text-charcoal-700">{podcastName}</h1>
+            <p className="text-xs text-charcoal-500">200+ experts</p>
           </div>
-          <div className="flex items-center gap-4">
-            {apiStatus === 'checking' && (
-              <div className="flex items-center gap-2 text-gray-500 text-sm">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Checking API...</span>
-              </div>
+
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Mobile: Participants Toggle */}
+            <button
+              onClick={() => setShowMobileParticipants(!showMobileParticipants)}
+              className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm text-charcoal-600 hover:bg-charcoal-50 rounded-lg transition-colors"
+              aria-label="Toggle participants"
+            >
+              <Users className="w-4 h-4" />
+              {hasGuestResponses && (
+                <span className="bg-orange-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                  {activeGuests.length}
+                </span>
+              )}
+            </button>
+
+            {/* Home Button */}
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center gap-2 px-3 md:px-4 py-2 text-sm text-charcoal-600 hover:bg-charcoal-50 rounded-lg transition-colors"
+              >
+                <Home className="w-4 h-4" />
+                <span className="hidden md:inline">Home</span>
+              </button>
             )}
-            {apiStatus === 'online' && (
-              <div className="flex items-center gap-2 text-fire-600 text-sm">
-                <CheckCircle2 className="w-4 h-4" />
-                <span>API Online</span>
-              </div>
-            )}
-            {apiStatus === 'offline' && (
-              <div className="flex items-center gap-2 text-red-500 text-sm">
-                <AlertCircle className="w-4 h-4" />
-                <span>API Offline</span>
-              </div>
-            )}
-            <div className="text-sm text-log-600 font-medium">
-              {userContext?.name || 'User'}
-            </div>
           </div>
         </div>
       </header>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-        {messages.length === 0 && (
-          <div className="text-center text-log-600 mt-20">
-            <img 
-              src="/lennylogo.svg" 
-              alt="Lenny and Friends" 
-              className="h-16 w-auto mx-auto mb-4 opacity-60"
-            />
-            <p className="text-lg mb-2 font-semibold text-log-700">👋 Welcome, {userContext?.name || 'there'}!</p>
-            <p className="text-log-500">Ask a question and get responses from Lenny's Podcast guests</p>
+      {/* Mobile Participants Drawer Overlay */}
+      {showMobileParticipants && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setShowMobileParticipants(false)}
+        />
+      )}
+
+      {/* Mobile Participants Drawer */}
+      <div 
+        className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+          showMobileParticipants ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Drawer Header */}
+          <div className="p-4 border-b border-charcoal-200 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-charcoal-700 flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              Participants
+            </h2>
+            <button
+              onClick={() => setShowMobileParticipants(false)}
+              className="p-2 hover:bg-charcoal-50 rounded-lg transition-colors"
+              aria-label="Close participants"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Drawer Content */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* You */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                <span className="text-orange-600 font-semibold text-sm">{userInitials}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-charcoal-700 truncate">{userContext?.name || 'You'}</p>
+              </div>
+            </div>
+
+            <div className="border-t border-charcoal-200 my-4" />
+
+            {/* Lenny bot */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                <span className="text-orange-600 font-semibold text-sm">LB</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-charcoal-700 truncate">Lenny bot</p>
+                <p className="text-xs text-charcoal-500">Moderator</p>
+              </div>
+            </div>
+
+            <div className="border-t border-charcoal-200 my-4" />
+
+            <div className="text-center py-2">
+              <p className="text-xs text-charcoal-500 mb-2">200+ Experts</p>
+              <p className="text-xs text-charcoal-400">Ready to respond to your questions</p>
+            </div>
+
+            {/* Active Guests */}
+            {hasGuestResponses && (
+              <>
+                <div className="border-t border-charcoal-200 my-4" />
+                <div className="mb-2">
+                  <p className="text-xs text-charcoal-500 uppercase tracking-wide mb-3">
+                    Active in this chat:
+                  </p>
+                  {activeGuests.map((guest) => {
+                    const initials = guest.guestName
+                      ?.split(' ')
+                      .map(n => n[0])
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2) || 'G'
+                    return (
+                      <div key={guest.id} className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                          <span className="text-orange-600 font-semibold text-sm">{initials}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-charcoal-700 truncate">{guest.guestName}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left Sidebar: Participants Panel - Hidden on mobile, collapsible on tablet/desktop */}
+        <div className="hidden lg:flex lg:w-1/5 bg-white border-r border-charcoal-200 flex-col">
+          <div className="p-4 border-b border-charcoal-200">
+            <h2 className="text-sm font-semibold text-charcoal-700 uppercase tracking-wide flex items-center gap-2">
+                <Users className="w-4 h-4" />
+              Participants
+            </h2>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* You */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                <span className="text-orange-600 font-semibold text-sm">{userInitials}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-charcoal-700 truncate">{userContext?.name || 'You'}</p>
+              </div>
+            </div>
+
+            <div className="border-t border-charcoal-200 my-4" />
+
+            {/* Lenny bot */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                <span className="text-orange-600 font-semibold text-sm">LB</span>
+          </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-charcoal-700">Lenny bot</p>
+                <p className="text-xs text-charcoal-500">Moderator</p>
+              </div>
+            </div>
+
+            <div className="border-t border-charcoal-200 my-4" />
+
+            {/* Guests Count */}
+            {!hasGuestResponses && (
+              <div className="text-center py-4">
+                <p className="text-2xl font-bold text-orange-600">+200</p>
+                <p className="text-xs text-charcoal-500 mt-1">Guests</p>
+                <p className="text-xs text-charcoal-400 mt-2">Ready to respond</p>
+              </div>
+            )}
+
+            {/* Active Guests */}
+            {hasGuestResponses && (
+              <>
+                <div className="mb-2">
+                  <p className="text-xs text-charcoal-500 uppercase tracking-wide mb-3">
+                    Active in this chat:
+                  </p>
+                  {activeGuests.slice(0, 3).map((guest) => {
+                    const initials = guest.guestName
+                      ?.split(' ')
+                      .map(n => n[0])
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2) || 'G'
+                    return (
+                      <div key={guest.id} className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                          <span className="text-orange-600 font-semibold text-sm">{initials}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-charcoal-700 truncate">{guest.guestName}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  {activeGuests.length > 3 && (
+                    <p className="text-xs text-charcoal-400 mt-2">+{activeGuests.length - 3} more</p>
+                  )}
+              </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Main Chat Area - Full width on mobile, adapts for desktop */}
+        <div className="flex-1 flex flex-col bg-cream-100">
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6 space-y-6">
+            {!hasMessages && (
+              /* Initial State */
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-8 max-w-2xl mx-auto">
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-semibold text-charcoal-700">
+                    Welcome to {podcastName} Panel
+                  </h2>
+                  <p className="text-charcoal-600 text-lg">
+                    Ask questions and hear perspectives from 200+ experts featured on {podcastName}.
+                  </p>
+                </div>
+
+                <div className="border-t border-charcoal-200 w-full pt-6">
+                  <p className="text-sm text-charcoal-500 mb-4">Try asking:</p>
+                  <div className="space-y-3 text-left">
+                    {exampleQuestions.map((q, i) => (
+                      <div 
+                        key={i} 
+                        onClick={() => setInput(q)}
+                        className="text-sm text-charcoal-600 hover:text-orange-600 cursor-pointer transition-colors p-3 rounded-lg hover:bg-orange-50"
+                      >
+                        💡 {q}
+                      </div>
+                    ))}
+                  </div>
+                </div>
           </div>
         )}
 
+            {/* Messages */}
         {messages.map((message) => (
           <MessageBubble
             key={message.id}
             message={message}
             onGuestClick={handleGuestMessageClick}
+                userInitials={userInitials}
           />
         ))}
 
-        {isLoading && (
-          <div className="flex items-center gap-2 text-log-600">
-            <Loader2 className="w-4 h-4 animate-spin text-fire-500" />
-            <span>Thinking...</span>
+            {/* System Status */}
+            {systemStatus && (
+              <div className="flex items-center gap-2 text-sm text-charcoal-500">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>{systemStatus}</span>
+              </div>
+            )}
+
+            {/* Loading State */}
+            {isLoading && !systemStatus && (
+              <div className="flex items-center gap-2 text-charcoal-500">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Gathering perspectives from past guests…</span>
+              </div>
+            )}
+
+            {/* After All Responses */}
+            {hasGuestResponses && !isLoading && (
+              <div className="border-t border-charcoal-200 pt-6 mt-6">
+                <p className="text-sm text-charcoal-600 mb-2">
+                  💡 That's {activeGuests.length} different perspective{activeGuests.length !== 1 ? 's' : ''} on your question.
+                </p>
+                <p className="text-xs text-charcoal-500">
+                  You can: Click any response to continue 1:1 with that guest • Ask a follow-up question to everyone • Start a new conversation
+                </p>
           </div>
         )}
 
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="bg-white/90 backdrop-blur-sm border-t border-fire-200 px-6 py-4">
-        {waitingForClarification && (
-          <div className="mb-3 p-3 bg-flame-50 border border-flame-200 rounded-lg">
-            <p className="text-sm text-flame-800 font-medium mb-2">Lenny's Questions:</p>
-            <ul className="list-disc list-inside text-sm text-flame-700 space-y-1">
-              {clarificationQuestions.map((q, i) => (
-                <li key={i}>{q}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {/* Input Area */}
+          <div className="border-t border-charcoal-200 bg-white px-4 md:px-6 py-4">
         <div className="flex gap-3">
           <input
             ref={inputRef}
@@ -299,18 +595,20 @@ export default function GroupChat({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={waitingForClarification ? "Answer Lenny's questions..." : "Ask a question..."}
-            className="flex-1 px-4 py-3 border border-fire-200 rounded-lg focus:ring-2 focus:ring-fire-500 focus:border-fire-400 outline-none bg-white text-log-800 placeholder-log-400"
+                placeholder={waitingForClarification ? "Answer Lenny bot's questions..." : "Ask your question..."}
+                className="editorial-input flex-1"
             disabled={isLoading}
           />
           <button
             onClick={() => handleSend()}
             disabled={isLoading || !input.trim()}
-            className="px-6 py-3 fire-gradient text-white rounded-lg font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl"
+                className="soft-button disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            <Send className="w-5 h-5" />
-            Send
+                <Send className="w-4 h-4" />
+                <span className="hidden md:inline">Send</span>
           </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -320,41 +618,121 @@ export default function GroupChat({
 function MessageBubble({
   message,
   onGuestClick,
+  userInitials,
 }: {
   message: Message
   onGuestClick: (message: Message) => void
+  userInitials: string
 }) {
-  const isGuest = message.senderType === 'guest'
-  const isLenny = message.senderType === 'lenny'
   const isUser = message.senderType === 'user'
+  const isLenny = message.senderType === 'lenny'
+  const isGuest = message.senderType === 'guest'
 
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
+  if (isUser) {
   return (
-    <div
-      className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
-    >
-      <div
-        className={`max-w-2xl rounded-2xl px-4 py-3 ${
-          isUser
-            ? 'fire-gradient text-white shadow-lg'
-            : isLenny
-            ? 'bg-flame-100 text-flame-900 border border-flame-300 shadow-sm'
-            : 'bg-white text-log-800 border border-fire-200 shadow-sm hover:shadow-md hover:border-fire-300 transition-all cursor-pointer'
-        }`}
-        onClick={isGuest ? () => onGuestClick(message) : undefined}
-      >
-        <div className="flex items-center gap-2 mb-1">
-          <span className={`font-semibold text-sm ${
-            isUser ? 'text-white' : isLenny ? 'text-flame-800' : 'text-fire-600'
-          }`}>
-            {message.sender}
+      <div className="flex justify-end">
+        <div className="max-w-2xl">
+          <div className="flex items-center gap-2 justify-end mb-1">
+            <span className="text-xs text-charcoal-400">
+              {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
-          {isGuest && (
-            <span className="text-xs text-log-500">(click to chat 1:1)</span>
-          )}
+            <span className="text-sm font-medium text-charcoal-700">{message.sender}</span>
+            <div className="w-8 h-8 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center">
+              <span className="text-orange-600 font-semibold text-xs">{userInitials}</span>
+            </div>
+          </div>
+          <div className="editorial-card p-4 bg-orange-50 border border-orange-200">
+            <p className="whitespace-pre-wrap text-charcoal-700">{message.text}</p>
+          </div>
         </div>
-        <p className="whitespace-pre-wrap">{message.text}</p>
+      </div>
+    )
+  }
+
+  if (isLenny) {
+    return (
+      <div className="flex justify-start">
+        <div className="max-w-2xl">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-8 h-8 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center">
+              <span className="text-orange-600 font-semibold text-xs">LB</span>
+            </div>
+            <span className="text-sm font-medium text-charcoal-700">{message.sender}</span>
+            <span className="text-xs text-charcoal-500">(Moderator)</span>
+            <span className="text-xs text-charcoal-400 ml-auto">
+              {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+          <div className="editorial-card p-4 bg-white border border-charcoal-200">
+            <p className="whitespace-pre-wrap text-charcoal-700">{message.text}</p>
+          </div>
       </div>
     </div>
   )
 }
 
+  if (isGuest) {
+    const initials = message.guestName ? getInitials(message.guestName) : 'G'
+    
+    return (
+      <div className="flex justify-start animate-fade-in-up">
+        <div className="max-w-2xl w-full">
+          <div className="editorial-card p-6">
+            {/* Guest Header */}
+            <div className="flex items-start gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center flex-shrink-0">
+                <span className="text-orange-600 font-semibold text-base">{initials}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-base font-semibold text-charcoal-700">{message.guestName}</span>
+                  <span className="text-xs text-charcoal-400 ml-auto">
+                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                {(message.guestCompany || message.guestRole) && (
+                  <p className="text-sm text-charcoal-500">
+                    {[message.guestCompany, message.guestRole].filter(Boolean).join(', ')}
+                  </p>
+                )}
+                <p className="text-xs text-charcoal-400 mt-1">From Lenny's Podcast</p>
+              </div>
+            </div>
+
+            {/* Response Text */}
+            <div className="mb-4">
+              <p className="text-charcoal-700 leading-relaxed whitespace-pre-wrap">{message.text}</p>
+            </div>
+
+            {/* Episode Citation */}
+            {message.episodeInfo && (
+              <div className="mb-4 text-xs text-charcoal-500">
+                📎 {message.episodeInfo}
+              </div>
+            )}
+
+            {/* Continue Button */}
+            <button
+              onClick={() => onGuestClick(message)}
+              className="w-full md:w-auto px-6 py-3 border border-orange-300 text-orange-600 rounded-lg font-medium hover:bg-orange-50 transition-all duration-200 flex items-center justify-center gap-2 group"
+            >
+              Continue with this expert
+              <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}

@@ -1,0 +1,27 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faviconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EA580C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Simple icon: 3 overlapping bubbles -->
+  <!-- Back bubble -->
+  <path d="M20 7C20 4.23858 17.7614 2 15 2C12.2386 2 10 4.23858 10 7C10 9.76142 12.2386 12 15 12L13 15L15 12C17.7614 12 20 9.76142 20 7Z" 
+        fill="url(#faviconGrad)" opacity="0.3"/>
+  
+  <!-- Middle bubble -->
+  <path d="M24 14C24 11.2386 21.7614 9 19 9C16.2386 9 14 11.2386 14 14C14 16.7614 16.2386 19 19 19L17 22L19 19C21.7614 19 24 16.7614 24 14Z" 
+        fill="url(#faviconGrad)" opacity="0.6"/>
+  
+  <!-- Front bubble -->
+  <path d="M18 20C18 17.2386 15.7614 15 13 15C10.2386 15 8 17.2386 8 20C8 22.7614 10.2386 25 13 25L11 28L13 25C15.7614 25 18 22.7614 18 20Z" 
+        fill="url(#faviconGrad)"/>
+  
+  <!-- Dots -->
+  <circle cx="12" cy="20" r="0.8" fill="white"/>
+  <circle cx="13" cy="20" r="0.8" fill="white"/>
+  <circle cx="14" cy="20" r="0.8" fill="white"/>
+</svg>
+

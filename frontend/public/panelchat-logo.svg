@@ -1,0 +1,39 @@
+<svg width="240" height="60" viewBox="0 0 240 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Panel Chat - Minimal Logo with Overlapping Speech Bubbles -->
+  <defs>
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EA580C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Icon: Overlapping speech bubbles representing panel of experts -->
+  <g transform="translate(5, 10)">
+    <!-- Back bubble - Light -->
+    <path d="M32 14C32 9.58172 28.4183 6 24 6C19.5817 6 16 9.58172 16 14C16 18.4183 19.5817 22 24 22L21 26L24 22C28.4183 22 32 18.4183 32 14Z" 
+          fill="url(#orangeGradient)" 
+          opacity="0.3"/>
+    
+    <!-- Middle bubble - Medium -->
+    <path d="M38 24C38 19.5817 34.4183 16 30 16C25.5817 16 22 19.5817 22 24C22 28.4183 25.5817 32 30 32L27 36L30 32C34.4183 32 38 28.4183 38 24Z" 
+          fill="url(#orangeGradient)" 
+          opacity="0.6"/>
+    
+    <!-- Front bubble - Full -->
+    <path d="M28 32C28 27.5817 24.4183 24 20 24C15.5817 24 12 27.5817 12 32C12 36.4183 15.5817 40 20 40L17 44L20 40C24.4183 40 28 36.4183 28 32Z" 
+          fill="url(#orangeGradient)"/>
+    
+    <!-- Dots representing voices -->
+    <circle cx="19" cy="32" r="1" fill="white" opacity="0.9"/>
+    <circle cx="20" cy="32" r="1" fill="white" opacity="0.9"/>
+    <circle cx="21" cy="32" r="1" fill="white" opacity="0.9"/>
+  </g>
+  
+  <!-- Text: Panel Chat - Same height as icon (~40 units) -->
+  <text x="55" y="44" font-family="Inter, sans-serif" font-size="38" font-weight="700" fill="#262626">
+    Panel
+  </text>
+  <text x="155" y="44" font-family="Inter, sans-serif" font-size="38" font-weight="700" fill="url(#orangeGradient)">
+    Chat
+  </text>
+</svg>
