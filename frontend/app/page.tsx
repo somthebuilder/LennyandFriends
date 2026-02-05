@@ -11,29 +11,59 @@ interface UserContext {
   goals?: string
 }
 
+interface Podcast {
+  id: string
+  name: string
+  description: string
+  category?: string
+  like_count: number
+  podcast_link?: string
+}
+
 export default function Home() {
   const router = useRouter()
   const [userContext, setUserContext] = useState<UserContext | null>(null)
   const [showNameInput, setShowNameInput] = useState(false)
   const [showRequestModal, setShowRequestModal] = useState(false)
-  const [podcastLikes, setPodcastLikes] = useState<Record<string, number>>({
-    '20VC': 7,
-    'My First Million': 5,
-    'All-In Podcast': 8,
-    'The India Opportunity': 3,
-    'Huberman Lab': 1,
-  })
+  const [podcasts, setPodcasts] = useState<Podcast[]>([])
   const [likedPodcasts, setLikedPodcasts] = useState<Record<string, boolean>>({})
+  const [isLoadingPodcasts, setIsLoadingPodcasts] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
 
+  // Fetch podcasts from backend on mount
+  useEffect(() => {
+    fetchPodcasts()
+  }, [])
+
+  const fetchPodcasts = async () => {
+    try {
+      const response = await fetch('/api/podcasts')
+      if (response.ok) {
+        const data = await response.json()
+        setPodcasts(data)
+      }
+    } catch (error) {
+      console.error('Error fetching podcasts:', error)
+    } finally {
+      setIsLoadingPodcasts(false)
+    }
+  }
+
   const handleLike = async (podcastName: string) => {
+    // Find the podcast in our state
+    const podcast = podcasts.find(p => p.name === podcastName)
+    if (!podcast) return
+
     // Optimistic update
     const isCurrentlyLiked = likedPodcasts[podcastName]
     const newLikeCount = isCurrentlyLiked 
-      ? podcastLikes[podcastName] - 1 
-      : podcastLikes[podcastName] + 1
+      ? podcast.like_count - 1 
+      : podcast.like_count + 1
 
-    setPodcastLikes(prev => ({ ...prev, [podcastName]: newLikeCount }))
+    // Update local state immediately
+    setPodcasts(prev => prev.map(p => 
+      p.name === podcastName ? { ...p, like_count: newLikeCount } : p
+    ))
     setLikedPodcasts(prev => ({ ...prev, [podcastName]: !isCurrentlyLiked }))
 
     try {
@@ -48,13 +78,25 @@ export default function Home() {
 
       if (!response.ok) {
         // Revert on error
-        setPodcastLikes(prev => ({ ...prev, [podcastName]: podcastLikes[podcastName] }))
+        setPodcasts(prev => prev.map(p => 
+          p.name === podcastName ? { ...p, like_count: podcast.like_count } : p
+        ))
         setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
         console.error('Failed to update like')
+      } else {
+        // Optionally: refresh from backend to ensure sync
+        const result = await response.json()
+        if (result.new_like_count !== undefined) {
+          setPodcasts(prev => prev.map(p => 
+            p.name === podcastName ? { ...p, like_count: result.new_like_count } : p
+          ))
+        }
       }
     } catch (error) {
       // Revert on error
-      setPodcastLikes(prev => ({ ...prev, [podcastName]: podcastLikes[podcastName] }))
+      setPodcasts(prev => prev.map(p => 
+        p.name === podcastName ? { ...p, like_count: podcast.like_count } : p
+      ))
       setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
       console.error('Error updating like:', error)
     }
@@ -130,43 +172,26 @@ export default function Home() {
                   </h2>
 
                   {/* Podcast Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <PodcastCard
-                      name="20VC"
-                      description="Venture & Fundraising"
-                      likes={podcastLikes['20VC']}
-                      isLiked={likedPodcasts['20VC']}
-                      onLike={() => handleLike('20VC')}
-                    />
-                    <PodcastCard
-                      name="My First Million"
-                      description="Business Ideas & Revenue"
-                      likes={podcastLikes['My First Million']}
-                      isLiked={likedPodcasts['My First Million']}
-                      onLike={() => handleLike('My First Million')}
-                    />
-                    <PodcastCard
-                      name="All-In Podcast"
-                      description="Tech, Markets & Strategy"
-                      likes={podcastLikes['All-In Podcast']}
-                      isLiked={likedPodcasts['All-In Podcast']}
-                      onLike={() => handleLike('All-In Podcast')}
-                    />
-                    <PodcastCard
-                      name="The India Opportunity"
-                      description="Indian Tech & Startups"
-                      likes={podcastLikes['The India Opportunity']}
-                      isLiked={likedPodcasts['The India Opportunity']}
-                      onLike={() => handleLike('The India Opportunity')}
-                    />
-                    <PodcastCard
-                      name="Huberman Lab"
-                      description="Science & Health"
-                      likes={podcastLikes['Huberman Lab']}
-                      isLiked={likedPodcasts['Huberman Lab']}
-                      onLike={() => handleLike('Huberman Lab')}
-                    />
-                  </div>
+                  {isLoadingPodcasts ? (
+                    <div className="flex items-center justify-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
+                    </div>
+                  ) : podcasts.length === 0 ? (
+                    <p className="text-center text-charcoal-500 py-8">No podcasts available</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      {podcasts.map((podcast) => (
+                        <PodcastCard
+                          key={podcast.id}
+                          name={podcast.name}
+                          description={podcast.description}
+                          likes={podcast.like_count}
+                          isLiked={likedPodcasts[podcast.name]}
+                          onLike={() => handleLike(podcast.name)}
+                        />
+                      ))}
+                    </div>
+                  )}
 
                   {/* Request Another Podcast Button */}
                   <button

@@ -595,10 +595,54 @@ class PodcastLike(BaseModel):
     podcast_name: str
     action: str  # 'like' or 'unlike'
 
+@app.get("/podcasts")
+async def get_podcasts():
+    """
+    Get all active podcasts with their like counts.
+    Returns the curated list shown in "Other Podcasts requests" section.
+    """
+    from supabase import create_client, Client
+    
+    try:
+        # Initialize Supabase client
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_KEY")
+        
+        if not supabase_url or not supabase_key:
+            raise HTTPException(status_code=500, detail="Database configuration error")
+        
+        supabase: Client = create_client(supabase_url, supabase_key)
+        
+        # Fetch all active podcasts ordered by display_order
+        result = supabase.table("podcasts").select("*").eq("status", "active").order("display_order").execute()
+        
+        if not result.data:
+            return []
+        
+        # Transform data for frontend
+        podcasts = [
+            {
+                "id": podcast["id"],
+                "name": podcast["name"],
+                "description": podcast["description"],
+                "category": podcast.get("category"),
+                "like_count": podcast["like_count"],
+                "podcast_link": podcast.get("podcast_link")
+            }
+            for podcast in result.data
+        ]
+        
+        return podcasts
+    
+    except Exception as e:
+        print(f"Error fetching podcasts: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching podcasts")
+
 @app.post("/podcast-like")
 async def podcast_like(request: PodcastLike):
     """
-    Like or unlike a podcast request.
+    Like or unlike a podcast.
+    Uses the podcast name to update the like count in the podcasts table.
     """
     from datetime import datetime
     from supabase import create_client, Client
@@ -619,31 +663,35 @@ async def podcast_like(request: PodcastLike):
         
         supabase: Client = create_client(supabase_url, supabase_key)
         
-        # Check if podcast_likes table exists, if not create it
-        # Get or create the podcast like record
-        result = supabase.table("podcast_likes").select("*").eq("podcast_name", request.podcast_name.strip()).execute()
+        # Get current podcast
+        result = supabase.table("podcasts").select("*").eq("name", request.podcast_name.strip()).execute()
         
-        if result.data and len(result.data) > 0:
-            # Update existing record
-            current_likes = result.data[0].get("like_count", 0)
-            new_count = current_likes + 1 if request.action == 'like' else max(0, current_likes - 1)
-            
-            supabase.table("podcast_likes").update({
-                "like_count": new_count,
-                "updated_at": datetime.utcnow().isoformat()
-            }).eq("podcast_name", request.podcast_name.strip()).execute()
-        else:
-            # Create new record
-            if request.action == 'like':
-                supabase.table("podcast_likes").insert({
-                    "podcast_name": request.podcast_name.strip(),
-                    "like_count": 1,
-                    "created_at": datetime.utcnow().isoformat(),
-                    "updated_at": datetime.utcnow().isoformat()
-                }).execute()
+        if not result.data or len(result.data) == 0:
+            raise HTTPException(status_code=404, detail="Podcast not found")
         
-        return {"success": True, "message": f"Successfully {request.action}d {request.podcast_name}"}
+        current_podcast = result.data[0]
+        current_likes = current_podcast.get("like_count", 0)
+        
+        # Calculate new like count
+        if request.action == 'like':
+            new_count = current_likes + 1
+        else:  # unlike
+            new_count = max(0, current_likes - 1)
+        
+        # Update the like count
+        supabase.table("podcasts").update({
+            "like_count": new_count,
+            "updated_at": datetime.utcnow().isoformat()
+        }).eq("name", request.podcast_name.strip()).execute()
+        
+        return {
+            "success": True, 
+            "message": f"Successfully {request.action}d {request.podcast_name}",
+            "new_like_count": new_count
+        }
     
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"Error updating podcast like: {e}")
         raise HTTPException(status_code=500, detail="Error updating like. Please try again.")
