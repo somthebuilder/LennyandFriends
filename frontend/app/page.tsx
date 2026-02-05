@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import AuthModal from '@/components/AuthModal'
+import type { User } from '@supabase/supabase-js'
 
 interface UserContext {
   name: string
@@ -25,9 +28,29 @@ export default function Home() {
   const [userContext, setUserContext] = useState<UserContext | null>(null)
   const [showNameInput, setShowNameInput] = useState(false)
   const [showRequestModal, setShowRequestModal] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
+  const [pendingAction, setPendingAction] = useState<'vote' | 'request' | null>(null)
+  const [pendingVotePodcast, setPendingVotePodcast] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
   const [isLoadingPodcasts, setIsLoadingPodcasts] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
+
+  // Check auth status on mount
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   // Fetch podcasts from backend on mount
   useEffect(() => {
@@ -49,6 +72,15 @@ export default function Home() {
   }
 
   const handleVote = async (podcastName: string) => {
+    // Check if user is authenticated
+    if (!user) {
+      setPendingAction('vote')
+      setPendingVotePodcast(podcastName)
+      setAuthMode('signin')
+      setShowAuthModal(true)
+      return
+    }
+
     // Find the podcast in our state
     const podcast = podcasts.find(p => p.name === podcastName)
     if (!podcast) return
@@ -91,6 +123,34 @@ export default function Home() {
     }
   }
 
+  const handleRequestPodcastClick = () => {
+    // Check if user is authenticated
+    if (!user) {
+      setPendingAction('request')
+      setAuthMode('signin')
+      setShowAuthModal(true)
+      return
+    }
+    setShowRequestModal(true)
+  }
+
+  const handleAuthSuccess = () => {
+    // Execute pending action after successful auth
+    if (pendingAction === 'vote' && pendingVotePodcast) {
+      // Reload page to re-trigger vote with authenticated user
+      window.location.reload()
+    } else if (pendingAction === 'request') {
+      setShowRequestModal(true)
+    }
+    setPendingAction(null)
+    setPendingVotePodcast(null)
+  }
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+  }
+
   const handleLennyPodcastClick = () => {
     setShowNameInput(true)
   }
@@ -112,6 +172,33 @@ export default function Home() {
     return (
       <>
         <div className="min-h-screen w-full bg-cream-100">
+          {/* Header with sign in/out */}
+          <div className="absolute top-0 right-0 p-4 md:p-6 z-10">
+            {user ? (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-charcoal-600">
+                  {user.email}
+                </span>
+                <button
+                  onClick={handleSignOut}
+                  className="px-4 py-2 text-sm font-medium text-charcoal-600 border border-charcoal-300 rounded-lg hover:bg-charcoal-50 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setAuthMode('signin')
+                  setShowAuthModal(true)
+                }}
+                className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-300 rounded-lg hover:bg-orange-50 transition-colors"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
+
           {/* Two Column Layout */}
           <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -183,7 +270,7 @@ export default function Home() {
 
                   {/* Request Another Podcast Button */}
                   <button
-                    onClick={() => setShowRequestModal(true)}
+                    onClick={handleRequestPodcastClick}
                     className="w-full px-6 py-4 border-2 border-dashed border-charcoal-300 rounded-lg text-charcoal-600 font-medium hover:bg-charcoal-50 transition-all duration-200 flex items-center justify-center gap-2"
                   >
                     <span className="text-2xl">+</span>
@@ -263,6 +350,14 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Auth Modal */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onSuccess={handleAuthSuccess}
+          mode={authMode}
+        />
 
         {/* Request Podcast Modal */}
         {showRequestModal && (
@@ -643,3 +738,6 @@ function RequestPodcastModal({ onClose }: { onClose: () => void }) {
     </div>
   )
 }
+
+// Add AuthModal to the JSX return
+// Update the return statement to include AuthModal
