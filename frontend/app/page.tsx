@@ -16,7 +16,7 @@ interface Podcast {
   name: string
   description: string
   category?: string
-  like_count: number
+  vote_count: number
   podcast_link?: string
 }
 
@@ -26,7 +26,6 @@ export default function Home() {
   const [showNameInput, setShowNameInput] = useState(false)
   const [showRequestModal, setShowRequestModal] = useState(false)
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
-  const [likedPodcasts, setLikedPodcasts] = useState<Record<string, boolean>>({})
   const [isLoadingPodcasts, setIsLoadingPodcasts] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -49,56 +48,46 @@ export default function Home() {
     }
   }
 
-  const handleLike = async (podcastName: string) => {
+  const handleVote = async (podcastName: string) => {
     // Find the podcast in our state
     const podcast = podcasts.find(p => p.name === podcastName)
     if (!podcast) return
 
-    // Optimistic update
-    const isCurrentlyLiked = likedPodcasts[podcastName]
-    const newLikeCount = isCurrentlyLiked 
-      ? podcast.like_count - 1 
-      : podcast.like_count + 1
-
-    // Update local state immediately
+    // Optimistic update - increment vote count immediately
     setPodcasts(prev => prev.map(p => 
-      p.name === podcastName ? { ...p, like_count: newLikeCount } : p
+      p.name === podcastName ? { ...p, vote_count: p.vote_count + 1 } : p
     ))
-    setLikedPodcasts(prev => ({ ...prev, [podcastName]: !isCurrentlyLiked }))
 
     try {
-      const response = await fetch('/api/podcast-like', {
+      const response = await fetch('/api/podcast-vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          podcast_name: podcastName,
-          action: isCurrentlyLiked ? 'unlike' : 'like'
+          podcast_name: podcastName
         })
       })
 
       if (!response.ok) {
         // Revert on error
         setPodcasts(prev => prev.map(p => 
-          p.name === podcastName ? { ...p, like_count: podcast.like_count } : p
+          p.name === podcastName ? { ...p, vote_count: podcast.vote_count } : p
         ))
-        setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
-        console.error('Failed to update like')
+        console.error('Failed to vote')
       } else {
-        // Optionally: refresh from backend to ensure sync
+        // Sync with backend response
         const result = await response.json()
-        if (result.new_like_count !== undefined) {
+        if (result.new_vote_count !== undefined) {
           setPodcasts(prev => prev.map(p => 
-            p.name === podcastName ? { ...p, like_count: result.new_like_count } : p
+            p.name === podcastName ? { ...p, vote_count: result.new_vote_count } : p
           ))
         }
       }
     } catch (error) {
       // Revert on error
       setPodcasts(prev => prev.map(p => 
-        p.name === podcastName ? { ...p, like_count: podcast.like_count } : p
+        p.name === podcastName ? { ...p, vote_count: podcast.vote_count } : p
       ))
-      setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
-      console.error('Error updating like:', error)
+      console.error('Error voting:', error)
     }
   }
 
@@ -185,9 +174,8 @@ export default function Home() {
                           key={podcast.id}
                           name={podcast.name}
                           description={podcast.description}
-                          likes={podcast.like_count}
-                          isLiked={likedPodcasts[podcast.name]}
-                          onLike={() => handleLike(podcast.name)}
+                          votes={podcast.vote_count}
+                          onVote={() => handleVote(podcast.name)}
                         />
                       ))}
                     </div>
@@ -424,15 +412,13 @@ function NameInput({ onSubmit }: { onSubmit: (context: UserContext) => void }) {
 function PodcastCard({
   name,
   description,
-  likes,
-  isLiked,
-  onLike,
+  votes,
+  onVote,
 }: {
   name: string
   description: string
-  likes: number
-  isLiked?: boolean
-  onLike: () => void
+  votes: number
+  onVote: () => void
 }) {
   return (
     <div className="editorial-card p-4 hover:shadow-md transition-shadow">
@@ -447,18 +433,14 @@ function PodcastCard({
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-sm text-charcoal-500">
-          <span>{isLiked ? '❤️' : '👍'}</span>
-          <span>{likes}</span>
+          <span>👍</span>
+          <span>{votes}</span>
         </div>
         <button
-          onClick={onLike}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-            isLiked
-              ? 'bg-orange-50 text-orange-600 border border-orange-300'
-              : 'text-charcoal-600 border border-charcoal-300 hover:bg-charcoal-50'
-          }`}
+          onClick={onVote}
+          className="px-4 py-2 text-sm font-medium rounded-lg transition-colors text-orange-600 border border-orange-300 hover:bg-orange-50"
         >
-          {isLiked ? '❤️ Liked' : 'Like'}
+          Vote
         </button>
       </div>
     </div>

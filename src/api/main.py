@@ -591,14 +591,13 @@ async def submit_podcast_request(request: PodcastRequest):
         raise HTTPException(status_code=500, detail="Error saving request. Please try again.")
 
 
-class PodcastLike(BaseModel):
+class PodcastVote(BaseModel):
     podcast_name: str
-    action: str  # 'like' or 'unlike'
 
 @app.get("/podcasts")
 async def get_podcasts():
     """
-    Get all active podcasts with their like counts.
+    Get all active podcasts with their vote counts.
     Returns the curated list shown in "Other Podcasts requests" section.
     """
     from supabase import create_client, Client
@@ -626,7 +625,7 @@ async def get_podcasts():
                 "name": podcast["name"],
                 "description": podcast["description"],
                 "category": podcast.get("category"),
-                "like_count": podcast["like_count"],
+                "vote_count": podcast["vote_count"],
                 "podcast_link": podcast.get("podcast_link")
             }
             for podcast in result.data
@@ -638,17 +637,14 @@ async def get_podcasts():
         print(f"Error fetching podcasts: {e}")
         raise HTTPException(status_code=500, detail="Error fetching podcasts")
 
-@app.post("/podcast-like")
-async def podcast_like(request: PodcastLike):
+@app.post("/podcast-vote")
+async def podcast_vote(request: PodcastVote):
     """
-    Like or unlike a podcast.
-    Uses the podcast name to update the like count in the podcasts table.
+    Vote for a podcast.
+    Increments the vote count by 1.
     """
     from datetime import datetime
     from supabase import create_client, Client
-    
-    if request.action not in ['like', 'unlike']:
-        raise HTTPException(status_code=400, detail="Action must be 'like' or 'unlike'")
     
     if not request.podcast_name or not request.podcast_name.strip():
         raise HTTPException(status_code=400, detail="Podcast name is required")
@@ -670,31 +666,28 @@ async def podcast_like(request: PodcastLike):
             raise HTTPException(status_code=404, detail="Podcast not found")
         
         current_podcast = result.data[0]
-        current_likes = current_podcast.get("like_count", 0)
+        current_votes = current_podcast.get("vote_count", 0)
         
-        # Calculate new like count
-        if request.action == 'like':
-            new_count = current_likes + 1
-        else:  # unlike
-            new_count = max(0, current_likes - 1)
+        # Increment vote count
+        new_count = current_votes + 1
         
-        # Update the like count
+        # Update the vote count
         supabase.table("podcasts").update({
-            "like_count": new_count,
+            "vote_count": new_count,
             "updated_at": datetime.utcnow().isoformat()
         }).eq("name", request.podcast_name.strip()).execute()
         
         return {
             "success": True, 
-            "message": f"Successfully {request.action}d {request.podcast_name}",
-            "new_like_count": new_count
+            "message": f"Successfully voted for {request.podcast_name}",
+            "new_vote_count": new_count
         }
     
     except HTTPException:
         raise
     except Exception as e:
-        print(f"Error updating podcast like: {e}")
-        raise HTTPException(status_code=500, detail="Error updating like. Please try again.")
+        print(f"Error voting for podcast: {e}")
+        raise HTTPException(status_code=500, detail="Error voting. Please try again.")
 
 
 if __name__ == "__main__":
