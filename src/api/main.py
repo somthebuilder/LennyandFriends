@@ -2,7 +2,7 @@
 FastAPI server for Lenny and Friends.
 Provides endpoints for group chat and split chat interactions.
 """
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict
@@ -453,6 +453,200 @@ async def websocket_endpoint(websocket: WebSocket):
             
     except WebSocketDisconnect:
         pass
+
+
+# Podcast Request endpoint
+class PodcastRequest(BaseModel):
+    # New format fields
+    podcast_name: Optional[str] = None
+    podcast_link: Optional[str] = None
+    questions: Optional[str] = None
+    note: Optional[str] = None
+    email: Optional[str] = None
+    # Legacy format fields (for backward compatibility)
+    name: Optional[str] = None
+    request_type: Optional[str] = None
+    youtube_url: Optional[str] = None
+    description: Optional[str] = None
+
+@app.post("/podcast-request")
+async def submit_podcast_request(request: PodcastRequest):
+    """
+    Submit a request for a new podcast.
+    Supports both new format (podcast_name, podcast_link, questions, email) and legacy format.
+    """
+    import re
+    from datetime import datetime
+    from supabase import create_client, Client
+    
+    # Determine if this is new format or legacy format
+    is_new_format = request.podcast_name is not None or request.podcast_link is not None or request.email is not None
+    
+    if is_new_format:
+        # New format validation
+        if not request.podcast_name or not request.podcast_name.strip():
+            raise HTTPException(status_code=400, detail="Podcast name is required")
+        if not request.podcast_link or not request.podcast_link.strip():
+            raise HTTPException(status_code=400, detail="Podcast link is required")
+        if not request.questions or not request.questions.strip():
+            raise HTTPException(status_code=400, detail="Questions field is required")
+        if not request.email or not request.email.strip():
+            raise HTTPException(status_code=400, detail="Email is required")
+        
+        # Validate email
+        email_pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+        if not re.match(email_pattern, request.email.strip()):
+            raise HTTPException(status_code=400, detail="Invalid email format")
+        
+        # Validate podcast link (Spotify, Apple, RSS, or YouTube)
+        link = request.podcast_link.strip()
+        link_patterns = [
+            r'^https?://(open\.)?spotify\.com/.+$',
+            r'^https?://podcasts\.apple\.com/.+$',
+            r'^https?://.+\.rss$',
+            r'^https?://.+\.xml$',
+            r'^https?://(www\.)?(youtube\.com|youtu\.be)/.+$',
+        ]
+        
+        is_valid_link = any(re.match(pattern, link, re.IGNORECASE) for pattern in link_patterns)
+        if not is_valid_link:
+            raise HTTPException(status_code=400, detail="Invalid podcast link. Must be Spotify, Apple, RSS, or YouTube URL")
+        
+        # Security: Check for malicious patterns
+        malicious_patterns = [
+            r'javascript:',
+            r'data:',
+            r'vbscript:',
+            r'on\w+\s*=',
+        ]
+        
+        has_malicious = any(re.search(pattern, link, re.IGNORECASE) for pattern in malicious_patterns)
+        if has_malicious:
+            raise HTTPException(status_code=400, detail="Invalid URL format")
+        
+        # Prepare data for new format
+        data_to_insert = {
+            "podcast_name": request.podcast_name.strip(),
+            "podcast_link": link,
+            "questions": request.questions.strip(),
+            "note": request.note.strip() if request.note else None,
+            "email": request.email.strip(),
+            "status": "pending",
+            "created_at": datetime.utcnow().isoformat()
+        }
+    else:
+        # Legacy format validation
+        if request.request_type and request.request_type not in ['guest', 'topic']:
+            raise HTTPException(status_code=400, detail="request_type must be 'guest' or 'topic'")
+        
+        # Validate YouTube URL if provided
+        url = request.youtube_url.strip() if request.youtube_url else None
+        if url:
+            youtube_patterns = [
+                r'^https?://(www\.)?(youtube\.com|youtu\.be)/.+$',
+                r'^https?://youtube\.com/watch\?v=[\w-]+',
+                r'^https?://youtu\.be/[\w-]+',
+                r'^https?://www\.youtube\.com/embed/[\w-]+',
+                r'^https?://www\.youtube\.com/v/[\w-]+',
+            ]
+            
+            is_valid = any(re.match(pattern, url) for pattern in youtube_patterns)
+            if not is_valid:
+                raise HTTPException(status_code=400, detail="Invalid YouTube URL. Must be from youtube.com or youtu.be")
+            
+            malicious_patterns = [
+                r'javascript:',
+                r'data:',
+                r'vbscript:',
+                r'on\w+\s*=',
+            ]
+            
+            has_malicious = any(re.search(pattern, url, re.IGNORECASE) for pattern in malicious_patterns)
+            if has_malicious:
+                raise HTTPException(status_code=400, detail="Invalid URL format")
+        
+        # Prepare data for legacy format
+        data_to_insert = {
+            "name": request.name if request.name else None,
+            "request_type": request.request_type,
+            "youtube_url": url if url else None,
+            "description": request.description if request.description else None,
+            "status": "pending",
+            "created_at": datetime.utcnow().isoformat()
+        }
+    
+    # Save to Supabase
+    try:
+        supabase_url = os.getenv("SUPABASE_URL", "https://rhzpjvuutpjtdsbnskdy.supabase.co")
+        supabase_key = os.getenv("SUPABASE_KEY", os.getenv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_2yKt6iNyAT4XEizznV8_1A_QlDKGoBo"))
+        supabase: Client = create_client(supabase_url, supabase_key)
+        
+        # Insert into podcast_requests table
+        result = supabase.table("podcast_requests").insert(data_to_insert).execute()
+        
+        return {"success": True, "message": "Request submitted successfully"}
+        
+    except Exception as e:
+        print(f"Error saving podcast request: {e}")
+        raise HTTPException(status_code=500, detail="Error saving request. Please try again.")
+
+
+class PodcastLike(BaseModel):
+    podcast_name: str
+    action: str  # 'like' or 'unlike'
+
+@app.post("/podcast-like")
+async def podcast_like(request: PodcastLike):
+    """
+    Like or unlike a podcast request.
+    """
+    from datetime import datetime
+    from supabase import create_client, Client
+    
+    if request.action not in ['like', 'unlike']:
+        raise HTTPException(status_code=400, detail="Action must be 'like' or 'unlike'")
+    
+    if not request.podcast_name or not request.podcast_name.strip():
+        raise HTTPException(status_code=400, detail="Podcast name is required")
+    
+    try:
+        # Initialize Supabase client
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_KEY")
+        
+        if not supabase_url or not supabase_key:
+            raise HTTPException(status_code=500, detail="Database configuration error")
+        
+        supabase: Client = create_client(supabase_url, supabase_key)
+        
+        # Check if podcast_likes table exists, if not create it
+        # Get or create the podcast like record
+        result = supabase.table("podcast_likes").select("*").eq("podcast_name", request.podcast_name.strip()).execute()
+        
+        if result.data and len(result.data) > 0:
+            # Update existing record
+            current_likes = result.data[0].get("like_count", 0)
+            new_count = current_likes + 1 if request.action == 'like' else max(0, current_likes - 1)
+            
+            supabase.table("podcast_likes").update({
+                "like_count": new_count,
+                "updated_at": datetime.utcnow().isoformat()
+            }).eq("podcast_name", request.podcast_name.strip()).execute()
+        else:
+            # Create new record
+            if request.action == 'like':
+                supabase.table("podcast_likes").insert({
+                    "podcast_name": request.podcast_name.strip(),
+                    "like_count": 1,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "updated_at": datetime.utcnow().isoformat()
+                }).execute()
+        
+        return {"success": True, "message": f"Successfully {request.action}d {request.podcast_name}"}
+    
+    except Exception as e:
+        print(f"Error updating podcast like: {e}")
+        raise HTTPException(status_code=500, detail="Error updating like. Please try again.")
 
 
 if __name__ == "__main__":

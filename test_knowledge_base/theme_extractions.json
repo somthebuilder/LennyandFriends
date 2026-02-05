@@ -1,0 +1,170 @@
+[
+  {
+    "chunk_id": "test-guest-3_c_00000",
+    "guest_id": "emily-watson",
+    "episode_id": "test-guest-3",
+    "semantic_descriptors": [
+      "leadership philosophy",
+      "team dynamics",
+      "building trust",
+      "reciprocal relationships"
+    ],
+    "core_thesis": "Effective leadership is fundamentally built upon a foundation of mutual trust between the leader and their team.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-3_c_00001",
+    "guest_id": "emily-watson",
+    "episode_id": "test-guest-3",
+    "semantic_descriptors": [
+      "trust building",
+      "transparent communication",
+      "leadership accountability",
+      "behavioral consistency"
+    ],
+    "core_thesis": "Effective leaders build trust by consistently demonstrating transparency in communication, taking accountability for outcomes, and maintaining predictable behavior.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-3_c_00002",
+    "guest_id": "emily-watson",
+    "episode_id": "test-guest-3",
+    "semantic_descriptors": [
+      "hiring criteria",
+      "candidate evaluation",
+      "organizational values",
+      "team building philosophy"
+    ],
+    "core_thesis": "Effective hiring identifies great people by assessing their competence, character, and alignment with organizational culture and values.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-3_c_00003",
+    "guest_id": "emily-watson",
+    "episode_id": "test-guest-3",
+    "semantic_descriptors": [
+      "conflict resolution strategies",
+      "empathetic communication",
+      "problem-centric approach",
+      "proactive engagement"
+    ],
+    "core_thesis": "Effective conflict resolution hinges on a proactive, empathetic, and problem-focused strategy that prioritizes understanding all perspectives and working collaboratively to find solutions.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-2_c_00000",
+    "guest_id": "michael-rodriguez",
+    "episode_id": "test-guest-2",
+    "semantic_descriptors": [
+      "sustainable growth",
+      "foundational strength",
+      "premature scaling",
+      "strategic scaling"
+    ],
+    "core_thesis": "Successful company scaling prioritizes building a solid foundation over pursuing rapid growth.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-2_c_00001",
+    "guest_id": "michael-rodriguez",
+    "episode_id": "test-guest-2",
+    "semantic_descriptors": [
+      "product-market fit",
+      "customer retention strategies",
+      "business foundational elements",
+      "sustainable growth prioritization"
+    ],
+    "core_thesis": "A strong business foundation necessitates achieving product-market fit and implementing robust customer retention systems before focusing extensively on new customer acquisition.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-2_c_00002",
+    "guest_id": "michael-rodriguez",
+    "episode_id": "test-guest-2",
+    "semantic_descriptors": [
+      "customer lifecycle management",
+      "sustainable growth strategy",
+      "organic acquisition focus",
+      "user onboarding & engagement"
+    ],
+    "core_thesis": "The speaker advocates for a comprehensive growth strategy structured around acquisition, activation, and retention, emphasizing sustainable organic acquisition and robust user engagement throughout the customer lifecycle.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-2_c_00003",
+    "guest_id": "michael-rodriguez",
+    "episode_id": "test-guest-2",
+    "semantic_descriptors": [
+      "Pricing strategy",
+      "Value-based monetization",
+      "Tiered product offerings",
+      "Revenue optimization"
+    ],
+    "core_thesis": "Businesses should optimize their pricing strategy by aligning it with the value delivered to customers, avoiding underpricing, and implementing clear tiered upgrade paths.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-1_c_00000",
+    "guest_id": "sarah-chen",
+    "episode_id": "test-guest-1",
+    "semantic_descriptors": [
+      "Podcast opening convention",
+      "Host-guest introduction",
+      "Conversation initiation"
+    ],
+    "core_thesis": "This excerpt functions purely as a conventional podcast opening, establishing the presence of the host and guest to formally commence the episode.",
+    "confidence": 0.2
+  },
+  {
+    "chunk_id": "test-guest-1_c_00001",
+    "guest_id": "sarah-chen",
+    "episode_id": "test-guest-1",
+    "semantic_descriptors": [
+      "User-centric product development",
+      "Understanding user needs",
+      "Problem-first approach",
+      "Product strategy"
+    ],
+    "core_thesis": "Building great products fundamentally requires a deep understanding of user problems and pain points before focusing on feature development.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-1_c_00002",
+    "guest_id": "sarah-chen",
+    "episode_id": "test-guest-1",
+    "semantic_descriptors": [
+      "customer discovery",
+      "problem validation",
+      "feature prioritization",
+      "user-centered product development"
+    ],
+    "core_thesis": "Prioritizing direct customer discovery over internal assumptions allows teams to validate true user needs, leading to effective feature prioritization and product success.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-1_c_00003",
+    "guest_id": "sarah-chen",
+    "episode_id": "test-guest-1",
+    "semantic_descriptors": [
+      "Prioritization frameworks",
+      "Strategic decision-making",
+      "Product development strategy",
+      "Balancing short-term and long-term goals"
+    ],
+    "core_thesis": "Effective product prioritization requires a multi-faceted approach, combining immediate impact and effort analysis with critical consideration for long-term strategic alignment.",
+    "confidence": 0.95
+  },
+  {
+    "chunk_id": "test-guest-1_c_00004",
+    "guest_id": "sarah-chen",
+    "episode_id": "test-guest-1",
+    "semantic_descriptors": [
+      "Performance measurement",
+      "Strategic goal setting",
+      "Balanced metric selection",
+      "Outcome optimization"
+    ],
+    "core_thesis": "Effective development and outcome optimization require setting clear success criteria and balanced metrics prior to any building.",
+    "confidence": 0.95
+  }
+]

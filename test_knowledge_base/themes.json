@@ -1,0 +1,46 @@
+[
+  {
+    "theme_id": "T00",
+    "label": "Effective leaders build trust by consistently demo",
+    "example_phrases": [
+      "Effective leaders build trust by consistently demonstrating transparency in communication, taking accountability for outcomes, and maintaining predictable behavior.",
+      "Effective leadership is fundamentally built upon a foundation of mutual trust between the leader and their team.",
+      "leadership philosophy",
+      "trust building",
+      "building trust"
+    ],
+    "chunk_ids": [
+      "test-guest-3_c_00002",
+      "test-guest-3_c_00000",
+      "test-guest-3_c_00001"
+    ],
+    "guest_ids": [
+      "emily-watson"
+    ]
+  },
+  {
+    "theme_id": "T01",
+    "label": "Product strategy",
+    "example_phrases": [
+      "Product strategy",
+      "Effective product prioritization requires a multi-faceted approach, combining immediate impact and effort analysis with critical consideration for long-term strategic alignment.",
+      "Product development strategy",
+      "strategic scaling",
+      "The speaker advocates for a comprehensive growth strategy structured around acquisition, activation, and retention, emphasizing sustainable organic acquisition and robust user engagement throughout the customer lifecycle."
+    ],
+    "chunk_ids": [
+      "test-guest-2_c_00002",
+      "test-guest-1_c_00002",
+      "test-guest-2_c_00001",
+      "test-guest-1_c_00003",
+      "test-guest-1_c_00001",
+      "test-guest-1_c_00004",
+      "test-guest-2_c_00003",
+      "test-guest-2_c_00000"
+    ],
+    "guest_ids": [
+      "sarah-chen",
+      "michael-rodriguez"
+    ]
+  }
+]

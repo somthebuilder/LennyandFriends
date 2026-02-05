@@ -16,18 +16,47 @@ export default function Home() {
   const [userContext, setUserContext] = useState<UserContext | null>(null)
   const [showNameInput, setShowNameInput] = useState(false)
   const [showRequestModal, setShowRequestModal] = useState(false)
-  const [notifyStatus, setNotifyStatus] = useState<Record<string, 'idle' | 'success'>>({})
+  const [podcastLikes, setPodcastLikes] = useState<Record<string, number>>({
+    '20VC': 7,
+    'My First Million': 5,
+    'All-In Podcast': 8,
+    'The India Opportunity': 3,
+    'Huberman Lab': 1,
+  })
+  const [likedPodcasts, setLikedPodcasts] = useState<Record<string, boolean>>({})
   const formRef = useRef<HTMLDivElement>(null)
 
-  const handleNotify = async (podcastName: string) => {
+  const handleLike = async (podcastName: string) => {
+    // Optimistic update
+    const isCurrentlyLiked = likedPodcasts[podcastName]
+    const newLikeCount = isCurrentlyLiked 
+      ? podcastLikes[podcastName] - 1 
+      : podcastLikes[podcastName] + 1
+
+    setPodcastLikes(prev => ({ ...prev, [podcastName]: newLikeCount }))
+    setLikedPodcasts(prev => ({ ...prev, [podcastName]: !isCurrentlyLiked }))
+
     try {
-      // For now, just show success. Later can save to DB
-      setNotifyStatus(prev => ({ ...prev, [podcastName]: 'success' }))
-      setTimeout(() => {
-        setNotifyStatus(prev => ({ ...prev, [podcastName]: 'idle' }))
-      }, 3000)
+      const response = await fetch('/api/podcast-like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          podcast_name: podcastName,
+          action: isCurrentlyLiked ? 'unlike' : 'like'
+        })
+      })
+
+      if (!response.ok) {
+        // Revert on error
+        setPodcastLikes(prev => ({ ...prev, [podcastName]: podcastLikes[podcastName] }))
+        setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
+        console.error('Failed to update like')
+      }
     } catch (error) {
-      console.error('Error notifying:', error)
+      // Revert on error
+      setPodcastLikes(prev => ({ ...prev, [podcastName]: podcastLikes[podcastName] }))
+      setLikedPodcasts(prev => ({ ...prev, [podcastName]: isCurrentlyLiked }))
+      console.error('Error updating like:', error)
     }
   }
 
@@ -105,30 +134,37 @@ export default function Home() {
                     <PodcastCard
                       name="20VC"
                       description="Venture & Fundraising"
-                      likes={7}
-                      notifyStatus={notifyStatus['20VC']}
-                      onNotify={() => handleNotify('20VC')}
+                      likes={podcastLikes['20VC']}
+                      isLiked={likedPodcasts['20VC']}
+                      onLike={() => handleLike('20VC')}
                     />
                     <PodcastCard
                       name="My First Million"
                       description="Business Ideas & Revenue"
-                      likes={5}
-                      notifyStatus={notifyStatus['My First Million']}
-                      onNotify={() => handleNotify('My First Million')}
+                      likes={podcastLikes['My First Million']}
+                      isLiked={likedPodcasts['My First Million']}
+                      onLike={() => handleLike('My First Million')}
                     />
                     <PodcastCard
                       name="All-In Podcast"
                       description="Tech, Markets & Strategy"
-                      likes={8}
-                      notifyStatus={notifyStatus['All-In Podcast']}
-                      onNotify={() => handleNotify('All-In Podcast')}
+                      likes={podcastLikes['All-In Podcast']}
+                      isLiked={likedPodcasts['All-In Podcast']}
+                      onLike={() => handleLike('All-In Podcast')}
                     />
                     <PodcastCard
                       name="The India Opportunity"
                       description="Indian Tech & Startups"
-                      likes={3}
-                      notifyStatus={notifyStatus['The India Opportunity']}
-                      onNotify={() => handleNotify('The India Opportunity')}
+                      likes={podcastLikes['The India Opportunity']}
+                      isLiked={likedPodcasts['The India Opportunity']}
+                      onLike={() => handleLike('The India Opportunity')}
+                    />
+                    <PodcastCard
+                      name="Huberman Lab"
+                      description="Science & Health"
+                      likes={podcastLikes['Huberman Lab']}
+                      isLiked={likedPodcasts['Huberman Lab']}
+                      onLike={() => handleLike('Huberman Lab')}
                     />
                   </div>
 
@@ -364,17 +400,15 @@ function PodcastCard({
   name,
   description,
   likes,
-  notifyStatus,
-  onNotify,
+  isLiked,
+  onLike,
 }: {
   name: string
   description: string
   likes: number
-  notifyStatus?: 'idle' | 'success'
-  onNotify: () => void
+  isLiked?: boolean
+  onLike: () => void
 }) {
-  const isNotified = notifyStatus === 'success'
-  
   return (
     <div className="editorial-card p-4 hover:shadow-md transition-shadow">
       <div className="flex items-start gap-3 mb-3">
@@ -388,19 +422,18 @@ function PodcastCard({
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-sm text-charcoal-500">
-          <span>👍</span>
+          <span>{isLiked ? '❤️' : '👍'}</span>
           <span>{likes}</span>
         </div>
         <button
-          onClick={onNotify}
-          disabled={isNotified}
+          onClick={onLike}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-            isNotified
-              ? 'bg-green-50 text-green-600 border border-green-300 cursor-default'
-              : 'text-orange-600 border border-orange-300 hover:bg-orange-50'
+            isLiked
+              ? 'bg-orange-50 text-orange-600 border border-orange-300'
+              : 'text-charcoal-600 border border-charcoal-300 hover:bg-charcoal-50'
           }`}
         >
-          {isNotified ? '✓ Notified' : 'Notify'}
+          {isLiked ? '❤️ Liked' : 'Like'}
         </button>
       </div>
     </div>
