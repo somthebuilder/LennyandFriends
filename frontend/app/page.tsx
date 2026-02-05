@@ -34,6 +34,7 @@ export default function Home() {
   const [pendingVotePodcast, setPendingVotePodcast] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [podcasts, setPodcasts] = useState<Podcast[]>([])
+  const [votedPodcastIds, setVotedPodcastIds] = useState<string[]>([])
   const [isLoadingPodcasts, setIsLoadingPodcasts] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -41,12 +42,20 @@ export default function Home() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
+      if (session?.access_token) {
+        fetchUserVotes(session.access_token)
+      }
     })
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      if (session?.access_token) {
+        fetchUserVotes(session.access_token)
+      } else {
+        setVotedPodcastIds([])
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -56,6 +65,24 @@ export default function Home() {
   useEffect(() => {
     fetchPodcasts()
   }, [])
+
+  const fetchUserVotes = async (token?: string) => {
+    if (!token) return
+    
+    try {
+      const response = await fetch('/api/user-votes', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setVotedPodcastIds(data.voted_podcast_ids || [])
+      }
+    } catch (error) {
+      console.error('Error fetching user votes:', error)
+    }
+  }
 
   const fetchPodcasts = async () => {
     try {
@@ -85,26 +112,45 @@ export default function Home() {
     const podcast = podcasts.find(p => p.name === podcastName)
     if (!podcast) return
 
+    // Check if user has already voted
+    if (votedPodcastIds.includes(podcast.id)) {
+      alert('You have already voted for this podcast')
+      return
+    }
+
     // Optimistic update - increment vote count immediately
     setPodcasts(prev => prev.map(p => 
       p.name === podcastName ? { ...p, vote_count: p.vote_count + 1 } : p
     ))
+    setVotedPodcastIds(prev => [...prev, podcast.id])
 
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
       const response = await fetch('/api/podcast-vote', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`
+        },
         body: JSON.stringify({
           podcast_name: podcastName
         })
       })
 
       if (!response.ok) {
+        const errorData = await response.json()
         // Revert on error
         setPodcasts(prev => prev.map(p => 
           p.name === podcastName ? { ...p, vote_count: podcast.vote_count } : p
         ))
-        console.error('Failed to vote')
+        setVotedPodcastIds(prev => prev.filter(id => id !== podcast.id))
+        
+        if (response.status === 400) {
+          alert(errorData.detail || 'You have already voted for this podcast')
+        } else {
+          console.error('Failed to vote')
+        }
       } else {
         // Sync with backend response
         const result = await response.json()
@@ -119,6 +165,7 @@ export default function Home() {
       setPodcasts(prev => prev.map(p => 
         p.name === podcastName ? { ...p, vote_count: podcast.vote_count } : p
       ))
+      setVotedPodcastIds(prev => prev.filter(id => id !== podcast.id))
       console.error('Error voting:', error)
     }
   }
@@ -199,7 +246,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* Two Column Layout */}
+          {/* Two Column Layout with max-width container */}
           <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               
@@ -262,6 +309,7 @@ export default function Home() {
                           name={podcast.name}
                           description={podcast.description}
                           votes={podcast.vote_count}
+                          hasVoted={votedPodcastIds.includes(podcast.id)}
                           onVote={() => handleVote(podcast.name)}
                         />
                       ))}
@@ -508,11 +556,13 @@ function PodcastCard({
   name,
   description,
   votes,
+  hasVoted,
   onVote,
 }: {
   name: string
   description: string
   votes: number
+  hasVoted: boolean
   onVote: () => void
 }) {
   return (
@@ -533,9 +583,14 @@ function PodcastCard({
         </div>
         <button
           onClick={onVote}
-          className="px-4 py-2 text-sm font-medium rounded-lg transition-colors text-orange-600 border border-orange-300 hover:bg-orange-50"
+          disabled={hasVoted}
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+            hasVoted
+              ? 'bg-charcoal-100 text-charcoal-400 cursor-not-allowed'
+              : 'text-orange-600 border border-orange-300 hover:bg-orange-50'
+          }`}
         >
-          Vote
+          {hasVoted ? '✓ Voted' : 'Vote'}
         </button>
       </div>
     </div>

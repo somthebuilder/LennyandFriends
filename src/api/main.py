@@ -2,7 +2,7 @@
 FastAPI server for Lenny and Friends.
 Provides endpoints for group chat and split chat interactions.
 """
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict
@@ -638,16 +638,21 @@ async def get_podcasts():
         raise HTTPException(status_code=500, detail="Error fetching podcasts")
 
 @app.post("/podcast-vote")
-async def podcast_vote(request: PodcastVote):
+async def podcast_vote(request: PodcastVote, authorization: str = Header(None)):
     """
     Vote for a podcast.
     Increments the vote count by 1.
+    Enforces 1 vote per user per podcast.
     """
     from datetime import datetime
     from supabase import create_client, Client
     
     if not request.podcast_name or not request.podcast_name.strip():
         raise HTTPException(status_code=400, detail="Podcast name is required")
+    
+    # Extract user from authorization header
+    if not authorization or not authorization.startswith('Bearer '):
+        raise HTTPException(status_code=401, detail="Authentication required")
     
     try:
         # Initialize Supabase client
@@ -659,16 +664,38 @@ async def podcast_vote(request: PodcastVote):
         
         supabase: Client = create_client(supabase_url, supabase_key)
         
-        # Get current podcast
+        # Get user from token
+        token = authorization.replace('Bearer ', '')
+        user_response = supabase.auth.get_user(token)
+        
+        if not user_response.user:
+            raise HTTPException(status_code=401, detail="Invalid authentication token")
+        
+        user_id = user_response.user.id
+        
+        # Get podcast
         result = supabase.table("podcasts").select("*").eq("name", request.podcast_name.strip()).execute()
         
         if not result.data or len(result.data) == 0:
             raise HTTPException(status_code=404, detail="Podcast not found")
         
-        current_podcast = result.data[0]
-        current_votes = current_podcast.get("vote_count", 0)
+        podcast = result.data[0]
+        podcast_id = podcast["id"]
+        
+        # Check if user has already voted
+        existing_vote = supabase.table("user_podcast_votes").select("*").eq("user_id", user_id).eq("podcast_id", podcast_id).execute()
+        
+        if existing_vote.data and len(existing_vote.data) > 0:
+            raise HTTPException(status_code=400, detail="You have already voted for this podcast")
+        
+        # Record the vote
+        supabase.table("user_podcast_votes").insert({
+            "user_id": user_id,
+            "podcast_id": podcast_id
+        }).execute()
         
         # Increment vote count
+        current_votes = podcast.get("vote_count", 0)
         new_count = current_votes + 1
         
         # Update the vote count
@@ -688,6 +715,48 @@ async def podcast_vote(request: PodcastVote):
     except Exception as e:
         print(f"Error voting for podcast: {e}")
         raise HTTPException(status_code=500, detail="Error voting. Please try again.")
+
+
+@app.get("/user-votes")
+async def get_user_votes(authorization: str = Header(None)):
+    """
+    Get all podcasts the current user has voted for.
+    Returns list of podcast IDs.
+    """
+    from supabase import create_client, Client
+    
+    if not authorization or not authorization.startswith('Bearer '):
+        return {"voted_podcast_ids": []}
+    
+    try:
+        # Initialize Supabase client
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_KEY")
+        
+        if not supabase_url or not supabase_key:
+            raise HTTPException(status_code=500, detail="Database configuration error")
+        
+        supabase: Client = create_client(supabase_url, supabase_key)
+        
+        # Get user from token
+        token = authorization.replace('Bearer ', '')
+        user_response = supabase.auth.get_user(token)
+        
+        if not user_response.user:
+            return {"voted_podcast_ids": []}
+        
+        user_id = user_response.user.id
+        
+        # Get all votes for this user
+        votes = supabase.table("user_podcast_votes").select("podcast_id").eq("user_id", user_id).execute()
+        
+        podcast_ids = [vote["podcast_id"] for vote in votes.data] if votes.data else []
+        
+        return {"voted_podcast_ids": podcast_ids}
+    
+    except Exception as e:
+        print(f"Error fetching user votes: {e}")
+        return {"voted_podcast_ids": []}
 
 
 if __name__ == "__main__":
