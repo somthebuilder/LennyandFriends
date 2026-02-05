@@ -219,35 +219,44 @@ export default function Home() {
     return (
       <>
         <div className="min-h-screen w-full bg-cream-100">
-          {/* Header with sign in/out */}
-          <div className="absolute top-0 right-0 p-4 md:p-6 z-10">
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-charcoal-600">
-                  {user.email}
-                </span>
-                <button
-                  onClick={handleSignOut}
-                  className="px-4 py-2 text-sm font-medium text-charcoal-600 border border-charcoal-300 rounded-lg hover:bg-charcoal-50 transition-colors"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => {
-                  setAuthMode('signin')
-                  setShowAuthModal(true)
-                }}
-                className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-300 rounded-lg hover:bg-orange-50 transition-colors"
-              >
-                Sign In
-              </button>
-            )}
-          </div>
-
           {/* Two Column Layout with max-width container */}
-          <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
+          <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12">
+            {/* Header with sign in/out - Inside container */}
+            <div className="flex justify-between items-center mb-8 md:mb-12">
+              {/* Logo/Brand */}
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/panelchat-logo.svg" 
+                  alt="Panel Chat"
+                  className="h-8 md:h-10 w-auto"
+                />
+              </div>
+              
+              {/* Auth Button */}
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-charcoal-600 hidden sm:inline">
+                    {user.email}
+                  </span>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-4 py-2 text-sm font-medium text-charcoal-600 border border-charcoal-300 rounded-lg hover:bg-charcoal-50 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthMode('signin')
+                    setShowAuthModal(true)
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-300 rounded-lg hover:bg-orange-50 transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               
               {/* Left Column: Lenny Card + Other Podcasts */}
