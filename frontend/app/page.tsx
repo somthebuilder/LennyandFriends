@@ -346,8 +346,8 @@ export default function Home() {
                 <div className="space-y-8 lg:space-y-10">
                   {/* Hero Product Name with Icon - IN ONE ROW */}
                   <div className="relative">
-                    {/* Decorative element */}
-                    <div className="absolute -left-4 top-0 w-1 h-24 bg-gradient-to-b from-orange-600 to-orange-400 rounded-full opacity-60"></div>
+                    {/* Blinking cursor decoration */}
+                    <div className="absolute -left-4 top-0 w-0.5 h-20 bg-orange-600 animate-blink"></div>
                     
                     {/* Logo + Name in single row */}
                     <div className="flex items-center gap-4 md:gap-6">
