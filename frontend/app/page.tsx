@@ -218,45 +218,50 @@ export default function Home() {
   if (!showNameInput) {
     return (
       <>
-        <div className="min-h-screen w-full bg-cream-100">
-          {/* Two Column Layout with max-width container */}
-          <div className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12">
-            {/* Header with sign in/out - Inside container */}
-            <div className="flex justify-between items-center mb-8 md:mb-12">
-              {/* Logo/Brand */}
-              <div className="flex items-center gap-3">
-                <img 
-                  src="/panelchat-logo.svg" 
-                  alt="Panel Chat"
-                  className="h-8 md:h-10 w-auto"
-                />
-              </div>
-              
-              {/* Auth Button */}
-              {user ? (
+        <div className="min-h-screen w-full bg-cream-100 flex flex-col">
+          {/* Sticky Header */}
+          <header className="sticky top-0 z-50 bg-white border-b border-charcoal-200 shadow-sm">
+            <div className="max-w-7xl mx-auto px-6 md:px-12 py-4">
+              <div className="flex justify-between items-center">
+                {/* Logo/Brand */}
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-charcoal-600 hidden sm:inline">
-                    {user.email}
-                  </span>
-                  <button
-                    onClick={handleSignOut}
-                    className="px-4 py-2 text-sm font-medium text-charcoal-600 border border-charcoal-300 rounded-lg hover:bg-charcoal-50 transition-colors"
-                  >
-                    Sign Out
-                  </button>
+                  <img 
+                    src="/panelchat-logo.svg" 
+                    alt="Panel Chat"
+                    className="h-8 md:h-10 w-auto"
+                  />
                 </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    setAuthMode('signin')
-                    setShowAuthModal(true)
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-300 rounded-lg hover:bg-orange-50 transition-colors"
-                >
-                  Sign In
-                </button>
-              )}
+                
+                {/* Auth Button */}
+                {user ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-charcoal-600 hidden sm:inline">
+                      {user.email}
+                    </span>
+                    <button
+                      onClick={handleSignOut}
+                      className="px-4 py-2 text-sm font-medium text-charcoal-600 border border-charcoal-300 rounded-lg hover:bg-charcoal-50 transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setAuthMode('signin')
+                      setShowAuthModal(true)
+                    }}
+                    className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-300 rounded-lg hover:bg-orange-50 transition-colors"
+                  >
+                    Sign In
+                  </button>
+                )}
+              </div>
             </div>
+          </header>
+
+          {/* Main Content */}
+          <div className="flex-1 max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               
               {/* Left Column: Lenny Card + Other Podcasts */}
@@ -406,6 +411,28 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Footer with Copyright */}
+          <footer className="bg-white border-t border-charcoal-200 mt-auto">
+            <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="text-sm text-charcoal-600">
+                  © {new Date().getFullYear()} Panel Chat. All rights reserved.
+                </div>
+                <div className="flex items-center gap-6 text-sm text-charcoal-500">
+                  <a href="#" className="hover:text-orange-600 transition-colors">
+                    Privacy Policy
+                  </a>
+                  <a href="#" className="hover:text-orange-600 transition-colors">
+                    Terms of Service
+                  </a>
+                  <a href="#" className="hover:text-orange-600 transition-colors">
+                    Contact
+                  </a>
+                </div>
+              </div>
+            </div>
+          </footer>
         </div>
 
         {/* Auth Modal */}
