@@ -97,15 +97,46 @@ def build_knowledge_base(
     extractions = []
     
     if skip_extraction:
-        # Load existing extractions
-        extraction_file = output_path / "theme_extractions.json"
-        if extraction_file.exists():
-            print("  Loading existing extractions...")
-            with open(extraction_file, "r") as f:
-                extractions = json.load(f)
+        # Load existing extractions from Supabase or local file
+        if use_supabase and supabase_store:
+            print("  Loading extractions from Supabase...")
+            try:
+                existing_extractions = supabase_store.load_theme_extractions()
+                # Convert to dict format expected by clusterer
+                extractions = [
+                    {
+                        "chunk_id": ext.chunk_id,
+                        "guest_id": ext.guest_id,
+                        "episode_id": ext.episode_id,
+                        "semantic_descriptors": ext.semantic_descriptors,
+                        "core_thesis": ext.core_thesis,
+                        "confidence": ext.confidence
+                    }
+                    for ext in existing_extractions
+                ]
+                print(f"  Loaded {len(extractions)} extractions from Supabase")
+            except Exception as e:
+                print(f"  ⚠️  Error loading from Supabase: {e}")
+                print("  Trying local file...")
+                extraction_file = output_path / "theme_extractions.json"
+                if extraction_file.exists():
+                    with open(extraction_file, "r") as f:
+                        extractions = json.load(f)
+                    print(f"  Loaded {len(extractions)} extractions from local file")
+                else:
+                    print("  No extractions found in Supabase or local file.")
+                    return
         else:
-            print("  No existing extractions found. Run without --skip-extraction first.")
-            return
+            # Load from local file
+            extraction_file = output_path / "theme_extractions.json"
+            if extraction_file.exists():
+                print("  Loading existing extractions from local file...")
+                with open(extraction_file, "r") as f:
+                    extractions = json.load(f)
+                print(f"  Loaded {len(extractions)} extractions")
+            else:
+                print("  No existing extractions found. Run without --skip-extraction first.")
+                return
     else:
         # Extract themes and save incrementally
         batch_size = 100  # Save to Supabase every 100 extractions
@@ -198,7 +229,7 @@ def build_knowledge_base(
     if use_supabase and supabase_store:
         supabase_store.save_themes(themes)
     else:
-    themes_file = output_path / "themes.json"
+        themes_file = output_path / "themes.json"
     themes_data = [
         {
             "theme_id": theme.theme_id,
@@ -233,8 +264,8 @@ def build_knowledge_base(
         supabase_store.save_guest_theme_strengths(strengths_dict)
     else:
         strengths_file = output_path / "guest_theme_strengths.json"
-    with open(strengths_file, "w") as f:
-        json.dump(strengths_dict, f, indent=2)
+        with open(strengths_file, "w") as f:
+            json.dump(strengths_dict, f, indent=2)
     print(f"  Mapped {len(guest_strengths)} guests to themes")
     
     # Step 6: Build vector store
@@ -286,16 +317,37 @@ def build_knowledge_base(
         embeddings_array = np.array(all_embeddings)
         supabase_store.save_chunk_embeddings(chunks_for_store, embeddings_array)
     else:
-    vector_store.save()
+        vector_store.save()
     print(f"  Vector store saved with {len(chunks_for_store)} chunks")
     
     # Save chunk assignments
     if use_supabase and supabase_store:
         supabase_store.save_chunk_theme_assignments(chunk_theme_assignments)
     else:
-    assignments_file = output_path / "chunk_theme_assignments.json"
-    with open(assignments_file, "w") as f:
-        json.dump(chunk_theme_assignments, f, indent=2)
+        assignments_file = output_path / "chunk_theme_assignments.json"
+        with open(assignments_file, "w") as f:
+            json.dump(chunk_theme_assignments, f, indent=2)
+    
+    # Step 7: Generate panels from themes
+    if use_supabase and supabase_store:
+        print("\n[7/7] Generating panels from themes...")
+        try:
+            # Import here to avoid circular dependencies
+            import importlib.util
+            panel_gen_path = Path(__file__).parent / "generate_panels.py"
+            spec = importlib.util.spec_from_file_location("generate_panels", panel_gen_path)
+            generate_panels_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(generate_panels_module)
+            PanelGenerator = generate_panels_module.PanelGenerator
+            
+            panel_generator = PanelGenerator(supabase_store)
+            panels = panel_generator.generate_panels(min_guests_per_panel=3, max_guests_per_panel=10)
+            panel_generator.save_panels(panels)
+            print(f"  Generated {len(panels)} panels")
+        except Exception as e:
+            print(f"  ⚠️  Error generating panels: {e}")
+            import traceback
+            traceback.print_exc()
     
     # Summary
     print("\n" + "=" * 60)
@@ -306,6 +358,12 @@ def build_knowledge_base(
     print(f"  Themes: {len(themes)}")
     print(f"  Guests: {len(guest_strengths)}")
     print(f"  Vector Store: {len(chunks_for_store)} chunks")
+    if use_supabase and supabase_store:
+        try:
+            panel_count = len(panels) if 'panels' in locals() else 0
+            print(f"  Panels: {panel_count}")
+        except:
+            pass
     print(f"\nOutput directory: {output_dir}/")
 
 

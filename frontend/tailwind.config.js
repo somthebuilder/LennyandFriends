@@ -14,22 +14,22 @@ module.exports = {
       colors: {
         // Editorial magazine theme
         cream: {
-          50: '#FEFDFC',
+          50: '#FDFCFB', // Softer cream
           100: '#FCFBFA', // Main background
           200: '#FAF9F7',
           300: '#F7F6F4',
         },
         charcoal: {
-          50: '#F5F5F5',
-          100: '#E5E5E5',
-          200: '#D4D4D4',
-          300: '#A3A3A3',
-          400: '#737373',
-          500: '#525252',
-          600: '#404040',
-          700: '#262626', // Deep charcoal text
-          800: '#1E1E1E',
-          900: '#171717',
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937', // Deeper charcoal text
+          900: '#111827',
         },
         orange: {
           50: '#FFF7ED',
@@ -137,6 +137,25 @@ module.exports = {
           500: '#ffd700',
           400: '#ffdd4d',
           300: '#ffe680',
+        },
+      },
+      animation: {
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'gradient-x': 'gradient-x 3s ease infinite',
+      },
+      keyframes: {
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'gradient-x': {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
         },
       },
     },

@@ -16,9 +16,30 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode = 'signin' 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+  const [customRole, setCustomRole] = useState('')
+  const [company, setCompany] = useState('')
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+
+  const roleOptions = [
+    'Product Manager',
+    'Product Designer',
+    'Founder / CEO',
+    'Growth Manager',
+    'Engineering Manager',
+    'Marketing Manager',
+    'Data Analyst',
+    'Product Marketing Manager',
+    'UX Researcher',
+    'Business Development',
+    'Investor / VC',
+    'Consultant',
+    'Student',
+    'Other'
+  ]
 
   if (!isOpen) return null
 
@@ -26,16 +47,34 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode = 'signin' 
     e.preventDefault()
     setError(null)
     setMessage(null)
+
+    // Check consent for signup
+    if (authMode === 'signup' && !agreedToTerms) {
+      setError('Please agree to the Terms of Service and Privacy Policy to continue')
+      return
+    }
+
+    // Check if custom role is provided when "Other" is selected
+    if (authMode === 'signup' && role === 'Other' && !customRole.trim()) {
+      setError('Please enter your role')
+      return
+    }
+
     setIsLoading(true)
 
     try {
       if (authMode === 'signup') {
+        // Use custom role if "Other" is selected, otherwise use selected role
+        const finalRole = role === 'Other' ? customRole : role
+        
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
               full_name: name,
+              role: finalRole,
+              company: company,
             },
           },
         })
@@ -103,19 +142,65 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode = 'signin' 
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {authMode === 'signup' && (
-            <div>
-              <label className="block text-sm font-medium text-charcoal-700 mb-1">
-                Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border border-charcoal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="Your name"
-                required
-              />
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium text-charcoal-700 mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-2 border border-charcoal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Your name"
+                  required
+                />
+              </div>
+              
+              {/* Role and Company Side by Side */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-charcoal-700 mb-1">
+                    Role
+                  </label>
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full px-4 py-2 border border-charcoal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    required
+                  >
+                    <option value="">Select a role</option>
+                    {roleOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {role === 'Other' && (
+                    <input
+                      type="text"
+                      value={customRole}
+                      onChange={(e) => setCustomRole(e.target.value)}
+                      className="w-full px-4 py-2 border border-charcoal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 mt-2"
+                      placeholder="Enter your role"
+                    />
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-charcoal-700 mb-1">
+                    Company
+                  </label>
+                  <input
+                    type="text"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="w-full px-4 py-2 border border-charcoal-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Your company name"
+                    required
+                  />
+                </div>
+              </div>
+            </>
           )}
 
           <div>
@@ -146,6 +231,40 @@ export default function AuthModal({ isOpen, onClose, onSuccess, mode = 'signin' 
               minLength={6}
             />
           </div>
+
+          {authMode === 'signup' && (
+            <div className="flex items-start gap-2 pt-2">
+              <input
+                type="checkbox"
+                id="terms-checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 text-orange-600 border-charcoal-300 rounded focus:ring-2 focus:ring-orange-500"
+              />
+              <label htmlFor="terms-checkbox" className="text-sm text-charcoal-600 leading-relaxed">
+                I agree to the{' '}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-600 hover:text-orange-700 underline font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Terms of Service
+                </a>{' '}
+                and{' '}
+                <a
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-600 hover:text-orange-700 underline font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Privacy Policy
+                </a>
+              </label>
+            </div>
+          )}
 
           <button
             type="submit"

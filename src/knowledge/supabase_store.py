@@ -49,13 +49,23 @@ class SupabaseStore:
         """Save theme extractions to Supabase."""
         records = []
         for ext in extractions:
+            # Ensure semantic_descriptors is always a list (never None)
+            semantic_descriptors = ext.semantic_descriptors
+            if semantic_descriptors is None:
+                semantic_descriptors = []
+            elif not isinstance(semantic_descriptors, list):
+                semantic_descriptors = []
+            
+            # Ensure core_thesis is always a string (never None)
+            core_thesis = ext.core_thesis or ""
+            
             records.append({
                 "chunk_id": ext.chunk_id,
                 "guest_id": ext.guest_id,
                 "episode_id": ext.episode_id,
-                "semantic_descriptors": ext.semantic_descriptors,
-                "core_thesis": ext.core_thesis,
-                "confidence": float(ext.confidence)
+                "semantic_descriptors": semantic_descriptors,
+                "core_thesis": core_thesis,
+                "confidence": float(ext.confidence) if ext.confidence is not None else 0.0
             })
         
         # Insert in batches
@@ -73,19 +83,33 @@ class SupabaseStore:
         print(f"  ✅ Saved {total_saved} theme extractions to Supabase")
     
     def load_theme_extractions(self) -> List[ThemeExtraction]:
-        """Load theme extractions from Supabase."""
-        response = self.client.table("theme_extractions").select("*").execute()
-        
+        """Load theme extractions from Supabase with pagination."""
         extractions = []
-        for row in response.data:
-            extractions.append(ThemeExtraction(
-                chunk_id=row["chunk_id"],
-                guest_id=row["guest_id"],
-                episode_id=row["episode_id"],
-                semantic_descriptors=row["semantic_descriptors"],
-                core_thesis=row["core_thesis"],
-                confidence=float(row["confidence"])
-            ))
+        page_size = 1000
+        offset = 0
+        
+        # Fetch all extractions using pagination
+        while True:
+            response = self.client.table("theme_extractions").select("*").range(offset, offset + page_size - 1).execute()
+            
+            if not response.data or len(response.data) == 0:
+                break
+            
+            for row in response.data:
+                extractions.append(ThemeExtraction(
+                    chunk_id=row["chunk_id"],
+                    guest_id=row["guest_id"],
+                    episode_id=row["episode_id"],
+                    semantic_descriptors=row["semantic_descriptors"],
+                    core_thesis=row["core_thesis"],
+                    confidence=float(row["confidence"])
+                ))
+            
+            # If we got fewer than page_size, we've reached the end
+            if len(response.data) < page_size:
+                break
+            
+            offset += page_size
         
         return extractions
     

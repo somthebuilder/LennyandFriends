@@ -247,13 +247,21 @@ JSON:"""
                 json_str = content[start_idx:end_idx]
                 data = json.loads(json_str)
                 
+                # Ensure semantic_descriptors is always a list (never None)
+                semantic_descriptors = data.get("semantic_descriptors", [])
+                if semantic_descriptors is None or not isinstance(semantic_descriptors, list):
+                    semantic_descriptors = []
+                
+                # Ensure core_thesis is always a string (never None)
+                core_thesis = data.get("core_thesis", "") or ""
+                
                 return ThemeExtraction(
                     chunk_id=chunk_id,
                     guest_id=guest_id,
                     episode_id=episode_id,
-                    semantic_descriptors=data.get("semantic_descriptors", []),
-                    core_thesis=data.get("core_thesis", ""),
-                    confidence=float(data.get("confidence", 0.5))
+                    semantic_descriptors=semantic_descriptors,
+                    core_thesis=core_thesis,
+                    confidence=float(data.get("confidence", 0.5)) if data.get("confidence") is not None else 0.5
                 )
         except Exception as e:
             print(f"Error parsing response: {e}")
