@@ -9,19 +9,31 @@ Process:
 4. Select top N guests per panel based on theme strengths
 5. Ensure all guests are covered
 6. Generate panel metadata (title, description, category)
+7. Use Gemini to generate content-aware slugs
 """
 import sys
 from pathlib import Path
 import json
 import re
+import os
 from typing import List, Dict, Set, Optional
 from dataclasses import dataclass, asdict
 from collections import defaultdict
+from dotenv import load_dotenv
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.knowledge.supabase_store import SupabaseStore
+
+# Try to import Gemini
+try:
+    from google import genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+
+load_dotenv()
 
 
 @dataclass
@@ -39,26 +51,159 @@ class Panel:
 class PanelGenerator:
     """Generates panels from themes."""
     
-    # PRD categories
+    # Comprehensive categories based on all themes
     CATEGORIES = [
+        # Product Development
+        "Product Strategy & Development",
+        "Product Discovery & Research",
+        "B2B & Enterprise Product",
+        "AI & Emerging Tech",
+        
+        # Growth & Marketing
         "Early Stage Growth",
+        "Growth Strategy & Tactics",
+        "User Acquisition & Engagement",
+        "Content & Distribution",
+        
+        # Team & Leadership
         "Hiring & Building Teams",
-        "Pricing Strategy",
-        "Scaling Product Teams",
-        "Building Culture",
-        "B2B Product",
-        "Fundraising",
+        "Team Dynamics & Collaboration",
+        "Leadership & Management",
+        "Organizational Culture",
+        
+        # Strategy & Operations
+        "Strategic Planning & Prioritization",
+        "Go-to-Market Strategy",
+        "Operational Excellence",
+        "Competitive Strategy",
+        
+        # Career & Personal Development
+        "Career Development",
+        "Personal Growth & Skills",
+        "Mentorship & Learning",
+        
+        # Business & Finance
+        "Fundraising & Investment",
+        "Pricing & Monetization",
     ]
     
-    # Category keywords for auto-categorization
+    def __init__(self, supabase_store: SupabaseStore):
+        self.supabase_store = supabase_store
+        self.client = supabase_store.client
+        
+        # Initialize Gemini for slug generation
+        self.gemini_client = None
+        if GEMINI_AVAILABLE:
+            api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+            if api_key:
+                try:
+                    self.gemini_client = genai.Client(api_key=api_key)
+                    print("  ✅ Gemini initialized for slug generation")
+                except Exception as e:
+                    print(f"  ⚠️  Failed to initialize Gemini: {e}")
+                    print("  Will use rule-based slug generation")
+    
+    # Comprehensive category keywords based on all themes
     CATEGORY_KEYWORDS = {
-        "Early Stage Growth": ["growth", "acquisition", "retention", "scaling", "growth loops", "user acquisition"],
-        "Hiring & Building Teams": ["hiring", "team", "recruiting", "talent", "culture", "leadership", "management"],
-        "Pricing Strategy": ["pricing", "monetization", "revenue", "pricing model", "value-based"],
-        "Scaling Product Teams": ["product team", "product management", "PM", "product org", "scaling"],
-        "Building Culture": ["culture", "values", "company culture", "team culture", "organizational"],
-        "B2B Product": ["B2B", "enterprise", "sales", "enterprise sales", "B2B sales"],
-        "Fundraising": ["fundraising", "venture capital", "VC", "investor", "funding", "raise"],
+        # Product Development
+        "Product Strategy & Development": [
+            "product strategy", "product development", "product differentiation", 
+            "iterative product", "customer-centric product", "product roadmap",
+            "product vision", "product planning"
+        ],
+        "Product Discovery & Research": [
+            "product discovery", "user research", "customer research", 
+            "product-market fit", "validation", "user needs"
+        ],
+        "B2B & Enterprise Product": [
+            "B2B", "enterprise", "SaaS enterprise", "enterprise features",
+            "enterprise sales", "B2B product", "enterprise software"
+        ],
+        "AI & Emerging Tech": [
+            "AI", "artificial intelligence", "AI product", "AI development",
+            "AI safety", "machine learning", "emerging technology"
+        ],
+        
+        # Growth & Marketing
+        "Early Stage Growth": [
+            "early stage", "startup growth", "early-stage startup", 
+            "startup strategy", "founder", "launch"
+        ],
+        "Growth Strategy & Tactics": [
+            "growth strategy", "growth tactics", "growth loops", 
+            "growth engine", "scaling growth", "growth playbook"
+        ],
+        "User Acquisition & Engagement": [
+            "user acquisition", "audience engagement", "user engagement",
+            "listener engagement", "acquisition", "retention", "engagement"
+        ],
+        "Content & Distribution": [
+            "content discoverability", "content distribution", "podcast promotion",
+            "marketing", "distribution", "discoverability"
+        ],
+        
+        # Team & Leadership
+        "Hiring & Building Teams": [
+            "hiring", "recruiting", "talent", "strategic hiring",
+            "team building", "building teams", "recruitment"
+        ],
+        "Team Dynamics & Collaboration": [
+            "team dynamics", "cross-functional", "collaboration",
+            "team collaboration", "working together", "teamwork"
+        ],
+        "Leadership & Management": [
+            "leadership", "management", "developing conviction",
+            "organizational alignment", "strategic alignment", "role clarity"
+        ],
+        "Organizational Culture": [
+            "culture", "organizational culture", "organizational values",
+            "company culture", "team culture", "psychological safety",
+            "values", "organizational"
+        ],
+        
+        # Strategy & Operations
+        "Strategic Planning & Prioritization": [
+            "strategic prioritization", "prioritization", "strategic planning",
+            "strategic focus", "strategic clarity", "resource allocation"
+        ],
+        "Go-to-Market Strategy": [
+            "go-to-market", "GTM", "go to market", "market strategy",
+            "launch strategy", "market entry"
+        ],
+        "Operational Excellence": [
+            "operational efficiency", "operations", "efficiency",
+            "process improvement", "operational"
+        ],
+        "Competitive Strategy": [
+            "competitive differentiation", "differentiation", "competitive advantage",
+            "market disruption", "competitive", "market position"
+        ],
+        
+        # Career & Personal Development
+        "Career Development": [
+            "career", "professional", "professional development",
+            "career growth", "career advice"
+        ],
+        "Personal Growth & Skills": [
+            "skill development", "personal growth", "self-awareness",
+            "emotional intelligence", "habits", "habit formation",
+            "embracing challenges", "novelty", "learning"
+        ],
+        "Mentorship & Learning": [
+            "mentorship", "professional mentorship", "mentor",
+            "knowledge sharing", "knowledge acquisition", "experiential learning",
+            "learning", "teaching"
+        ],
+        
+        # Business & Finance
+        "Fundraising & Investment": [
+            "fundraising", "venture capital", "VC", "investment",
+            "investor", "funding", "raise", "capital"
+        ],
+        "Pricing & Monetization": [
+            "pricing", "monetization", "revenue", "pricing strategy",
+            "pricing model", "value-based pricing", "monetization strategy"
+        ],
     }
     
     def __init__(self, supabase_store: SupabaseStore):
@@ -210,8 +355,14 @@ class PanelGenerator:
         theme_id = theme['theme_id']
         theme_label = theme.get('label', '')
         
-        # Generate slug from theme label
-        slug = self._generate_slug(theme_label or f"theme-{theme_id}")
+        # Use pre-generated slug from database if available, otherwise generate
+        theme_slug = theme.get('panel_slug')
+        if theme_slug:
+            slug = theme_slug
+            print(f"      Using pre-generated slug: {slug}")
+        else:
+            # Generate slug using Gemini (content-aware) or fallback to rule-based
+            slug = self._generate_slug_with_gemini(theme) or self._generate_slug(theme_label or f"theme-{theme_id}")
         
         # Generate title (capitalize and clean theme label)
         title = self._generate_title(theme_label or f"Theme {theme_id}")
@@ -233,29 +384,176 @@ class PanelGenerator:
             guest_ids=guest_ids
         )
     
+    def _generate_slug_with_gemini(self, theme: Dict) -> Optional[str]:
+        """Generate a content-aware slug using Gemini based on theme content."""
+        if not self.gemini_client:
+            return None
+        
+        try:
+            theme_label = theme.get('label', '')
+            example_phrases = theme.get('example_phrases', [])
+            guest_count = len(theme.get('guest_ids', []))
+            chunk_ids = theme.get('chunk_ids', [])
+            
+            # Get sample core theses from chunks in this theme for better context
+            sample_theses = []
+            if chunk_ids:
+                try:
+                    # Get a few sample extractions to understand the theme content
+                    sample_chunk_ids = chunk_ids[:3]  # Get first 3 chunks
+                    for chunk_id in sample_chunk_ids:
+                        response = self.client.table("theme_extractions").select("core_thesis").eq("chunk_id", chunk_id).limit(1).execute()
+                        if response.data and response.data[0].get('core_thesis'):
+                            sample_theses.append(response.data[0]['core_thesis'])
+                except:
+                    pass  # If we can't get sample theses, continue without them
+            
+            # Build context from theme
+            context_parts = []
+            if theme_label:
+                context_parts.append(f"Theme: {theme_label}")
+            if example_phrases and len(example_phrases) > 0:
+                # Filter out duplicates and get unique examples
+                unique_examples = list(dict.fromkeys(example_phrases[:8]))  # Preserve order, remove dupes
+                context_parts.append(f"Example topics: {', '.join(unique_examples)}")
+            if sample_theses:
+                context_parts.append(f"Sample insights: {' | '.join(sample_theses[:2])}")
+            if guest_count > 0:
+                context_parts.append(f"Discussed by {guest_count} industry experts")
+            
+            context = "\n".join(context_parts)
+            
+            prompt = f"""Generate a URL-friendly slug (hyphenated, lowercase) for a panel discussion based on this theme.
+
+Theme Information:
+{context}
+
+Requirements:
+- 2-4 words maximum
+- Descriptive and specific (not generic)
+- Discussion/panel-focused (e.g., "growth-engine", "product-leadership", "pricing-mastery")
+- 30-40 characters max
+- No special characters except hyphens
+- Should capture the essence of what experts discuss in this theme
+
+Examples of good slugs:
+- "the-growth-engine" (for growth strategies)
+- "product-leadership" (for product management)
+- "pricing-mastery" (for pricing strategies)
+- "b2b-sales-motion" (for B2B sales)
+
+Generate ONLY the slug, nothing else. No explanation, no quotes, just the slug:"""
+
+            # Use the correct Gemini API format (matching theme_extractor.py)
+            response = self.gemini_client.models.generate_content(
+                model="models/gemini-2.5-flash",
+                contents=prompt
+            )
+            
+            # Extract slug from response
+            slug = response.text.strip().lower()
+            
+            # Clean up: remove quotes, extra whitespace, etc.
+            slug = re.sub(r'["\']', '', slug)
+            slug = re.sub(r'[^\w-]', '-', slug)
+            slug = re.sub(r'-+', '-', slug)
+            slug = slug.strip('-')
+            
+            # Validate length
+            if 5 <= len(slug) <= 45:
+                return slug
+            else:
+                return None
+                
+        except Exception as e:
+            print(f"   ⚠️  Error generating slug with Gemini for theme {theme.get('theme_id')}: {e}")
+            return None
+    
     def _generate_slug(self, text: str) -> str:
-        """Generate URL-friendly slug from text."""
-        # Convert to lowercase
-        slug = text.lower()
+        """Generate URL-friendly slug that's descriptive and discussion-focused."""
+        # Clean the text
+        slug = text.lower().strip()
+        
+        # Remove common prefixes/suffixes that make it generic
+        slug = re.sub(r'^(the|a|an)\s+', '', slug, flags=re.IGNORECASE)
+        slug = re.sub(r'\s+(core|advanced|\(core\)|\(advanced\))', '', slug)
+        
+        # Remove parenthetical content
+        slug = re.sub(r'\([^)]*\)', '', slug)
+        
         # Replace spaces and special chars with hyphens
         slug = re.sub(r'[^\w\s-]', '', slug)
         slug = re.sub(r'[-\s]+', '-', slug)
-        # Remove leading/trailing hyphens
         slug = slug.strip('-')
-        # Limit length
-        if len(slug) > 50:
-            slug = slug[:50].rstrip('-')
-        return slug or "panel"
+        
+        # Make it more discussion-focused if it's too generic
+        # Check if slug is just a single word or very generic
+        words = slug.split('-')
+        
+        # Skip adding discussion if it already has action words
+        has_action_word = any(word in ['discussion', 'insights', 'strategies', 'mastery', 'engine', 
+                                       'motion', 'playbook', 'guide', 'framework'] for word in words)
+        
+        if len(words) <= 1:
+            # Single word - definitely add context
+            if not has_action_word:
+                slug = f"{slug}-discussion"
+        elif len(words) == 2:
+            # Two words - add context if it's a generic combo
+            if not has_action_word:
+                # Check if it's a common generic combo
+                generic_combos = ['strategy', 'growth', 'product', 'team', 'market', 'customer', 
+                                'user', 'business', 'company', 'organization']
+                if any(word in generic_combos for word in words):
+                    slug = f"{slug}-insights"
+                else:
+                    # More specific two-word combo, add discussion
+                    slug = f"{slug}-discussion"
+        # For 3+ words, assume it's descriptive enough
+        
+        # Ensure it's not too long (max 45 chars for readability)
+        if len(slug) > 45:
+            # Try to shorten intelligently
+            words = slug.split('-')
+            if len(words) > 3:
+                # Keep first 3 words
+                slug = '-'.join(words[:3])
+            else:
+                # Truncate but keep word boundaries
+                slug = slug[:45].rsplit('-', 1)[0]
+        
+        # Final cleanup
+        slug = slug.strip('-')
+        
+        # Fallback
+        if not slug or len(slug) < 3:
+            slug = "expert-discussion"
+        
+        return slug
     
     def _generate_title(self, theme_label: str) -> str:
-        """Generate panel title from theme label."""
-        # Clean and capitalize
+        """Generate panel title from theme label - make it discussion-focused."""
+        # Clean the label
         title = theme_label.strip()
-        # Capitalize first letter of each word
+        
+        # Remove parenthetical content like "(Core)" or "(Advanced)"
+        title = re.sub(r'\s*\([^)]*\)', '', title)
+        
+        # Capitalize properly
         title = ' '.join(word.capitalize() for word in title.split())
+        
         # Remove common prefixes
         title = re.sub(r'^(The|A|An)\s+', '', title, flags=re.IGNORECASE)
-        return title or "Expert Panel"
+        
+        # Make it more discussion-focused if it's too generic
+        # Check if title is just a single concept
+        words = title.split()
+        if len(words) <= 2 and not any(word.lower() in ['discussion', 'insights', 'strategies', 'mastery', 'engine'] for word in words):
+            # Add context to make it more panel-like
+            if 'discussion' not in title.lower():
+                title = f"{title} Discussion"
+        
+        return title or "Expert Panel Discussion"
     
     def _generate_description(self, theme: Dict, guest_ids: List[str]) -> str:
         """Generate panel description."""
@@ -271,21 +569,41 @@ class PanelGenerator:
             return f"Expert perspectives on {theme_label.lower()} from {guest_count} industry leaders. Learn from their real-world experiences and insights."
     
     def _determine_category(self, theme_label: str) -> str:
-        """Determine panel category from theme label."""
+        """Determine panel category from theme label using comprehensive keyword matching."""
         theme_lower = theme_label.lower()
         
-        # Score each category
+        # Score each category (weighted by keyword match)
         category_scores = {}
         for category, keywords in self.CATEGORY_KEYWORDS.items():
-            score = sum(1 for keyword in keywords if keyword in theme_lower)
+            score = 0
+            for keyword in keywords:
+                if keyword.lower() in theme_lower:
+                    # Longer/more specific keywords get higher weight
+                    score += len(keyword.split()) * 2
             if score > 0:
                 category_scores[category] = score
         
-        # Return highest scoring category, or default
+        # Return highest scoring category
         if category_scores:
-            return max(category_scores.items(), key=lambda x: x[1])[0]
+            best_category = max(category_scores.items(), key=lambda x: x[1])[0]
+            return best_category
+        
+        # Fallback: use theme label to infer category
+        # Check for common patterns
+        if any(word in theme_lower for word in ["product", "development", "strategy"]):
+            return "Product Strategy & Development"
+        elif any(word in theme_lower for word in ["growth", "acquisition", "engagement"]):
+            return "Growth Strategy & Tactics"
+        elif any(word in theme_lower for word in ["team", "hiring", "collaboration"]):
+            return "Team Dynamics & Collaboration"
+        elif any(word in theme_lower for word in ["strategic", "prioritization", "planning"]):
+            return "Strategic Planning & Prioritization"
+        elif any(word in theme_lower for word in ["mentorship", "learning", "knowledge"]):
+            return "Mentorship & Learning"
+        elif any(word in theme_lower for word in ["venture", "capital", "investment", "fundraising"]):
+            return "Fundraising & Investment"
         else:
-            return self.CATEGORIES[0]  # Default to first category
+            return "Product Strategy & Development"  # Default
     
     def _add_guests_to_panels(self, panels: List[Panel], uncovered_guests: Set[str], 
                               guest_strengths: List[Dict], max_guests: int):

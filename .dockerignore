@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Frontend
+frontend/
+node_modules/
+
+# Knowledge base (will be mounted as volume)
+knowledge_base/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+build.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Episodes (not needed in production)
+episodes/
+
+# Test files
+test_*
+

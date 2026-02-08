@@ -56,7 +56,7 @@ export default function NoResults({
 
       <button
         onClick={onAskDifferent}
-        className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+        className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-400"
       >
         Ask a different question
       </button>

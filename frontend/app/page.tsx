@@ -236,7 +236,7 @@ export default function Home() {
                   <img 
                     src="/panelchat-logo.svg" 
                     alt="Panel Chat"
-                      className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                      className="h-8 md:h-10 w-auto transition-transform group-hover:scale-[1.02] duration-500"
                   />
                 </div>
                 
@@ -280,15 +280,15 @@ export default function Home() {
               
                 {/* Left Column: Lenny Card */}
                 <div className="order-2 lg:order-1 animate-fade-in-up">
-                  <div className="editorial-card p-8 md:p-12 hover:shadow-xl hover:scale-[1.02] transition-all duration-500 bg-gradient-to-br from-white to-orange-50/30 border border-orange-100/50">
+                  <div className="editorial-card p-8 md:p-12 hover:shadow-xl hover:scale-[1.01] transition-all duration-600 bg-gradient-to-br from-white to-orange-50/30 border border-orange-100/50">
                   <div className="flex flex-col items-center text-center space-y-6">
                       {/* Lenny Logo Image with glow effect */}
                       <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-full blur-2xl group-hover:blur-2xl transition-all duration-700 opacity-0 group-hover:opacity-50"></div>
                       <img 
                         src="/lennylogo.svg" 
                         alt="Lenny's Podcast"
-                          className="relative w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                          className="relative w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                       />
                     </div>
                     
@@ -310,15 +310,15 @@ export default function Home() {
                       {/* Button with enhanced style */}
                     <button
                       onClick={handleLennyPodcastClick}
-                        className="group relative w-full md:w-auto px-10 py-4 text-base font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                        className="group relative w-full md:w-auto px-10 py-4 text-base font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all duration-500 overflow-hidden"
                     >
                         <span className="relative z-10 flex items-center justify-center gap-2">
-                          {user ? 'Start chatting' : 'Get started'}
-                          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          {user ? 'Start chatting' : 'Explore'}
+                          <svg className="w-5 h-5 group-hover:translate-x-0.5 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                           </svg>
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-80 transition-opacity duration-500"></div>
                     </button>
                   </div>
                 </div>
@@ -333,8 +333,8 @@ export default function Home() {
                       <div className="flex items-center gap-2 md:gap-3">
                       {/* Minimal Logo Icon - Overlapping Speech Bubbles representing Panel of Experts */}
                         <div className="flex-shrink-0 relative w-16 h-16 md:w-24 md:h-24 group p-0">
-                          <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
-                          <svg width="96" height="96" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative w-full h-full group-hover:scale-105 transition-transform duration-300 p-0">
+                          <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-700"></div>
+                          <svg width="96" height="96" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative w-full h-full group-hover:scale-[1.02] transition-transform duration-500 p-0">
                           <defs>
                             <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                               <stop offset="0%" style={{stopColor: '#F97316', stopOpacity: 1}} />
@@ -412,7 +412,7 @@ export default function Home() {
                     {user && (
                       <button
                         onClick={handleCreateCustomPanelClick}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-200"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-400"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -471,13 +471,13 @@ export default function Home() {
                     {/* Request Another Podcast Card */}
                     <button
                       onClick={handleRequestPodcastClick}
-                      className="group h-full min-h-[240px] px-6 py-8 border-2 border-dashed border-charcoal-300 rounded-xl text-charcoal-600 font-semibold hover:bg-gradient-to-br hover:from-orange-50 hover:to-white hover:border-orange-400 transition-all duration-300 flex flex-col items-center justify-center gap-4"
+                      className="group h-full min-h-[240px] px-6 py-8 border-2 border-dashed border-charcoal-300 rounded-xl text-charcoal-600 font-semibold hover:bg-gradient-to-br hover:from-orange-50 hover:to-white hover:border-orange-400 transition-all duration-500 flex flex-col items-center justify-center gap-4"
                     >
-                      <div className="w-16 h-16 rounded-full bg-charcoal-100 group-hover:bg-orange-100 flex items-center justify-center transition-colors duration-300">
-                        <span className="text-4xl text-charcoal-400 group-hover:text-orange-600 group-hover:scale-110 transition-all duration-300">+</span>
+                      <div className="w-16 h-16 rounded-full bg-charcoal-100 group-hover:bg-orange-100 flex items-center justify-center transition-colors duration-500">
+                        <span className="text-4xl text-charcoal-400 group-hover:text-orange-600 group-hover:scale-105 transition-all duration-500">+</span>
                       </div>
                       <div className="text-center">
-                        <p className="font-bold text-lg group-hover:text-orange-600 transition-colors duration-300 mb-1">Request Another Podcast</p>
+                        <p className="font-bold text-lg group-hover:text-orange-600 transition-colors duration-500 mb-1">Request Another Podcast</p>
                         <p className="text-sm text-charcoal-500 font-normal">SUBMIT YOUR REQUEST</p>
                       </div>
                     </button>
@@ -516,8 +516,8 @@ export default function Home() {
     return (
       <div className="relative min-h-screen w-full bg-gradient-to-br from-cream-50 via-white to-orange-50/20 flex items-center justify-center p-6 md:p-8">
         {/* Animated background gradient orbs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-300/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-orange-400/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}}></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-300/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s', animationDuration: '8s'}}></div>
         
         <div className="relative w-full max-w-2xl">
           <div className="editorial-card p-10 md:p-14 shadow-2xl border border-charcoal-100 animate-scale-in">
@@ -732,15 +732,15 @@ function NameInput({ onSubmit }: { onSubmit: (context: UserContext) => void }) {
       <button
         type="submit"
         disabled={!name.trim() || !role.trim() || interests.length === 0}
-        className="group relative w-full px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none overflow-hidden"
+        className="group relative w-full px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none overflow-hidden"
       >
         <span className="relative z-10 flex items-center justify-center gap-2">
           Start chatting
-          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 group-hover:translate-x-0.5 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </span>
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-80 transition-opacity duration-500"></div>
       </button>
     </form>
   )
@@ -761,7 +761,7 @@ function PodcastCard({
   onVote: () => void
 }) {
   return (
-    <div className="group h-full editorial-card p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-charcoal-100 hover:border-orange-200 flex flex-col">
+    <div className="group h-full editorial-card p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 bg-white border border-charcoal-100 hover:border-orange-200 flex flex-col">
       {/* Header with icon and votes */}
       <div className="flex items-start justify-between mb-4">
         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center flex-shrink-0">
@@ -777,8 +777,9 @@ function PodcastCard({
             strokeLinecap="round"
             strokeLinejoin="round"
             viewBox="0 0 24 24"
+            fill="none"
           >
-            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+            <path d="M18 15l-6-6-6 6" />
           </svg>
           <span className="text-sm font-bold text-charcoal-700">{votes}</span>
         </div>
@@ -786,7 +787,7 @@ function PodcastCard({
 
       {/* Content */}
       <div className="flex-1 mb-4">
-        <h3 className="font-bold text-lg text-charcoal-800 mb-2 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2">
+        <h3 className="font-bold text-lg text-charcoal-800 mb-2 group-hover:text-orange-600 transition-colors duration-500 line-clamp-2">
           {name}
         </h3>
         <p className="text-sm text-charcoal-600 leading-relaxed line-clamp-2">
@@ -798,7 +799,7 @@ function PodcastCard({
         <button
           onClick={onVote}
           disabled={hasVoted}
-        className={`w-full px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300 ${
+        className={`w-full px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-500 ${
             hasVoted
             ? 'bg-charcoal-100 text-charcoal-500 cursor-not-allowed'
             : 'text-charcoal-700 border border-charcoal-300 hover:bg-charcoal-50 hover:border-charcoal-400'
@@ -1012,7 +1013,7 @@ function RequestPodcastModal({ onClose }: { onClose: () => void }) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-6 py-3 text-white font-semibold rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+              className="flex-1 px-6 py-3 text-white font-semibold rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
@@ -1226,7 +1227,7 @@ function CreateCustomPanelModal({ onClose }: { onClose: () => void }) {
             <button
               type="submit"
               disabled={isSubmitting || selectedGuests.length === 0}
-              className="flex-1 px-6 py-3 text-white font-semibold rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+              className="flex-1 px-6 py-3 text-white font-semibold rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">

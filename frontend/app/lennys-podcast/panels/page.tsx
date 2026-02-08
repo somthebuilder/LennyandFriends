@@ -8,6 +8,7 @@ import type { User } from '@supabase/supabase-js'
 
 interface Panel {
   id: string
+  slug?: string
   name: string
   description: string
   category: string
@@ -34,58 +35,8 @@ export default function ExplorePanelsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showCustomPanelModal, setShowCustomPanelModal] = useState(false)
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
-
-  // Sample panels data - replace with API call
-  const panels: Panel[] = [
-    {
-      id: 'the-growth-engine',
-      name: 'The Growth Engine',
-      description: 'Master the levers of early-stage growth with perspectives from operators who scaled Airbnb, Uber, and Iterable.',
-      category: 'Early Stage Growth',
-      insightfulCount: 1240,
-      guests: [
-        { name: 'Brian Chesky' },
-        { name: 'Andrew Chen' },
-        { name: 'Elena Verna' },
-      ],
-    },
-    {
-      id: 'product-leadership',
-      name: 'Product Leadership',
-      description: 'Hiring your first VP of Product? Scaling from 0-50 PM? Get the playbook from the best in the business.',
-      category: 'Scaling Product Teams',
-      insightfulCount: 850,
-      guests: [
-        { name: 'Julie Zhuo' },
-        { name: 'Shreyas Doshi' },
-        { name: 'Des Traynor' },
-      ],
-    },
-    {
-      id: 'pricing-mastery',
-      name: 'Pricing Mastery',
-      description: 'Unpack complex pricing models, value-based positioning, and monetization strategies for PLG and Enterprise.',
-      category: 'Pricing Strategy',
-      insightfulCount: 450,
-      guests: [
-        { name: 'April Dunford' },
-        { name: 'Kevin Kwok' },
-        { name: 'Elena Verna' },
-      ],
-    },
-    {
-      id: 'b2b-sales-motion',
-      name: 'B2B Sales Motion',
-      description: 'How to build a repeatable enterprise sales motion and align your product roadmap with high-value contracts.',
-      category: 'B2B Product',
-      insightfulCount: 1300,
-      guests: [
-        { name: 'Anu Hariharan' },
-        { name: 'Casey Winters' },
-        { name: 'Reid Hoffman' },
-      ],
-    },
-  ]
+  const [panels, setPanels] = useState<Panel[]>([])
+  const [isLoadingPanels, setIsLoadingPanels] = useState(true)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -99,6 +50,30 @@ export default function ExplorePanelsPage() {
     })
 
     return () => subscription.unsubscribe()
+  }, [])
+
+  // Fetch panels from API
+  useEffect(() => {
+    const fetchPanels = async () => {
+      try {
+        setIsLoadingPanels(true)
+        const response = await fetch('/api/panels')
+        if (response.ok) {
+          const data = await response.json()
+          setPanels(data)
+        } else {
+          console.error('Failed to fetch panels:', response.statusText)
+          setPanels([])
+        }
+      } catch (error) {
+        console.error('Error fetching panels:', error)
+        setPanels([])
+      } finally {
+        setIsLoadingPanels(false)
+      }
+    }
+
+    fetchPanels()
   }, [])
 
   // Close dropdown when clicking outside
@@ -162,7 +137,7 @@ export default function ExplorePanelsPage() {
                   <img 
                     src="/panelchat-logo.svg" 
                     alt="Panel Chat"
-                    className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                    className="h-8 md:h-10 w-auto transition-transform group-hover:scale-[1.02] duration-500"
                   />
                 </button>
                 <svg className="w-4 h-4 text-charcoal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +232,7 @@ export default function ExplorePanelsPage() {
                   {user && (
                     <button
                       onClick={handleCreateCustomPanel}
-                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-1 transition-all duration-300"
+                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all duration-500"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -395,13 +370,32 @@ export default function ExplorePanelsPage() {
               </div>
 
               {/* Panels Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredPanels.map((panel, index) => (
+              {isLoadingPanels ? (
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 rounded-full border-4 border-orange-200"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-orange-600 border-t-transparent animate-spin"></div>
+                  </div>
+                  <p className="text-sm text-charcoal-500 font-medium">Loading panels...</p>
+                </div>
+              ) : filteredPanels.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-center text-charcoal-600 font-medium">No panels found</p>
+                  <p className="text-center text-charcoal-500 text-sm">Check back later or create your own panel!</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredPanels.map((panel, index) => (
                   <div
                     key={panel.id}
                     style={{ animationDelay: `${index * 100}ms` }}
-                    className="editorial-card p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer animate-fade-in-up bg-white border border-charcoal-100"
-                    onClick={() => router.push(`/lennys-podcast/panels/${panel.id}`)}
+                    className="editorial-card p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 cursor-pointer animate-fade-in-up bg-white border border-charcoal-100"
+                    onClick={() => router.push(`/lennys-podcast/panels/${panel.slug || panel.id}`)}
                   >
                     {/* Header */}
                     <div className="flex items-start justify-between mb-4">
@@ -443,8 +437,9 @@ export default function ExplorePanelsPage() {
                       </span>
                     </div>
                   </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               {/* View More */}
               <div className="mt-8 text-center">

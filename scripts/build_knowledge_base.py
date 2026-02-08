@@ -264,8 +264,8 @@ def build_knowledge_base(
         supabase_store.save_guest_theme_strengths(strengths_dict)
     else:
         strengths_file = output_path / "guest_theme_strengths.json"
-        with open(strengths_file, "w") as f:
-            json.dump(strengths_dict, f, indent=2)
+    with open(strengths_file, "w") as f:
+        json.dump(strengths_dict, f, indent=2)
     print(f"  Mapped {len(guest_strengths)} guests to themes")
     
     # Step 6: Build vector store
@@ -325,8 +325,8 @@ def build_knowledge_base(
         supabase_store.save_chunk_theme_assignments(chunk_theme_assignments)
     else:
         assignments_file = output_path / "chunk_theme_assignments.json"
-        with open(assignments_file, "w") as f:
-            json.dump(chunk_theme_assignments, f, indent=2)
+    with open(assignments_file, "w") as f:
+        json.dump(chunk_theme_assignments, f, indent=2)
     
     # Step 7: Generate panels from themes
     if use_supabase and supabase_store:

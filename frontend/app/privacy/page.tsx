@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
               <img 
                 src="/panelchat-logo.svg" 
                 alt="Panel Chat"
-                className="h-8 w-auto transition-transform group-hover:scale-105 duration-300"
+                className="h-8 w-auto transition-transform group-hover:scale-[1.02] duration-500"
               />
             </button>
             <button

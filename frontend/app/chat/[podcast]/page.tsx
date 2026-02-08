@@ -137,7 +137,7 @@ export default function PodcastChatPage() {
                 <img 
                   src="/panelchat-logo.svg" 
                   alt="Panel Chat"
-                  className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                  className="h-8 md:h-10 w-auto transition-transform group-hover:scale-[1.02] duration-500"
                 />
               </button>
               <svg className="w-4 h-4 text-charcoal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

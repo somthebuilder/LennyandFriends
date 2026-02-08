@@ -12,7 +12,7 @@ export default function PanelTabs({ activeTab, onTabChange }: PanelTabsProps) {
     <div className="flex gap-8 border-b border-charcoal-200 mb-8">
       <button
         onClick={() => onTabChange('discussion')}
-        className={`pb-4 px-1 font-semibold text-base transition-colors duration-200 relative ${
+        className={`pb-4 px-1 font-semibold text-base transition-colors duration-400 relative ${
           activeTab === 'discussion'
             ? 'text-charcoal-900'
             : 'text-charcoal-500 hover:text-charcoal-700'
@@ -25,7 +25,7 @@ export default function PanelTabs({ activeTab, onTabChange }: PanelTabsProps) {
       </button>
       <button
         onClick={() => onTabChange('ask')}
-        className={`pb-4 px-1 font-semibold text-base transition-colors duration-200 relative ${
+        className={`pb-4 px-1 font-semibold text-base transition-colors duration-400 relative ${
           activeTab === 'ask'
             ? 'text-charcoal-900'
             : 'text-charcoal-500 hover:text-charcoal-700'

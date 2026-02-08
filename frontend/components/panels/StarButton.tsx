@@ -84,12 +84,12 @@ export default function StarButton({
       <button
         onClick={handleClick}
         disabled={isUpdating}
-        className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity duration-200 focus:outline-none group disabled:opacity-50"
+        className="flex items-center gap-3 cursor-pointer hover:opacity-85 transition-opacity duration-400 focus:outline-none group disabled:opacity-50"
         title={localIsMarked ? "Click to unmark as valuable" : "Click to mark as valuable"}
       >
         {localIsMarked ? (
           <svg 
-            className="w-8 h-8 text-orange-500 group-hover:scale-110 transition-transform duration-200" 
+            className="w-8 h-8 text-orange-500 group-hover:scale-105 transition-transform duration-500" 
             fill="currentColor" 
             viewBox="0 0 20 20"
           >
@@ -97,7 +97,7 @@ export default function StarButton({
           </svg>
         ) : (
           <svg 
-            className="w-8 h-8 text-orange-300 group-hover:scale-110 transition-transform duration-200" 
+            className="w-8 h-8 text-orange-300 group-hover:scale-105 transition-transform duration-500" 
             fill="none" 
             stroke="currentColor" 
             strokeWidth="1.5" 

@@ -95,15 +95,15 @@ class SupabaseStore:
             if not response.data or len(response.data) == 0:
                 break
             
-            for row in response.data:
-                extractions.append(ThemeExtraction(
-                    chunk_id=row["chunk_id"],
-                    guest_id=row["guest_id"],
-                    episode_id=row["episode_id"],
-                    semantic_descriptors=row["semantic_descriptors"],
-                    core_thesis=row["core_thesis"],
-                    confidence=float(row["confidence"])
-                ))
+        for row in response.data:
+            extractions.append(ThemeExtraction(
+                chunk_id=row["chunk_id"],
+                guest_id=row["guest_id"],
+                episode_id=row["episode_id"],
+                semantic_descriptors=row["semantic_descriptors"],
+                core_thesis=row["core_thesis"],
+                confidence=float(row["confidence"])
+            ))
             
             # If we got fewer than page_size, we've reached the end
             if len(response.data) < page_size:

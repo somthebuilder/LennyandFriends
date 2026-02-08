@@ -23,7 +23,7 @@ export default function DiscussionCard({ discussion, onAskExpert }: DiscussionCa
 
   return (
     <div
-      className={`editorial-card p-6 border border-charcoal-100 transition-all duration-300 ${
+      className={`editorial-card p-6 border border-charcoal-100 transition-all duration-500 ${
         isExpanded ? '' : 'hover:shadow-lg cursor-pointer'
       }`}
       onClick={!isExpanded ? () => setIsExpanded(true) : undefined}

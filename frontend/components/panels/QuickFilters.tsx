@@ -57,7 +57,7 @@ export default function QuickFilters({
             <button
               key={filter.value}
               onClick={() => onFilterChange(filter.value)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-400 ${
                 isActive
                   ? 'bg-orange-600 text-white'
                   : 'bg-white border border-charcoal-300 text-charcoal-700 hover:border-charcoal-400'
