@@ -1,0 +1,791 @@
+# Book recommendations (lightning round)
+
+Grouped by book title. If multiple guests recommended the same book, they are listed together.
+
+- 15 Commitments of Conscious Leadership
+  - Ken Norton — Executive Coach
+  - Kenneth Berger — Executive Coach
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- 4000 Weeks
+  - Georgiana Laudi — Co-founder and CEO at Forget The Funnel
+- 7 Powers
+  - Grant Lee — CEO and co-founder at Gamma
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- A Fine Balance
+  - Elizabeth Stone — Chief Technology Officer at Netflix
+- A Guide to Midwest Conversation
+  - Jackson Shuttleworth — Group PM, Retention Team at Duolingo
+- A Man's Search for Meaning
+  - Yuriy Timen — full-time advisor at various companies as a growth advisor
+- A Swim in a Pond in the Rain
+  - Dan Shipper — co-founder and CEO at Every
+- A Team of Rivals
+  - Tamar Yehoshua — President of Product and Technology at Glean
+- A Wrinkle in Time
+  - Camille Hearst — Head of Fan Monetization at Spotify
+- Adam Grant's Originals
+  - Vikrama Dhiman — heads all things product at Gojek
+- Adventures of Women in Tech Workbook
+  - Marily Nika — Product Lead focusing on Metaverse, avatars and identity at Meta
+- Alchemy
+  - Nir Eyal — Author, teacher, and consultant
+  - Arielle Jackson — marketer in residence at First Round capital
+- American Kingpin
+  - Jonathan Becker — Founder at Thrive Digital
+- Amp It Up
+  - Varun Parmar — Chief Product Officer at Miro
+- An Elegant Puzzle
+  - Alex Hardiman — Chief Product Officer at the New York Times
+- Ancillary
+  - Zoelle Egner — Head of Marketing and Growth at Block Party
+- Andrew Chen's
+  - Jason Feifer — editor in chief at Entrepreneur Magazine
+- Anna Akhmatova's You Will Hear Thunder
+  - Nikita Miller — Senior Vice President and Head of Product at The Knot Worldwide
+- Anything
+  - Nick Turley — Head of ChatGPT at OpenAI
+- Apple in China
+  - Hamel Husain & Shreya Shankar — Teachers of the definitive online course on AI evals at Maven
+- Are Here
+  - Lauren Ipsen — Executive Recruiter at General Catalyst, specializing in consumer and crypto investments at General Catalyst
+- Art of Profitability
+  - Janna Bastow — CEO and co-founder at ProdPad
+- Ask Jeeves
+  - Jessica Livingston — co-founder at Y Combinator
+- Atomic Habits
+  - Uri Levine — Serial entrepreneur, Startup board member, Startup advisor
+  - Laura Schaffer — VP of Growth at Amplitude
+- Atwood and The Alchemist
+  - Paige Costello — Head of Core Product at Asana
+- Bad Leadership
+  - Judd Antin — Consultant at Self-employed
+- Bamford
+  - Matthew Dicks — Elementary school teacher at Speak Up
+- Barnes
+  - Andy Raskin — Strategic Narrative Consultant
+- Becky
+  - Julie Zhuo — co-founder at Sundial, an AI-powered data analysis company
+- Big Magic
+  - Chip Conley — Founder at Modern Elder Academy (MEA)
+- Bird
+  - Eeke de Milliano — Head of Product at Retool
+- Body Burst
+  - Elena Verna — Head of Growth at Lovable
+- Brief
+  - Ryan J. Salva — VP of Product at GitHub
+- Build
+  - Marty Cagan — Founder, Author at Silicon Valley Product Group
+  - Noam Lovinsky — chief product officer at Grammarly
+  - Dmitry Zlokazov — global head of product at Revolut
+  - Scott Belsky — Chief Strategy Officer and EVP of Design and Emerging Products at Adobe
+- Business Adventures from John Brooks
+  - Farhan Thawar — Vice President and Head of Engineering at Shopify
+- Business Model Canvas
+  - Madhavan Ramanujam — Investing full-time at 49 Palms VC
+- by David Epstein
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- by Ed Catmull
+  - Mihika Kapoor — design-engineer-PM hybrid at Figma
+- by Michael Singer
+  - Jonathan Lowenhar — Co-founder at Enjoy The Work
+- by Patrick Lencioni
+  - Jonathan Lowenhar — Co-founder at Enjoy The Work
+- by Philipp Dettmer
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- by Shonda Rhimes
+  - Ami Vora — Chief Product Officer at Faire
+- Byron Sharp
+  - Anuj Rathi — Chief Product and Marketing Officer at Jupiter Money
+- Cable Cowboy
+  - Kevin Weil — Chief Product Officer at OpenAI
+- Calling Bullshit
+  - Ronny Kohavi — full-time advisor and instructor
+- Calvino
+  - Sam Schillace — Corporate Vice President and Deputy Chief Technology Officer at Microsoft
+- Chase
+  - Mike Maples Jr — Partner at Floodgate
+- Children
+  - Nilan Peiris — Chief Product Officer at Wise
+- Children of Time
+  - Maya Prohovnik — Head of Product for Podcasting at Spotify
+- Children of Time Trilogy
+  - Ayo Omojola — Chief Product Officer at Carbon Health
+- Christiansen
+  - Noah Weiss — Chief Product Officer at Slack
+- Circe
+  - Krithika Shankarraman — Executive in residence at Thrive Capital
+- Clayton Christensen
+  - Robby Stein — VP of Product at Google
+- Clayton Christensen's Innovator's Dilemma
+  - Shweta Shrivastava — Senior Director of Product Management at Waymo
+- Co-Intelligence
+  - Kevin Weil — Chief Product Officer at OpenAI
+- Codex Seraphinianus
+  - Dylan Field — CEO and co-founder at Figma
+- Collins
+  - Inbal Shani — Chief Product Officer at GitHub
+- Competing Against Luck
+  - Robby Stein — VP of Product at Google
+  - Ryan Singer — Role not found
+- Computing Taste
+  - Zoelle Egner — Head of Marketing and Growth at Block Party
+- Conscious Business
+  - Matt MacInnis — Chief Product Officer at Rippling
+- Constellations
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- Contagious
+  - Madhavan Ramanujam — Investing full-time at 49 Palms VC
+- Creativity Inc
+  - Chandra Janakiraman — Chief Product Officer, Executive Vice President, and Board Member at VRChat
+  - Mihika Kapoor — design-engineer-PM hybrid at Figma
+- Crime
+  - Nilan Peiris — Chief Product Officer at Wise
+- Crossing the Chasm
+  - Nikhyl Singhal — VP of Product at Meta, overseeing teams building messaging, groups, stories, and the main Facebook feed at Meta
+- Crossing The Chasm
+  - Shweta Shrivastava — Senior Director of Product Management at Waymo
+  - Nikhyl Singhal — VP of Product at Meta, overseeing teams building messaging, groups, stories, and the main Facebook feed at Meta
+- Dan Heath
+  - Shishir Mehrotra — co-founder and CEO at Coda
+  - Tamar Yehoshua — President of Product and Technology at Glean
+- Daniel Kahneman's Thinking
+  - Vikrama Dhiman — heads all things product at Gojek
+- Dare to Lead
+  - Claire Butler — Lead, Go-to-market and bottom-up growth motion, community events, social advocacy, and Figma for education teams at Figma
+- Dare to Lead Like a Girl
+  - Inbal Shani — Chief Product Officer at GitHub
+- Dark Squares
+  - Albert Cheng — Led growth and monetization at Chess.com
+- Darwin Economy
+  - Kristen Berman — CEO and co-founder at Irrational Labs
+- David Rock
+  - Wes Kao — Founder, Executive Communication and Influence Course
+- Decision Stack
+  - Petra Wille — Independent product leadership coach and author
+- Decisive
+  - Ethan Evans — Executive coach and course creator
+- Deep Work
+  - Timothy Davis — Head of Performance Marketing at Shopify
+  - Bangaly Kaba — Director of Product Management at YouTube
+- Demand-Side Sales 101
+  - Ryan Singer — Role not found
+- Design of Everyday Things
+  - Robby Stein — VP of Product at Google
+- Design Sprint
+  - Jiaona Zhang — SVP of Product at Webflow
+- Designing
+  - Rachel Lockett — executive coach
+- Designing Your Life
+  - Ada Chen Rekhi — executive coach and co-founder at Notejoy
+- Dethmer and Diana Chapman
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- Diana Chapman
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- Die with Zero
+  - Chris Hutchins — Independent Creator / Podcaster at All the Hacks
+- Dilemma
+  - Richard Rumelt — Author, Professor at UCLA Anderson School of Management (former)
+  - Sanchan Saxena — VP product for ecosystems at Coinbase
+  - Shweta Shrivastava — Senior Director of Product Management at Waymo
+  - Noah Weiss — Chief Product Officer at Slack
+- Don Norman
+  - Robby Stein — VP of Product at Google
+- Donna Meadows
+  - Matt MacInnis — Chief Product Officer at Rippling
+- East of Eden
+  - Hilary Gridley — Head of Core Product at Whoop
+- Elizabeth Gilbert
+  - Chip Conley — Founder at Modern Elder Academy (MEA)
+- End of Average
+  - Bob Moesta — co-founder and CEO at The Rewired Group
+- Epstein
+  - Bangaly Kaba — Director of Product Management at YouTube
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- Escaping the Build Trap
+  - Melissa Perri & Denise Tilles — Melissa Perri: CEO of Produx Labs, Author, Product Management Professor; Denise Tilles: Product Leader, Coach, Consultant at Produx Labs at Produx Labs
+- Essentialism
+  - Yuriy Timen — full-time advisor at various companies as a growth advisor
+- Expecting Better
+  - Laura Modi — Founder, CEO at Bobbie
+- Failing Forward
+  - Inbal Shani — Chief Product Officer at GitHub
+- Fast
+  - Casey Winters — Advisor, Board Member, Angel Investor
+  - Jason Droege — CEO at Scale AI
+  - Vikrama Dhiman — heads all things product at Gojek
+- Five Dysfunctions of a Team
+  - Jonathan Lowenhar — Co-founder at Enjoy The Work
+- Four Thousand Weeks
+  - Ramesh Johari — Professor at Stanford University
+- Frankl's
+  - Yuriy Timen — full-time advisor at various companies as a growth advisor
+- Fred Kofman
+  - Matt MacInnis — Chief Product Officer at Rippling
+- From
+  - Jag Duggal — Chief Product Officer at Nubank
+- from Marshall Brain
+  - Farhan Thawar — Vice President and Head of Engineering at Shopify
+- From Third to First World
+  - Chip Huyen — core developer at NVIDIA’s NeMo platform
+- From Third World to First
+  - Jag Duggal — Chief Product Officer at Nubank
+- Gates of Fire
+  - Lulu Cheng Meservey — Executive Vice President of Corporate Affairs and Chief Communications Officer at Activision Blizzard
+- Gene Kim
+  - John Cutler — Role not found
+- Getting Things Done
+  - Jackie Bavaro — Author and Product Strategy Expert
+- Goldratt
+  - Casey Winters — Advisor, Board Member, Angel Investor
+  - Pete Kazanjy — CEO and Founder at Atrium
+- Good
+  - Julie Zhuo — co-founder at Sundial, an AI-powered data analysis company
+  - Will Larson — CTO at Carta
+- Good Strategy Bad Strategy
+  - Benjamin Mann — tech lead for product engineering at Anthropic
+- Good Strategy/Bad Strategy
+  - Lane Shackleton — Chief Product Officer at Coda
+- Good to Great
+  - Bill Carr — Runs a consulting firm at Working Backwards, LLC
+  - Jason Droege — CEO at Scale AI
+- Great
+  - Laura Modi — Founder, CEO at Bobbie
+- Grove
+  - David Singleton — Chief Technology Officer at Stripe
+- Guide to Losing Control
+  - Jason Feifer — editor in chief at Entrepreneur Magazine
+- Guide to Participatory Decision-Making
+  - Heidi Helfand — Author, Workshop and Course Instructor, Consultant on Team Reorganization
+- Guide to Surviving with Grace
+  - Jeff Weinstein — product lead at Stripe
+- Hamel: Machine Learning
+  - Hamel Husain & Shreya Shankar — Teachers of the definitive online course on AI evals at Maven
+- Hard Facts
+  - Ronny Kohavi — full-time advisor and instructor
+- Harry Potter
+  - Mihika Kapoor — design-engineer-PM hybrid at Figma
+- Helgoland
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- High Growth Handbook
+  - Alex Hardiman — Chief Product Officer at the New York Times
+  - Tom Conrad — CEO at Zero Longevity Science
+- High Output Management
+  - David Singleton — Chief Technology Officer at Stripe
+  - Nabeel Qureshi — founder, writer, researcher, visiting scholar at Mercatus Center
+  - Patrick Campbell — Founder and CEO at ProfitWell
+  - Wes Kao — Founder, Executive Communication and Influence Course
+- His Emissary
+  - Dan Shipper — co-founder and CEO at Every
+- Hit Refresh
+  - Varun Parmar — Chief Product Officer at Miro
+- Home-made: Contemporary RussianFolk Artifacts
+  - Jason Fried — Co-Founder and CEO at 37signals
+- Hooked
+  - Georgiana Laudi — Co-founder and CEO at Forget The Funnel
+  - Sean Ellis — Influential thinker and operator in growth; Author of 'Hacking Growth'
+- Horowitz
+  - Dmitry Zlokazov — global head of product at Revolut
+- How Brands Grow
+  - Kevin Aluwi — co-founder and former CEO at Gojek
+- How Good You Want to Be
+  - Paul Adams — Chief Product Officer at Intercom
+- How They Tell Me the World Ends
+  - Ben Williams — VP of Product at Snyk
+- How to Be Free
+  - Ben Horowitz — co-founder at Andreessen Horowitz
+- How to Change Things When Change Is Hard
+  - Shishir Mehrotra — co-founder and CEO at Coda
+- How to Change Your Mind
+  - Emilie Gerber — founder and CEO at Six Eastern
+- How to Get Rich
+  - Andrew Wilkinson — co-founder and CEO at Tiny
+- How to Measure Anything
+  - Ben Williams — VP of Product at Snyk
+- How To Win Friends
+  - Katie Dill — Head of Design at Stripe
+  - Upasna Gautam — Product Manager at CNN Digital
+- Hyperion
+  - Tom Conrad — CEO at Zero Longevity Science
+- I also love the Culture series
+  - Jeremy Henrickson — SVP of Product at Rippling
+- Illusions
+  - Christopher Lochhead — 13-time #1 bestselling co-author, popular podcaster, co-creator, Godfather of Category Design, advisor at Category Pirates
+- Immune
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- Impro
+  - Nabeel Qureshi — founder, writer, researcher, visiting scholar at Mercatus Center
+- Influence
+  - Kristen Berman — CEO and co-founder at Irrational Labs
+  - Luc Levesque — Chief Growth Officer at Shopify
+- Influence People
+  - Katie Dill — Head of Design at Stripe
+  - Upasna Gautam — Product Manager at CNN Digital
+- Innovator's Dilemma
+  - Noah Weiss — Chief Product Officer at Slack
+- Innovators Dilemma
+  - Ken Norton — Executive Coach
+- Inside Paragraphs
+  - Jessica Hische — Lettering artist, New York Times bestselling author at Self-employed
+- Inspired
+  - Marily Nika — Product Lead focusing on Metaverse, avatars and identity at Meta
+  - Megan Cook — Head of Product, Jira at Atlassian
+- Instructions on Writing and Life
+  - Eeke de Milliano — Head of Product at Retool
+- Invisible Cities
+  - Sam Schillace — Corporate Vice President and Deputy Chief Technology Officer at Microsoft
+- It's
+  - Ethan Evans — Executive coach and course creator
+- It's How Good You Want to Be
+  - Paul Adams — Chief Product Officer at Intercom
+- It's Not How Good You Are
+  - Paul Adams — Chief Product Officer at Intercom
+- It's The New Product Development Game
+  - Upasna Gautam — Product Manager at CNN Digital
+- Jez Humble
+  - John Cutler — Role not found
+- Jim Dethmer
+  - J.M. Nickels — Senior Director of Product Management at Uber
+- Journey
+  - Donna Lichaw — executive coach, keynote speaker, best-selling author
+  - Nancy Duarte — CEO at Duarte Incorporated
+- Just Kids
+  - Jessica Hische — Lettering artist, New York Times bestselling author at Self-employed
+- Kafka on the Shore
+  - Barbra Gago — Founder and CEO at Pando
+- Kahneman
+  - Casey Winters — Advisor, Board Member, Angel Investor
+- Kindred
+  - Camille Hearst — Head of Fan Monetization at Spotify
+- L Collins
+  - Laura Schaffer — VP of Growth at Amplitude
+- Leadership
+  - Ethan Evans — Executive coach and course creator
+- Leadership and Self Deception
+  - Ethan Evans — Executive coach and course creator
+- Leadership and Self-Deception
+  - Nikhyl Singhal — VP of Product at Meta, overseeing teams building messaging, groups, stories, and the main Facebook feed at Meta
+- Leadership in Turbulent Times
+  - Noah Weiss — Chief Product Officer at Slack
+- Lee Kuan Yew
+  - Jag Duggal — Chief Product Officer at Nubank
+- Let My People Go Surfing
+  - Tim Holley — VP of Product at Etsy
+- Life
+  - Jessica Livingston — co-founder at Y Combinator
+  - Eeke de Milliano — Head of Product at Retool
+- Look Like a Thing
+  - Marily Nika — Product Lead focusing on Metaverse, avatars and identity at Meta
+- Love Shoe Dog
+  - Garrett Lord — co-founder and CEO at Handshake
+- Love You
+  - Marily Nika — Product Lead focusing on Metaverse, avatars and identity at Meta
+- M-A-N-N-A
+  - Farhan Thawar — Vice President and Head of Engineering at Shopify
+- Machine Learning
+  - Hamel Husain & Shreya Shankar — Teachers of the definitive online course on AI evals at Maven
+- Madeline Miller's Circe
+  - Krithika Shankarraman — Executive in residence at Thrive Capital
+- Make It So
+  - Ryan J. Salva — VP of Product at GitHub
+- Make Time
+  - Ben Williams — VP of Product at Snyk
+- Man's Search for Meaning
+  - Chip Conley — Founder at Modern Elder Academy (MEA)
+- Manna
+  - Farhan Thawar — Vice President and Head of Engineering at Shopify
+- Mark Randolph of Netflix
+  - Uri Levine — Serial entrepreneur, Startup board member, Startup advisor
+- Master in Margarita
+  - Dhanji R. Prasanna — Chief Technology Officer at Block (formerly Square)
+- Maxwell
+  - Inbal Shani — Chief Product Officer at GitHub
+- Metabolical
+  - Laura Modi — Founder, CEO at Bobbie
+- Meyer
+  - Raaz Herzberg — Chief Marketing Officer and VP of Product Strategy at Wiz
+- Mindfulness in Plain English
+  - Upasna Gautam — Product Manager at CNN Digital
+- Misbehaving
+  - Evan LaPointe — founder at CORE Sciences
+- Misbehaving: The Makings of Behavioral Economics
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- Mistakes Were Made
+  - Ronny Kohavi — full-time advisor and instructor
+- Mollick
+  - Kevin Weil — Chief Product Officer at OpenAI
+- Monetizing Innovation
+  - Naomi Ionita — Partner at Menlo Ventures
+  - Rahul Vohra — CEO and founder at Superhuman
+- Name of the Wind
+  - Kayvon Beykpour — Role not found
+- Never
+  - Evan LaPointe — founder at CORE Sciences
+- Never Split The Difference
+  - Sri Batchu — head of growth at Ramp
+- Never Split the Difference
+  - Jules Walter — Product Leader at YouTube
+- Newport
+  - Bangaly Kaba — Director of Product Management at YouTube
+- Nicole Forsgren
+  - John Cutler — Role not found
+- Nonviolent Communication
+  - Daniel Lereya — chief product and technology officer at Monday.com
+- Not How Good You Are
+  - Paul Adams — Chief Product Officer at Intercom
+- Nozick
+  - Nick Turley — Head of ChatGPT at OpenAI
+- Nuclear War: A Scenario
+  - Eoghan McCabe — founder and CEO at Intercom
+- Obviously Awesome
+  - Camille Ricketts — Role not found
+  - Georgiana Laudi — Co-founder and CEO at Forget The Funnel
+  - Krithika Shankarraman — Executive in residence at Thrive Capital
+- Octavia Butler's Kindred
+  - Camille Hearst — Head of Fan Monetization at Spotify
+- Odyssey
+  - Tanguy Crusson — Head of Jira Product Discovery at Atlassian
+- Ogilvy on Advertising
+  - Albert Cheng — Led growth and monetization at Chess.com
+- Okay
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- One Mindset
+  - Tomer Cohen — Chief Product Officer at LinkedIn
+- One Room Schoolhouse
+  - Logan Kilpatrick — head of developer relations at OpenAI
+- Origin of Wealth
+  - Alex Komoroske — Founder at a startup that aims to reimagine the web for the AI era
+- Originals
+  - Vikrama Dhiman — heads all things product at Gojek
+- Osterwalder
+  - Madhavan Ramanujam — Investing full-time at 49 Palms VC
+- Out of Sheer Rage
+  - Andy Raskin — Strategic Narrative Consultant
+- Outlive
+  - Nicole Forsgren — Role not found
+  - Tomer Cohen — Chief Product Officer at LinkedIn
+- Pachinko
+  - Hamel Husain & Shreya Shankar — Teachers of the definitive online course on AI evals at Maven
+  - Mihika Kapoor — design-engineer-PM hybrid at Figma
+- Peace
+  - Dan Shipper — co-founder and CEO at Every
+- Persuasion
+  - Ada Chen Rekhi — executive coach and co-founder at Notejoy
+- Playing to Win: How Strategy Really Works
+  - Gokul Rajaram — Executive team lead, Caviar product line at DoorDash
+- Positioning: The Battle for Your Mind
+  - Arielle Jackson — marketer in residence at First Round capital
+- Power: Who Has It and Why
+  - Deb Liu — CEO at Ancestry
+- Powerful
+  - Patrick Campbell — Founder and CEO at ProfitWell
+- Powers
+  - Grant Lee — CEO and co-founder at Gamma
+- Predictably Irrational
+  - Kristen Berman — CEO and co-founder at Irrational Labs
+- Present Yourself
+  - Petra Wille — Independent product leadership coach and author
+- Presenting
+  - Sean Ellis — Influential thinker and operator in growth; Author of 'Hacking Growth'
+- Principles
+  - Paul Adams — Chief Product Officer at Intercom
+- Profit from the Core
+  - Casey Winters — Advisor, Board Member, Angel Investor
+- Project Hail Mary
+  - Elena Verna — Head of Growth at Lovable
+- Purple Cow
+  - Emily Kramer — co-founder at MKT1
+  - Laura Modi — Founder, CEO at Bobbie
+- Quiet
+  - Deb Liu — CEO at Ancestry
+- Radical Candor
+  - Alisa Cohn — Executive coach
+  - Barbra Gago — Founder and CEO at Pando
+  - Claire Butler — Lead, Go-to-market and bottom-up growth motion, community events, social advocacy, and Figma for education teams at Figma
+  - Kenneth Berger — Executive Coach
+  - Noah Weiss — Chief Product Officer at Slack
+- Radical Focus
+  - Matt LeMay — Product Leader, Author, Consultant
+- Radical Respect
+  - Kim Scott — Author
+- Range
+  - Bangaly Kaba — Director of Product Management at YouTube
+- Range: Why Generalists Triumph in a Specialized World
+  - Benjamin Lauzier — Advising marketplace teams and founders, teaching a reforged course on marketplace growth, and most recently started a healthcare company called Nurra that connects you to a care advocate to help you navigate the healthcare system in the U.S. at Nurra
+- Recapture the Rapture
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- Resilience
+  - David Placek — founder at Lexicon Branding
+- Resonate
+  - J.M. Nickels — Senior Director of Product Management at Uber
+- Richard Bach
+  - Christopher Lochhead — 13-time #1 bestselling co-author, popular podcaster, co-creator, Godfather of Category Design, advisor at Category Pirates
+- Ride of a Lifetime
+  - Lauryn Isford — Role not found
+- Road Less Traveled
+  - Jason Droege — CEO at Scale AI
+- Rocket Men
+  - Lauryn Isford — Role not found
+- Room
+  - Alex Hardiman — Chief Product Officer at the New York Times
+- Sapiens
+  - Peter Deng — General Partner at Felicis
+- Scaling People
+  - Claire Hughes Johnson — Chief Operating Officer at Stripe
+  - Megan Cook — Head of Product, Jira at Atlassian
+- Scandinavian
+  - Nicole Forsgren — Role not found
+- Scientific Advertising
+  - Archie Abrams — VP of product and head of growth at Shopify
+- Scott
+  - Noah Weiss — Chief Product Officer at Slack
+- Scott Fitzgerald
+  - Scott Wu — co-founder and CEO at Cognition
+- Search for Meaning
+  - Chip Conley — Founder at Modern Elder Academy (MEA)
+  - Gina Gotthilf — Co-founder and COO at Latitud
+  - Yuriy Timen — full-time advisor at various companies as a growth advisor
+- Self Deception
+  - Ethan Evans — Executive coach and course creator
+- Setting the Table
+  - Raaz Herzberg — Chief Marketing Officer and VP of Product Strategy at Wiz
+- Shape Up
+  - Bob Moesta — co-founder and CEO at The Rewired Group
+- Shoe Dog
+  - Grant Lee — CEO and co-founder at Gamma
+- Shreya: Pachinko
+  - Hamel Husain & Shreya Shankar — Teachers of the definitive online course on AI evals at Maven
+- Siddhartha Mukherjee
+  - Hamilton Helmer — Author, Expert on business strategy
+- Simple Path to Wealth
+  - Laura Schaffer — VP of Growth at Amplitude
+- Slow
+  - Jason Droege — CEO at Scale AI
+  - Vikrama Dhiman — heads all things product at Gojek
+  - Casey Winters — Advisor, Board Member, Angel Investor
+- Small Data
+  - Eli Schwartz — SEO advisor, author
+  - Vikrama Dhiman — heads all things product at Gojek
+- Smart Brevity
+  - Luc Levesque — Chief Growth Officer at Shopify
+- Something Deeply Hidden
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- Spark
+  - Luc Levesque — Chief Growth Officer at Shopify
+- Start At The End
+  - Bangaly Kaba — Director of Product Management at YouTube
+- Start With Why
+  - Eli Schwartz — SEO advisor, author
+- Steinbeck and The Sun Also Rises
+  - Hilary Gridley — Head of Core Product at Whoop
+- Steve
+  - Bill Carr — Runs a consulting firm at Working Backwards, LLC
+- Steven Johnson
+  - Sam Schillace — Corporate Vice President and Deputy Chief Technology Officer at Microsoft
+- Stormlight Archive
+  - Ayo Omojola — Chief Product Officer at Carbon Health
+- Stumbling Upon Happiness
+  - Sahil Mansuri — CEO and founder at Bravado
+- Sutherland and The Experience Machine
+  - Nir Eyal — Author, teacher, and consultant
+- Switch
+  - Shishir Mehrotra — co-founder and CEO at Coda
+  - Yuhki Yamashita — Chief Product Officer at Figma
+- Switch: How to Change Things When Change Is Hard
+  - Tamar Yehoshua — President of Product and Technology at Glean
+- Tao Te Ching
+  - Carilu Dietrich — Advisor to CEOs and CMOs of hypergrowth B2B companies
+- Team
+  - Tim Holley — VP of Product at Etsy
+- The 100% Solution
+  - Gustaf Alstromer — Group Partner at Y Combinator
+- The 15 Commitments of Conscious Leaders
+  - Rachel Lockett — executive coach
+- The 15 Commitments of Conscious Leadership
+  - J.M. Nickels — Senior Director of Product Management at Uber
+- The Accidental Superpower
+  - Kevin Weil — Chief Product Officer at OpenAI
+- The Alignment Problem
+  - Benjamin Mann — tech lead for product engineering at Anthropic
+- The Almanack Of Naval Ravikant
+  - Ethan Evans — Executive coach and course creator
+- the Arbinger Institute
+  - Ethan Evans — Executive coach and course creator
+- The Art of Thinking Clearly
+  - Petra Wille — Independent product leadership coach and author
+- The Art of War
+  - Barbra Gago — Founder and CEO at Pando
+- The Beginning of Infinity
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+  - Tomer Cohen — Chief Product Officer at LinkedIn
+- The Beginning of Infinity and The Fabric of Reality
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- The Big Leap
+  - Tristan de Montebello — co-creator at Ultraspeaking
+- The Blind Assassin
+  - Paige Costello — Head of Core Product at Asana
+- The Brief History of Intelligence
+  - Aparna Chennapragada — Chief Product Officer of Experiences and Devices at Microsoft
+- the Cambridge Fundamentals of Neuroscience
+  - Evan LaPointe — founder at CORE Sciences
+- The Case Against Reality
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- The Challenger Customer
+  - April Dunford — World's foremost authority on product positioning
+- The Cold Start Problem
+  - Jason Feifer — editor in chief at Entrepreneur Magazine
+- The Courage to Be Disliked
+  - Kevin Yien — leads product at Stripe (for merchant experiences)
+- The Demon in the Machine
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- The Design Of Everyday Things
+  - Gina Gotthilf — Co-founder and COO at Latitud
+  - Nan Yu — Head of Product at Linear
+- The Design of Everyday Things
+  - Nan Yu — Head of Product at Linear
+- the Design Sprint
+  - Jiaona Zhang — SVP of Product at Webflow
+- The Effective Executive
+  - Matt MacInnis — Chief Product Officer at Rippling
+- The Elements of Typographic Style
+  - Bob Baxley — designer, executive and advisor at ThoughtSpot
+- The Enlightened Capitalists
+  - Eric Ries — Creator of the Lean Startup methodology and movement, advisor to founders and startups, founder and executive chairman at Long-Term Stock Exchange
+- The Experience Machine
+  - Nir Eyal — Author, teacher, and consultant
+- The Fabric of Reality
+  - Gustav Söderström — Co-President, Chief Product and Chief Technology Officer at Spotify
+- The Fearless Organization
+  - Christina Wodtke — Author, Speaker, Lecturer, Consultant at Stanford University
+- The Five Regrets of the Dying
+  - Mike Maples Jr — Partner at Floodgate
+- The Great Gatsby
+  - Scott Wu — co-founder and CEO at Cognition
+- The Halo Effect
+  - Oji Udezue — Chief Product Officer at Typeform
+- The Hard Thing About Hard Things
+  - Anneka Gupta — Chief Product Officer at Rubrik
+  - Dmitry Zlokazov — global head of product at Revolut
+- The Inner Game of Tennis
+  - Lane Shackleton — Chief Product Officer at Coda
+- The JOLT Effect
+  - April Dunford — World's foremost authority on product positioning
+- the Motorcycle Maintenance
+  - Bob Baxley — designer, executive and advisor at ThoughtSpot
+- The New Product Development Game
+  - Upasna Gautam — Product Manager at CNN Digital
+- the One Room Schoolhouse
+  - Logan Kilpatrick — head of developer relations at OpenAI
+- The other one that I kind of liked that I read recently is
+  - Mike Maples Jr — Partner at Floodgate
+- The Paper Menagerie
+  - Kevin Yien — leads product at Stripe (for merchant experiences)
+- The Perfectionist's Guide to Losing Control
+  - Jason Feifer — editor in chief at Entrepreneur Magazine
+- The Person and the Situation
+  - Evan LaPointe — founder at CORE Sciences
+- The Power Law
+  - Scott Wu — co-founder and CEO at Cognition
+- The Power of Now
+  - Lauren Ipsen — Executive Recruiter at General Catalyst, specializing in consumer and crypto investments at General Catalyst
+- The River of Doubt
+  - Sander Schulhoff — CEO at HackAPrompt
+- The Road to Reality
+  - Hamilton Helmer — Author, Expert on business strategy
+- The Rose Code
+  - Jessica Lachs — Vice President of Analytics and Data Science at DoorDash
+- The Selfish Gene
+  - Jason Droege — CEO at Scale AI
+- The Silk Roads
+  - Peter Deng — General Partner at Felicis
+- The Splendid and the Vile
+  - Yuriy Timen — full-time advisor at various companies as a growth advisor
+- The Story of the Stone
+  - Yuhki Yamashita — Chief Product Officer at Figma
+- The Sun Also Rises
+  - Hilary Gridley — Head of Core Product at Whoop
+- The Timeless Way of Building
+  - Sachin Monga — Head of Product at Substack
+- The User's Journey
+  - Donna Lichaw — executive coach, keynote speaker, best-selling author
+- The Wasp Factory
+  - Sam Schillace — Corporate Vice President and Deputy Chief Technology Officer at Microsoft
+- The Wisdom of Insecurity
+  - Matt LeMay — Product Leader, Author, Consultant
+- The Year of Yes
+  - Ami Vora — Chief Product Officer at Faire
+- Thinking
+  - Casey Winters — Advisor, Board Member, Angel Investor
+  - Jason Droege — CEO at Scale AI
+  - Vikrama Dhiman — heads all things product at Gojek
+- Thinking Fast
+  - Madhavan Ramanujam — Investing full-time at 49 Palms VC
+- Thinking Fast and Slow
+  - Tomer Cohen — Chief Product Officer at LinkedIn
+- Thinking in Bets
+  - Maggie Crowley — Vice president of Product at Toast
+  - Patrick Campbell — Founder and CEO at ProfitWell
+  - Stewart Butterfield — Role not found
+- Thinking in Systems
+  - Hari Srinivasan — VP of Product at LinkedIn Talent Solutions
+  - Matt MacInnis — Chief Product Officer at Rippling
+  - Nickey Skarstad — Director of Product Management at Duolingo
+- Thinking Slow
+  - Madhavan Ramanujam — Investing full-time at 49 Palms VC
+- Three-Body Problem
+  - Ayo Omojola — Chief Product Officer at Carbon Health
+  - Camille Hearst — Head of Fan Monetization at Spotify
+  - Howie Liu — co-founder and CEO at Airtable
+- Time in the Art of Living
+  - Bob Baxley — designer, executive and advisor at ThoughtSpot
+- Timeless Way of Building
+  - Karri Saarinen — co-founder and CEO at Linear
+- Tomorrow
+  - Hari Srinivasan — VP of Product at LinkedIn Talent Solutions
+- Traffic
+  - Melissa Perri & Denise Tilles — Melissa Perri: CEO of Produx Labs, Author, Product Management Professor; Denise Tilles: Product Leader, Coach, Consultant at Produx Labs at Produx Labs
+- Understanding Comics
+  - Dylan Field — CEO and co-founder at Figma
+  - Shishir Mehrotra — co-founder and CEO at Coda
+- Untethered Soul
+  - Jonathan Lowenhar — Co-founder at Enjoy The Work
+- Vagabonding
+  - Chris Hutchins — Independent Creator / Podcaster at All the Hacks
+- Viktor Frankl
+  - Chip Conley — Founder at Modern Elder Academy (MEA)
+- Viktor Frankl's Man's Search For Meaning
+  - Gina Gotthilf — Co-founder and COO at Latitud
+- Well
+  - Jeremy Henrickson — SVP of Product at Rippling
+- What Got You Here Won't Get You There
+  - Camille Fournier — Technology executive, author of The Manager's Path, and author of the upcoming Platform Engineering, A Guide for Technical Product and People Leaders
+- What They Don't Teach You At The Harvard Business School
+  - Christopher Lochhead — 13-time #1 bestselling co-author, popular podcaster, co-creator, Godfather of Category Design, advisor at Category Pirates
+- What You Do Is Who You Are
+  - Kevin Aluwi — co-founder and former CEO at Gojek
+- What's
+  - Marty Cagan — Founder, Author at Silicon Valley Product Group
+- When Breath Becomes Air
+  - Aishwarya Naresh Reganti and Kiriti Badam — Works on Kodex, AI researcher, Teachers of number one rated AI course on Maven at OpenAI, Maven
+  - Geoff Charles — VP of Product at Ramp
+- When Things Fall Apart
+  - Camille Fournier — Technology executive, author of The Manager's Path, and author of the upcoming Platform Engineering, A Guide for Technical Product and People Leaders
+- Where Good Ideas Come From
+  - Sam Schillace — Corporate Vice President and Deputy Chief Technology Officer at Microsoft
+- White
+  - Jonny Miller — Founder, course instructor, and one-on-one coach for tech professionals at Nervous System Mastery
+- Why Nations Fail
+  - Tomer Cohen — Chief Product Officer at LinkedIn
+- Why We Sleep
+  - Logan Kilpatrick — head of developer relations at OpenAI
+- Will Hear Thunder
+  - Nikita Miller — Senior Vice President and Head of Product at The Knot Worldwide
+- Winston
+  - David Placek — founder at Lexicon Branding
+- Working Backwards
+  - Anuj Rathi — Chief Product and Marketing Officer at Jupiter Money
+- Wright
+  - Katie Dill — Head of Design at Stripe
+- Your Brain At Work
+  - Wes Kao — Founder, Executive Communication and Influence Course
+- Zero to One
+  - Garrett Lord — co-founder and CEO at Handshake

@@ -4,9 +4,9 @@
 
 ## 1. Acceptance of Terms
 
-By accessing or using Panel Chat (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the Service.
+By accessing or using Espresso (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the Service.
 
-**IMPORTANT DISCLAIMER**: Panel Chat is an **experimental, educational, and non-commercial project**. It is:
+**IMPORTANT DISCLAIMER**: Espresso is an **experimental, educational, and non-commercial project**. It is:
 - Provided FREE of charge with no commercial intent
 - Created for educational and research purposes only
 - NOT a commercial product or service
@@ -17,7 +17,7 @@ By accessing or using Panel Chat (the "Service"), you agree to be bound by these
 
 ## 2. Description of Service
 
-Panel Chat is an AI-powered service that allows users to:
+Espresso is an AI-powered service that allows users to:
 - Ask questions and receive AI-generated responses based on podcast transcript data
 - Interact with virtual "guest panels" representing podcast guests
 - Engage in group chat and 1:1 conversations with AI-generated personas
@@ -91,7 +91,7 @@ We reserve the right to suspend or terminate your account if you violate these T
 
 ### Our Rights
 
-The Service, including all content, features, and functionality, is owned by Panel Chat and is protected by copyright, trademark, and other intellectual property laws.
+The Service, including all content, features, and functionality, is owned by Espresso and is protected by copyright, trademark, and other intellectual property laws.
 
 ### Source Material
 
@@ -169,7 +169,7 @@ TO THE MAXIMUM EXTENT PERMITTED BY LAW, PANEL CHAT, ITS CREATOR, AND ANY CONTRIB
 
 ### Indemnification
 
-**YOU AGREE TO INDEMNIFY AND HOLD HARMLESS** Panel Chat, its creator, and any contributors from ANY and ALL claims, damages, expenses, or liabilities arising from:
+**YOU AGREE TO INDEMNIFY AND HOLD HARMLESS** Espresso, its creator, and any contributors from ANY and ALL claims, damages, expenses, or liabilities arising from:
 - Your violation of these Terms
 - Your use of the Service
 - Your violation of any third-party rights
@@ -264,7 +264,7 @@ You must bring any claim within one (1) year of the cause of action arising.
 
 ### Entire Agreement
 
-These Terms, together with our Privacy Policy, constitute the entire agreement between you and Panel Chat.
+These Terms, together with our Privacy Policy, constitute the entire agreement between you and Espresso.
 
 ### Severability
 
@@ -327,5 +327,5 @@ BY USING THE SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE 
 
 **Questions?** Contact somshivanshu@gmail.com
 
-**Final Disclaimer**: Panel Chat is a FREE, experimental, educational project. All podcast content belongs to its original creators. We claim no ownership or rights to any content. Not affiliated with any podcast or podcast creator. Use at your own risk.
+**Final Disclaimer**: Espresso is a FREE, experimental, educational project. All podcast content belongs to its original creators. We claim no ownership or rights to any content. Not affiliated with any podcast or podcast creator. Use at your own risk.
 

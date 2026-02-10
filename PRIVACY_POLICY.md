@@ -4,11 +4,11 @@
 
 ## Introduction
 
-Welcome to Panel Chat ("we," "our," or "us"). 
+Welcome to Espresso ("we," "our," or "us"). 
 
-**Important Notice**: Panel Chat is an **experimental, educational, and non-commercial project** created for research and learning purposes. It is provided free of charge and is not a commercial service or product. This service processes publicly available podcast transcript data to generate AI-powered conversational experiences.
+**Important Notice**: Espresso is an **experimental, educational, and non-commercial project** created for research and learning purposes. It is provided free of charge and is not a commercial service or product. This service processes publicly available podcast transcript data to generate AI-powered conversational experiences.
 
-We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Panel Chat service (the "Service").
+We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Espresso service (the "Service").
 
 ## Information We Collect
 

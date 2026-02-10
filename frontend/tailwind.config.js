@@ -9,15 +9,18 @@ module.exports = {
     extend: {
       fontFamily: {
         'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        'display': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        'serif': ['Source Serif 4', 'Georgia', 'serif'],
+        'display': ['Source Serif 4', 'Georgia', 'serif'],
+        'cafe': ['Playfair Display', 'Georgia', 'serif'],
       },
       colors: {
-        // Editorial magazine theme
+        // Espresso Editorial Palette (Neutral & Quiet)
+        // Primary background & text
         cream: {
-          50: '#FDFCFB', // Softer cream
-          100: '#FCFBFA', // Main background
-          200: '#FAF9F7',
-          300: '#F7F6F4',
+          50: '#FDFCFB', // Base background
+          100: '#FAF9F7',
+          200: '#F5F4F1',
+          300: '#EBE9E4',
         },
         charcoal: {
           50: '#F9FAFB',
@@ -25,140 +28,123 @@ module.exports = {
           200: '#E5E7EB',
           300: '#D1D5DB',
           400: '#9CA3AF',
-          500: '#6B7280',
+          500: '#6B7280', // Muted text
           600: '#4B5563',
           700: '#374151',
-          800: '#1F2937', // Deeper charcoal text
-          900: '#111827',
+          800: '#1F2937', // Body text
+          900: '#111827', // Headings
         },
-        orange: {
+        // Lenny's Podcast Accent (Muted Orange)
+        accent: {
           50: '#FFF7ED',
           100: '#FFEDD5',
           200: '#FED7AA',
           300: '#FDBA74',
           400: '#FB923C',
           500: '#F97316',
-          600: '#EA580C', // Muted warm orange
+          600: '#EA580C', // Primary CTA / Links
           700: '#C2410C',
           800: '#9A3412',
           900: '#7C2D12',
         },
-        // Rick and Morty 8-bit theme
-        rick: {
-          50: '#e0f7ff',
-          100: '#b3e5ff',
-          200: '#80d4ff',
-          300: '#4dc2ff',
-          400: '#26b5ff',
-          500: '#00a8ff', // Rick's blue
-          600: '#0099e6',
-          700: '#0088cc',
-          800: '#0077b3',
-          900: '#005999',
+        // 20VC Podcast Accent (Muted Blue)
+        'podcast-blue': {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
         },
-        portal: {
-          50: '#f3e5f5',
-          100: '#e1bee7',
-          200: '#ce93d8',
-          300: '#ba68c8',
-          400: '#ab47bc',
-          500: '#9d4edd', // Portal purple
-          600: '#8e24aa',
-          700: '#7b1fa2',
-          800: '#6a1b9a',
-          900: '#4a148c',
+        // All-In Podcast Accent (Muted Emerald)
+        'podcast-emerald': {
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
         },
-        morty: {
-          50: '#fff9e6',
-          100: '#fff0b3',
-          200: '#ffe680',
-          300: '#ffdd4d',
-          400: '#ffd700', // Morty's yellow
-          500: '#ffc107',
-          600: '#ffb300',
-          700: '#ffa000',
-          800: '#ff8f00',
-          900: '#ff6f00',
+        // Espresso Brown (brand color for coming-soon / neutral accent)
+        espresso: {
+          50: '#FAF5F0',
+          100: '#F3EAE0',
+          200: '#E6D5C1',
+          300: '#D4B896',
+          400: '#C19A6B',
+          500: '#A0764A',
+          600: '#7B5B39', // Primary espresso brown
+          700: '#5C4329',
+          800: '#3D2D1C',
+          900: '#2A1F14',
         },
-        toxic: {
-          50: '#e8f5e9',
-          100: '#c8e6c9',
-          200: '#a5d6a7',
-          300: '#81c784',
-          400: '#66bb6a',
-          500: '#00ff00', // Toxic green (portal green)
-          600: '#43a047',
-          700: '#388e3c',
-          800: '#2e7d32',
-          900: '#1b5e20',
+        // Semantic utility colors (Muted)
+        success: {
+          DEFAULT: '#166534',
+          bg: '#F0FDF4',
         },
-        space: {
-          50: '#e3f2fd',
-          100: '#bbdefb',
-          200: '#90caf9',
-          300: '#64b5f6',
-          400: '#42a5f5',
-          500: '#1e88e5', // Space blue
-          600: '#1976d2',
-          700: '#1565c0',
-          800: '#0d47a1',
-          900: '#0a1929',
+        warning: {
+          DEFAULT: '#92400E',
+          bg: '#FEFCE8',
         },
-        // Backward compatibility
-        teal: {
-          500: '#00ff00',
-          400: '#66bb6a',
-          300: '#81c784',
-          200: '#a5d6a7',
-        },
-        peach: {
-          500: '#ffd700',
-          400: '#ffdd4d',
-          300: '#ffe680',
-        },
-        navy: {
-          900: '#0a1929',
-          800: '#0d47a1',
-          700: '#1565c0',
-          500: '#1e88e5',
-          800: '#0a1929',
-        },
-        purple: {
-          500: '#9d4edd',
-          400: '#ab47bc',
-          300: '#ba68c8',
-        },
-        fire: {
-          500: '#00ff00',
-          400: '#66bb6a',
-          300: '#81c784',
-        },
-        flame: {
-          500: '#ffd700',
-          400: '#ffdd4d',
-          300: '#ffe680',
+        error: {
+          DEFAULT: '#991B1B',
+          bg: '#FEF2F2',
         },
       },
       animation: {
-        'fade-in-up': 'fadeInUp 0.6s ease-out',
-        'scale-in': 'scaleIn 0.3s ease-out',
-        'gradient-x': 'gradient-x 3s ease infinite',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'steam-1': 'steamRise 3s ease-out infinite',
+        'steam-2': 'steamRise 3.5s ease-out 0.8s infinite',
+        'steam-3': 'steamRise 2.8s ease-out 1.6s infinite',
+        'hero-enter': 'heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'hero-enter-delay': 'heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards',
+        'hero-enter-delay-2': 'heroEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards',
+        'rule-expand': 'ruleExpand 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards',
+        'section-enter': 'sectionEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'section-enter-d1': 'sectionEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards',
+        'section-enter-d2': 'sectionEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards',
       },
       keyframes: {
-        fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        scaleIn: {
-          '0%': { opacity: '0', transform: 'scale(0.95)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
+        steamRise: {
+          '0%': { opacity: '0', transform: 'translateY(0) scaleX(1)' },
+          '15%': { opacity: '0.6' },
+          '50%': { opacity: '0.3', transform: 'translateY(-20px) scaleX(1.2)' },
+          '100%': { opacity: '0', transform: 'translateY(-40px) scaleX(0.8)' },
         },
-        'gradient-x': {
-          '0%, 100%': { 'background-position': '0% 50%' },
-          '50%': { 'background-position': '100% 50%' },
+        heroEnter: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        ruleExpand: {
+          '0%': { width: '0%', opacity: '0' },
+          '100%': { width: '100%', opacity: '1' },
+        },
+        sectionEnter: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

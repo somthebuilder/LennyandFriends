@@ -1,5 +1,5 @@
 {
-  "name": "lenny-group-chat",
+  "name": "espresso",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@rive-app/react-canvas": "^4.26.2",
     "@supabase/supabase-js": "^2.95.1",
     "axios": "^1.7.0",

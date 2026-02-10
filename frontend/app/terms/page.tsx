@@ -8,24 +8,23 @@ export default function TermsOfServicePage() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-cream-50 via-white to-orange-50/20">
+    <div className="min-h-screen w-full bg-cream-50">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-charcoal-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 bg-cream-50/80 backdrop-blur-lg border-b border-charcoal-200/50">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => router.push('/')}
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-2 group"
             >
-              <img 
-                src="/panelchat-logo.svg" 
-                alt="Panel Chat"
-                className="h-8 w-auto transition-transform group-hover:scale-[1.02] duration-500"
-              />
+              <img src="/espressologo.png" alt="" className="w-6 h-6 object-contain" />
+              <span className="text-lg font-serif font-semibold text-charcoal-900 group-hover:text-charcoal-700 transition-colors">
+                espresso
+              </span>
             </button>
             <button
               onClick={() => router.back()}
-              className="text-sm font-medium text-charcoal-700 hover:text-orange-600 transition-colors"
+              className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900 transition-colors"
             >
               ← Back
             </button>
@@ -40,14 +39,14 @@ export default function TermsOfServicePage() {
             Terms of Service
           </h1>
           <p className="text-sm text-charcoal-500 mb-8">
-            Last Updated: February 7, 2026
+            Last Updated: February 9, 2026
           </p>
 
           {/* Experimental Notice */}
           <div className="mb-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
-            <p className="text-sm font-semibold text-charcoal-900 mb-2">🚨 IMPORTANT LEGAL NOTICE</p>
+            <p className="text-sm font-semibold text-charcoal-900 mb-2">🚨 IMPORTANT NOTICE</p>
             <p className="text-sm text-charcoal-700 leading-relaxed mb-2">
-              Panel Chat is a <strong>FREE, experimental, educational, non-commercial project</strong> by an individual developer.
+              Espresso is a <strong>FREE, experimental, educational, non-commercial project</strong> by an individual developer.
             </p>
             <p className="text-sm text-charcoal-700 leading-relaxed">
               <strong>ALL podcast content belongs to its original creators.</strong> We claim NO ownership or rights. 
@@ -55,27 +54,27 @@ export default function TermsOfServicePage() {
             </p>
           </div>
 
-          <div className="prose prose-charcoal max-w-none">
+          <div className="prose max-w-none">
             {/* Acceptance */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">1. Acceptance of Terms</h2>
               <p className="text-charcoal-700 leading-relaxed">
-                By accessing or using Panel Chat (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the Service.
+                By accessing or using Espresso (the &quot;Service&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, do not use the Service.
               </p>
             </section>
 
             {/* Description */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">2. Description of Service</h2>
-              <p className="text-charcoal-700 mb-3">Panel Chat is an AI-powered service that allows users to:</p>
+              <p className="text-charcoal-700 mb-3">Espresso is an AI-powered service that allows users to:</p>
               <ul className="list-disc pl-6 space-y-2 text-charcoal-700 mb-4">
-                <li>Ask questions and receive AI-generated responses based on podcast transcript data</li>
-                <li>Interact with virtual "guest panels" representing podcast guests</li>
-                <li>Engage in group chat and 1:1 conversations with AI-generated personas</li>
-                <li>Access curated panels organized by topic</li>
+                <li>Explore synthesized concepts and knowledge bases from podcast transcripts</li>
+                <li>Ask questions and receive AI-generated responses grounded in transcript evidence</li>
+                <li>Browse curated insights organized by podcast, topic, and guest</li>
+                <li>Request new knowledge bases for podcasts and thought leaders</li>
               </ul>
 
-              <div className="bg-orange-50 border-l-4 border-orange-500 p-4">
+              <div className="bg-cream-100 border-l-4 border-charcoal-400 p-4">
                 <p className="font-semibold text-charcoal-900 mb-2">Important Disclaimers:</p>
                 <ul className="list-disc pl-6 space-y-2 text-charcoal-700">
                   <li><strong>AI-Generated Content</strong>: All responses are generated by AI models and may contain inaccuracies</li>
@@ -104,7 +103,6 @@ export default function TermsOfServicePage() {
                 <li>A valid email address</li>
                 <li>A secure password</li>
                 <li>Your name</li>
-                <li>Optionally: company name and role</li>
               </ul>
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">Account Security</h3>
@@ -147,7 +145,7 @@ export default function TermsOfServicePage() {
               
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">Our Rights</h3>
               <p className="text-charcoal-700 mb-4">
-                The Service, including all content and functionality, is owned by Panel Chat and is protected by copyright, trademark, and other intellectual property laws.
+                The Service, including all content and functionality, is owned by Espresso and is protected by copyright, trademark, and other intellectual property laws.
               </p>
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">Source Material</h3>
@@ -161,7 +159,7 @@ export default function TermsOfServicePage() {
               <p className="text-charcoal-700 mb-3">You may use AI-generated responses for personal, non-commercial purposes. If sharing publicly, you should:</p>
               <ul className="list-disc pl-6 space-y-2 text-charcoal-700 mb-4">
                 <li>Disclose that it was AI-generated</li>
-                <li>Attribute the source material (e.g., "Based on Lenny's Podcast transcripts")</li>
+                <li>Attribute the source material (e.g., &quot;Based on Lenny&apos;s Podcast transcripts via Espresso&quot;)</li>
                 <li>Verify accuracy before relying on it</li>
               </ul>
             </section>
@@ -183,7 +181,7 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">8. Disclaimers and Limitations</h2>
               
-              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
+              <div className="bg-cream-100 border-l-4 border-charcoal-400 p-4 mb-4">
                 <h3 className="text-lg font-semibold text-charcoal-900 mb-2">No Warranty</h3>
                 <p className="text-charcoal-700 mb-3">
                   THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY KIND, INCLUDING:
@@ -198,7 +196,7 @@ export default function TermsOfServicePage() {
               <div className="bg-red-50 border-l-4 border-red-500 p-4">
                 <h3 className="text-lg font-semibold text-charcoal-900 mb-2">Limitation of Liability</h3>
                 <p className="text-charcoal-700 mb-3">
-                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, PANEL CHAT SHALL NOT BE LIABLE FOR:
+                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, ESPRESSO SHALL NOT BE LIABLE FOR:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-charcoal-700">
                   <li>Any indirect, incidental, special, or consequential damages</li>
@@ -239,7 +237,7 @@ export default function TermsOfServicePage() {
                 We may suspend or terminate your access if you violate these Terms or if your use poses a security risk.
               </p>
               <p className="text-charcoal-700">
-                You may stop using the Service and delete your account at any time by contacting <a href="mailto:somshivanshu@gmail.com" className="text-orange-600 hover:underline">somshivanshu@gmail.com</a>
+                You may stop using the Service and delete your account at any time by contacting <a href="mailto:somshivanshu@gmail.com" className="text-charcoal-800 underline underline-offset-2 hover:text-charcoal-600 transition-colors">somshivanshu@gmail.com</a>
               </p>
             </section>
 
@@ -247,7 +245,7 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">11. Contact Information</h2>
               <p className="text-charcoal-700">
-                If you have questions about these Terms, contact us at: <a href="mailto:somshivanshu@gmail.com" className="text-orange-600 hover:underline">somshivanshu@gmail.com</a>
+                If you have questions about these Terms, contact us at: <a href="mailto:somshivanshu@gmail.com" className="text-charcoal-800 underline underline-offset-2 hover:text-charcoal-600 transition-colors">somshivanshu@gmail.com</a>
               </p>
             </section>
 
@@ -259,7 +257,7 @@ export default function TermsOfServicePage() {
                 <div>
                   <p className="font-semibold mb-2">What you can do:</p>
                   <ul className="list-disc pl-6 space-y-1">
-                    <li>Ask questions to AI-generated panels</li>
+                    <li>Explore knowledge bases and ask questions</li>
                     <li>Use responses for personal learning</li>
                     <li>Create an account with email/name</li>
                   </ul>
@@ -296,7 +294,7 @@ export default function TermsOfServicePage() {
               </div>
             </section>
 
-            <div className="mt-8 p-4 bg-orange-100 border border-orange-300 rounded-lg">
+            <div className="mt-8 p-4 bg-charcoal-50 border border-charcoal-200 rounded-lg">
               <p className="text-charcoal-900 font-semibold">
                 BY USING THE SERVICE, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THESE TERMS OF SERVICE.
               </p>
@@ -309,4 +307,3 @@ export default function TermsOfServicePage() {
     </div>
   )
 }
-

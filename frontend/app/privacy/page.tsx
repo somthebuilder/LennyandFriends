@@ -8,24 +8,23 @@ export default function PrivacyPolicyPage() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-cream-50 via-white to-orange-50/20">
+    <div className="min-h-screen w-full bg-cream-50">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-charcoal-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 bg-cream-50/80 backdrop-blur-lg border-b border-charcoal-200/50">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => router.push('/')}
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-2 group"
             >
-              <img 
-                src="/panelchat-logo.svg" 
-                alt="Panel Chat"
-                className="h-8 w-auto transition-transform group-hover:scale-[1.02] duration-500"
-              />
+              <img src="/espressologo.png" alt="" className="w-6 h-6 object-contain" />
+              <span className="text-lg font-serif font-semibold text-charcoal-900 group-hover:text-charcoal-700 transition-colors">
+                espresso
+              </span>
             </button>
             <button
               onClick={() => router.back()}
-              className="text-sm font-medium text-charcoal-700 hover:text-orange-600 transition-colors"
+              className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900 transition-colors"
             >
               ← Back
             </button>
@@ -40,24 +39,24 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="text-sm text-charcoal-500 mb-8">
-            Last Updated: February 7, 2026
+            Last Updated: February 9, 2026
           </p>
 
           {/* Experimental Notice */}
-          <div className="mb-8 p-4 bg-orange-50 border-l-4 border-orange-500 rounded-r-lg">
+          <div className="mb-8 p-4 bg-cream-100 border-l-4 border-charcoal-400 rounded-r-lg">
             <p className="text-sm font-semibold text-charcoal-900 mb-2">⚠️ Experimental Project Notice</p>
             <p className="text-sm text-charcoal-700 leading-relaxed">
-              Panel Chat is a <strong>free, experimental, educational, and non-commercial project</strong> created for research and learning purposes. 
+              Espresso is a <strong>free, experimental, educational, and non-commercial project</strong> created for research and learning purposes. 
               All podcast content belongs to its original creators. Not affiliated with any podcast or creator.
             </p>
           </div>
 
-          <div className="prose prose-charcoal max-w-none">
+          <div className="prose max-w-none">
             {/* Introduction */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">Introduction</h2>
               <p className="text-charcoal-700 leading-relaxed mb-4">
-                Welcome to Panel Chat ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Panel Chat service (the "Service").
+                Welcome to Espresso (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service (the &quot;Service&quot;).
               </p>
             </section>
 
@@ -71,17 +70,14 @@ export default function PrivacyPolicyPage() {
                 <li><strong>Name</strong>: Your full name for personalization</li>
                 <li><strong>Email Address</strong>: Used for account authentication and communication</li>
                 <li><strong>Password</strong>: Securely hashed and encrypted for account security</li>
-                <li><strong>Company</strong> (Optional): Your company or organization name</li>
-                <li><strong>Role</strong> (Optional): Your professional role or title</li>
               </ul>
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">2. Usage Data</h3>
               <p className="text-charcoal-700 mb-3">When you interact with our Service, we automatically collect:</p>
               <ul className="list-disc pl-6 space-y-2 text-charcoal-700 mb-4">
-                <li><strong>Queries and Conversations</strong>: Questions you ask the AI panel and responses generated</li>
-                <li><strong>User Context</strong>: Information you provide about your interests, goals, and professional context</li>
+                <li><strong>Queries and Conversations</strong>: Questions you ask and responses generated</li>
                 <li><strong>Authentication Data</strong>: Session tokens managed through Supabase Auth</li>
-                <li><strong>Interaction Data</strong>: Which guest responses you click on, panels you view, and features you use</li>
+                <li><strong>Interaction Data</strong>: Which concepts you view, knowledge bases you access, and features you use</li>
               </ul>
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">3. Technical Data</h3>
@@ -100,8 +96,8 @@ export default function PrivacyPolicyPage() {
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">1. Provide the Service</h3>
               <ul className="list-disc pl-6 space-y-2 text-charcoal-700 mb-4">
                 <li>Authenticate your account</li>
-                <li>Generate personalized AI responses based on your context</li>
-                <li>Enable group chat and split chat features</li>
+                <li>Generate AI-powered responses grounded in transcript evidence</li>
+                <li>Enable knowledge base exploration and chat features</li>
               </ul>
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">2. Improve the Service</h3>
@@ -166,14 +162,14 @@ export default function PrivacyPolicyPage() {
 
               <h3 className="text-xl font-semibold text-charcoal-800 mb-3">Deletion</h3>
               <p className="text-charcoal-700 mb-4">
-                You can request deletion of your account and associated data by contacting us at <a href="mailto:somshivanshu@gmail.com" className="text-orange-600 hover:underline">somshivanshu@gmail.com</a>
+                You can request deletion of your account and associated data by contacting us at <a href="mailto:somshivanshu@gmail.com" className="text-charcoal-800 underline underline-offset-2 hover:text-charcoal-600 transition-colors">somshivanshu@gmail.com</a>
               </p>
             </section>
 
             {/* AI Content */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-charcoal-900 mb-4">AI-Generated Content</h2>
-              <div className="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4">
+              <div className="bg-cream-100 border-l-4 border-charcoal-400 p-4 mb-4">
                 <p className="text-charcoal-700 mb-2"><strong>Important:</strong></p>
                 <ul className="list-disc pl-6 space-y-2 text-charcoal-700">
                   <li>Your queries are sent to AI model providers (Gemini, OpenAI) to generate responses</li>
@@ -191,7 +187,7 @@ export default function PrivacyPolicyPage() {
                 If you have questions or concerns about this Privacy Policy, please contact us at:
               </p>
               <p className="text-charcoal-700">
-                <strong>Email:</strong> <a href="mailto:somshivanshu@gmail.com" className="text-orange-600 hover:underline">somshivanshu@gmail.com</a>
+                <strong>Email:</strong> <a href="mailto:somshivanshu@gmail.com" className="text-charcoal-800 underline underline-offset-2 hover:text-charcoal-600 transition-colors">somshivanshu@gmail.com</a>
               </p>
             </section>
 
@@ -204,7 +200,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc pl-6 space-y-2 text-charcoal-700">
                 <li>Right to access your personal data</li>
                 <li>Right to rectification of inaccurate data</li>
-                <li>Right to erasure ("right to be forgotten")</li>
+                <li>Right to erasure (&quot;right to be forgotten&quot;)</li>
                 <li>Right to restrict processing</li>
                 <li>Right to data portability</li>
                 <li>Right to object to processing</li>
@@ -220,7 +216,7 @@ export default function PrivacyPolicyPage() {
                 <div>
                   <p className="font-semibold mb-2">What we collect:</p>
                   <ul className="list-disc pl-6 space-y-1">
-                    <li>Name, email, company, role (you provide)</li>
+                    <li>Name, email (you provide)</li>
                     <li>Your questions and conversations with AI</li>
                     <li>Basic usage data</li>
                   </ul>
@@ -229,7 +225,7 @@ export default function PrivacyPolicyPage() {
                 <div>
                   <p className="font-semibold mb-2">What we do with it:</p>
                   <ul className="list-disc pl-6 space-y-1">
-                    <li>Provide personalized AI responses</li>
+                    <li>Provide AI-powered knowledge exploration</li>
                     <li>Improve the service</li>
                     <li>Keep your account secure</li>
                   </ul>
@@ -263,4 +259,3 @@ export default function PrivacyPolicyPage() {
     </div>
   )
 }
-

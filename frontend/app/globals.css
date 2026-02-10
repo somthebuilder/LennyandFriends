@@ -1,243 +1,192 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Blinking cursor animation - subtle and calming */
-@keyframes blink {
-  0%, 60% {
-    opacity: 1;
-  }
-  61%, 100% {
-    opacity: 0.3;
-  }
-}
-
-.animate-blink {
-  animation: blink 1.5s ease-in-out infinite;
-}
-
-/* Gradient animation for text - subtle and calming */
-@keyframes gradient-x {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-gradient-x {
-  background-size: 200% auto;
-  animation: gradient-x 6s ease-in-out infinite;
-}
-
-/* Scale in animation for modals - subtle and calming */
-@keyframes scale-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-scale-in {
-  animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Fade in animation - subtle and calming */
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 :root {
-  --foreground-rgb: 20, 20, 20; /* Deeper charcoal */
-  --background-rgb: 253, 252, 251; /* Softer cream #FDFCFB */
-  --accent-orange: 234, 88, 12; /* Muted warm orange */
-  --accent-orange-light: 249, 115, 22; /* Lighter orange for gradients */
+  /* Espresso Editorial Palette */
+  --color-cream-50: #FDFCFB;
+  --color-cream-100: #FAF9F7;
+  
+  --color-charcoal-500: #6B7280;
+  --color-charcoal-800: #1F2937;
+  --color-charcoal-900: #111827;
+  
+  --color-accent-600: #EA580C;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-  min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-charcoal-800);
+  background: var(--color-cream-50);
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Source Serif 4', serif;
+  color: var(--color-charcoal-900);
+  font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Typography Utilities */
+  .prose-editorial {
+    @apply prose prose-lg max-w-none;
+    @apply prose-headings:font-serif prose-headings:font-semibold prose-headings:text-charcoal-900;
+    @apply prose-p:font-sans prose-p:text-charcoal-800 prose-p:leading-relaxed;
+    @apply prose-a:text-accent-600 prose-a:no-underline hover:prose-a:underline;
+    @apply prose-blockquote:font-serif prose-blockquote:italic prose-blockquote:border-accent-600 prose-blockquote:bg-cream-100 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg;
+    @apply prose-strong:font-semibold prose-strong:text-charcoal-900;
+    @apply prose-code:text-charcoal-700 prose-code:bg-charcoal-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none;
+  }
 }
 
-/* Custom scrollbar - Editorial theme */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-charcoal-900 text-white font-medium text-sm transition-all hover:bg-charcoal-800 active:bg-charcoal-900 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
 }
+
+  /* Primary Button (Accent): Accent bg, white text, no border */
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-accent-600 text-white font-medium text-sm transition-all hover:bg-accent-500 active:bg-accent-700 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-white text-charcoal-900 border border-charcoal-200 font-medium text-sm transition-colors hover:bg-charcoal-50 active:bg-charcoal-100 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-charcoal-600 hover:text-charcoal-900 hover:bg-charcoal-50 transition-colors text-sm font-medium;
+  }
+
+  /* Cards — Concept Card: Transparent bg, bottom border only */
+  .card-editorial {
+    @apply bg-transparent border-b border-[#E5E5E2] py-6 transition-colors;
+}
+
+  /* Inputs */
+  .input-editorial {
+    @apply w-full px-4 py-3 rounded-lg bg-cream-100 text-charcoal-900 placeholder:text-charcoal-400 focus:outline-none focus:ring-2 focus:ring-accent-600/15 focus:bg-white transition-all text-sm;
+}
+
+  /* Chips — Reference Chip: Surface Subtle bg, Secondary ink, no border */
+  .chip {
+    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cream-100 text-charcoal-600;
+}
+
+  .chip-accent {
+    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-accent-50 text-accent-700;
+  }
+
+  /* Signal Badges — Insight signal indicators */
+  .badge-signal {
+    @apply inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full;
+  }
+
+  .badge-consensus {
+    @apply badge-signal bg-green-50 text-green-700;
+  }
+
+  .badge-split {
+    @apply badge-signal bg-amber-50 text-amber-700;
+  }
+
+  .badge-emerging {
+    @apply badge-signal bg-blue-50 text-blue-700;
+  }
+
+  /* Tab Bar */
+  .tab-item {
+    @apply relative px-4 py-3 text-sm font-medium transition-colors;
+  }
+
+  .tab-item-active {
+    @apply tab-item text-charcoal-900;
+  }
+
+  .tab-item-inactive {
+    @apply tab-item text-charcoal-400 hover:text-charcoal-600;
+  }
+
+  /* Insight Card */
+  .card-insight {
+    @apply block w-full text-left bg-white border border-charcoal-200 rounded-xl p-5 md:p-6 transition-all duration-200 hover:border-charcoal-300 hover:shadow-sm;
+  }
+
+  .card-insight-selected {
+    @apply card-insight border-accent-400 shadow-md ring-1 ring-accent-200;
+  }
+}
+
+/* ── Hero: Steam wisps ── */
+.steam-wisp {
+  width: 2px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(to top, rgba(193, 154, 107, 0.5), transparent);
+  filter: blur(2px);
+}
+
+/* ── Hero: Warm gradient text ── */
+.text-warm-gradient {
+  background: linear-gradient(
+    135deg,
+    #5C4329 0%,
+    #7B5B39 25%,
+    #A0764A 50%,
+    #C19A6B 75%,
+    #7B5B39 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: warmShift 6s ease-in-out infinite;
+}
+
+@keyframes warmShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── Hero: Decorative rule animation ── */
+.rule-animated {
+  overflow: hidden;
+}
+.rule-animated::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4B896, transparent);
+  animation: ruleExpand 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  width: 0%;
+  opacity: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  }
 
 ::-webkit-scrollbar-track {
-  background: #FDFCFB;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #FED7AA, #FDBA74);
-  border-radius: 6px;
-  border: 2px solid #FDFCFB;
-}
+  @apply bg-charcoal-300 rounded-full border-2 border-cream-50;
+  }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #FDBA74, #FB923C);
-}
-
-/* Editorial card style with enhanced shadow */
-.editorial-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 
-              0 1px 2px rgba(0, 0, 0, 0.06),
-              0 4px 12px rgba(234, 88, 12, 0.04);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.editorial-card:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 
-              0 1px 3px rgba(0, 0, 0, 0.07),
-              0 8px 16px rgba(234, 88, 12, 0.06);
-}
-
-/* Soft button style with enhanced gradients */
-.soft-button {
-  background: linear-gradient(135deg, rgb(var(--accent-orange-light)), rgb(var(--accent-orange)));
-  color: white;
-  border-radius: 12px;
-  padding: 14px 28px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(var(--accent-orange), 0.25);
-}
-
-.soft-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(var(--accent-orange), 0.28);
-}
-
-.soft-button:active {
-  transform: translateY(0);
-}
-
-/* Editorial input style with better focus states */
-.editorial-input {
-  background: white;
-  border: 2px solid #E5E5E5;
-  border-radius: 12px;
-  padding: 14px 18px;
-  color: rgb(var(--foreground-rgb));
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-}
-
-.editorial-input:focus {
-  outline: none;
-  border-color: rgb(var(--accent-orange));
-  box-shadow: 0 0 0 4px rgba(var(--accent-orange), 0.1);
-}
-
-.editorial-input:hover {
-  border-color: #D4D4D4;
-}
-
-/* Editorial textarea with enhanced styling */
-.editorial-textarea {
-  background: white;
-  border: 2px solid #E5E5E5;
-  border-radius: 12px;
-  padding: 16px 18px;
-  color: rgb(var(--foreground-rgb));
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Inter', sans-serif;
-  line-height: 1.6;
-  resize: vertical;
-  font-size: 15px;
-}
-
-.editorial-textarea:focus {
-  outline: none;
-  border-color: rgb(var(--accent-orange));
-  box-shadow: 0 0 0 4px rgba(var(--accent-orange), 0.1);
-}
-
-.editorial-textarea:hover {
-  border-color: #D4D4D4;
-}
-
-/* Animation delays for staggered effects */
-.delay-1000 {
-  animation-delay: 1s;
-}
-
-.delay-2000 {
-  animation-delay: 2s;
-}
-
-/* Fade in up animation - subtle and calming */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Glow pulse for campfire effect - subtle and calming */
-@keyframes glow-pulse {
-  0%, 100% {
-    opacity: 0.2;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(1.02);
-  }
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 4s ease-in-out infinite;
-}
-
-/* Twinkling stars animation - subtle and calming */
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.1);
-  }
+  @apply bg-charcoal-400;
 }

@@ -8,8 +8,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Panel Chat - Real problems. Real experts. Real perspectives.',
-  description: 'Ask a question and hear how real builders have handled it.',
+  title: 'espresso — Collective wisdom from the world\'s best operators',
+  description: 'Explore synthesized knowledge, concepts, and insights from top podcasts and thought leaders.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
@@ -23,4 +26,3 @@ export default function RootLayout({
     </html>
   )
 }
-

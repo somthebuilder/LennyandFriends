@@ -1,10 +1,21 @@
 # Lenny's Podcast Transcripts Archive
 
-A comprehensive archive of transcripts from [Lenny's Podcast](https://www.youtube.com/@LennysPodcast), organized for easy use with AI coding assistants and language models.
+A comprehensive archive of transcripts from [Lenny's Podcast](https://www.youtube.com/@LennysPodcast), organized for easy use with AI coding assistants and language models. This repository also powers **[Espresso](Updated_Final_PRD.md)** — a knowledge product that distills podcast conversations into editorial-quality concepts and a grounded chat experience.
 
 ## About Lenny's Podcast
 
 Lenny's Podcast features interviews with world-class product leaders and growth experts, providing concrete, actionable, and tactical advice to help you build, launch, and grow your own product.
+
+## Espresso
+
+This repo includes the full Espresso application:
+
+- **Frontend** (`frontend/`) — Next.js editorial UI with Knowledge Base (Concepts) + Ask the Collective (Chat)
+- **Ingestion pipeline** (`scripts/`) — Gemini-powered extraction of guests, episodes, segments, books
+- **Knowledge base** (`src/`) — Theme extraction, clustering, and RAG engine
+- **Database** — Supabase (PostgreSQL + pgvector) with 302 episodes, 284 guests, 530 books
+
+See [Updated_Final_PRD.md](Updated_Final_PRD.md) for the full product spec and [README_TRANSCRIPT_INGESTION.md](README_TRANSCRIPT_INGESTION.md) for pipeline details.
 
 ## Quick Start
 
@@ -15,19 +26,32 @@ Lenny's Podcast features interviews with world-class product leaders and growth 
 grep -r "product-market fit" episodes/
 ```
 
+**Run Espresso locally:**
+```bash
+cd frontend && npm install && npm run dev
+# Opens at http://localhost:3001
+```
+
 ## Repository Structure
 
 ```
-├── episodes/                    # 269 episode transcripts
+├── episodes/                    # 302 episode transcripts
 │   └── {guest-name}/
 │       └── transcript.md
+├── frontend/                    # Espresso Next.js application
+│   ├── app/                     # Pages and API routes
+│   ├── components/              # React components
+│   └── lib/                     # Utilities and Supabase client
+├── src/                         # Python backend (knowledge base, RAG)
+├── scripts/                     # Ingestion and extraction scripts
+├── migrations/                  # Supabase SQL migrations
 ├── index/                       # AI-generated topic index
 │   ├── README.md                # Main entry point
 │   ├── product-management.md    # Episodes about product management
 │   ├── leadership.md            # Episodes about leadership
 │   └── ...                      # 50+ topic files
-└── scripts/
-    └── build-index.sh           # Script to regenerate index
+├── Updated_Final_PRD.md         # Espresso product spec
+└── README_TRANSCRIPT_INGESTION.md  # Pipeline documentation
 ```
 
 ## Episode Format
@@ -102,7 +126,7 @@ print(f"Title: {metadata['title']}")
 
 ## Episode Count
 
-This archive contains **269 transcripts** from Lenny's Podcast episodes.
+This archive contains **302 transcripts** from Lenny's Podcast episodes.
 
 ## Data Sources
 

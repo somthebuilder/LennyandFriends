@@ -1,10 +1,15 @@
 # Gemini Setup Guide
 
-The system has been updated to use **Google Gemini** as the primary LLM provider (with fallback to OpenAI and Anthropic).
+The system uses **Google Gemini** for LLM responses (chat, panel questions) in a hybrid setup with OpenAI.
+
+## Architecture
+
+- **OpenAI** → Embeddings (vector search) - Fast, reliable
+- **Gemini** → LLM responses (chat) - Cost-effective, good quality
 
 ## Setup
 
-1. **Add your Gemini API key to `.env`:**
+1. **Add your Gemini API key to `.env.local` (frontend):**
    ```bash
    GEMINI_API_KEY=your_gemini_api_key_here
    ```
@@ -17,61 +22,39 @@ The system has been updated to use **Google Gemini** as the primary LLM provider
 2. **Get your Gemini API key:**
    - Go to https://makersuite.google.com/app/apikey
    - Create a new API key
-   - Copy it to your `.env` file
+   - Copy it to your `.env.local` file
 
 ## Supported Models
 
 The system defaults to:
-- **Theme Extraction**: `gemini-1.5-pro`
-- **RAG Generation**: `gemini-1.5-pro`
-- **Lenny Moderation**: `gemini-1.5-pro`
-
-You can override by passing a different model name when initializing:
-```python
-extractor = ThemeExtractor(model="gemini-1.5-flash", provider="gemini")
-```
-
-## Fallback Support
-
-The system automatically falls back to:
-1. **Gemini** (if `GEMINI_API_KEY` or `GOOGLE_API_KEY` is set)
-2. **OpenAI** (if `OPENAI_API_KEY` is set)
-3. **Anthropic** (if `ANTHROPIC_API_KEY` is set)
+- **LLM Responses**: `gemini-2.0-flash-exp` (fast, cost-effective)
+- **Clarification Questions**: `gemini-2.0-flash-exp`
 
 ## Usage
 
-The build script will automatically use Gemini if the API key is set:
+Gemini is used automatically in:
+- `/api/query` - Guest responses in group chat
+- `/api/split-chat` - 1:1 conversations
+- Clarification question generation
 
-```bash
-python3 scripts/build_knowledge_base.py
-```
+## Safety Features
 
-The API server will also use Gemini by default:
+Gemini includes built-in safety filters that automatically block:
+- Harassment
+- Hate speech
+- Sexually explicit content
+- Dangerous content
 
-```bash
-python3 -m src.api.main
-```
+Thresholds are set to `BLOCK_MEDIUM_AND_ABOVE` for all categories.
 
-## Testing
+## Cost
 
-To test if Gemini is working:
-
-```python
-from src.knowledge.theme_extractor import ThemeExtractor
-
-extractor = ThemeExtractor(provider="gemini")
-extraction = extractor.extract_theme(
-    chunk_text="Your test text here",
-    chunk_id="test_001",
-    guest_id="test-guest",
-    episode_id="test_ep"
-)
-print(extraction)
-```
+- **Free tier**: Available (generous limits)
+- **Paid**: $0.075/1M input tokens, $0.30/1M output tokens
+- **Much cheaper** than OpenAI for LLM responses
 
 ## Notes
 
-- Gemini API has rate limits. For 28,000+ chunks, theme extraction will take several hours.
-- Consider using `gemini-1.5-flash` for faster/cheaper processing during development.
-- The system will automatically handle API errors and continue processing.
-
+- Gemini API has rate limits (check current limits)
+- The system handles API errors gracefully
+- Safety filters can block some content (configurable)
