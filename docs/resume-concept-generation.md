@@ -258,3 +258,84 @@ echo "Started: $!"
 
 **100% success rate so far. All within 800-1300 word range.**
 
+---
+
+## Next: KNN-Enriched Insights (To Build Tomorrow)
+
+### Problem
+Current insights have 4-9 guests each (decent), but were generated from a random sample of chunks. KNN vector search can find **additional guests with similar views** that the random sample missed, strengthening consensus signals and adding richer evidence.
+
+### Architecture: `enrich_insight` Edge Function
+
+Same pattern as `generate_concept_article` — a dedicated, per-insight function:
+
+```
+Insight title + takeaway → Embed → KNN Search (15-20 similar chunks)
+                                        ↓
+                    Group by guest_id (deduplicate with stored evidence)
+                                        ↓
+                    For each NEW guest chunk found:
+                      - Does this chunk support or contradict the insight?
+                      - Extract relevant quote, timestamp, URL
+                                        ↓
+                    Update insight_evidence with new rows
+                    Recalculate: guest_count, episode_count, signal
+                                        ↓
+                    Signal logic:
+                      - guest_count >= 5 AND no contradictions → high_consensus
+                      - guest_count >= 3 AND has contradictions → split_views
+                      - guest_count >= 2 AND recent episodes  → emerging
+```
+
+### Key Design Decisions
+1. **Model**: `gemini-2.0-flash` (same as concepts — fast, reliable)
+2. **KNN chunks**: 15-20 per insight (slightly more than concepts, since we're hunting for consensus)
+3. **Per-insight call**: Avoids WORKER_LIMIT, can retry individually
+4. **Two-phase LLM call**:
+   - **Phase 1** (cheap): Classify each KNN chunk as `supports`, `contradicts`, or `irrelevant` to the insight
+   - **Phase 2** (if supports): Extract the best quote and attribution
+5. **Signal recalculation**: After enrichment, recalculate signal based on actual evidence diversity
+6. **Deduplication**: Skip chunks from guests/episodes already in `insight_evidence`
+
+### Function Signature (POST)
+```json
+{
+  "insightId": "uuid",
+  "podcastSlug": "lennys-podcast",
+  "dryRun": false,
+  "knnChunks": 15,
+  "force": false
+}
+```
+
+### Returns
+```json
+{
+  "ok": true,
+  "insightTitle": "...",
+  "previousGuestCount": 4,
+  "newGuestCount": 7,
+  "newEvidenceAdded": 3,
+  "signalBefore": "high_consensus",
+  "signalAfter": "high_consensus",
+  "newGuests": ["Speaker A", "Speaker B", "Speaker C"]
+}
+```
+
+### Current Insight State (12 insights)
+| Insight | Guests | Signal | Evidence |
+|---------|--------|--------|----------|
+| Rigorous Experimentation for Growth | 9 | high_consensus | 10 |
+| Deep Customer Empathy | 8 | high_consensus | 8 |
+| Empowering Culture & Leadership | 7 | high_consensus | 8 |
+| AI Era Demands Adaptability | 6 | emerging | 6 |
+| High Shipping Velocity | 5 | high_consensus | 6 |
+| Brand & Emotional Connection | 4 | high_consensus | 4 |
+| Focus on Right Problem | 4 | high_consensus | 4 |
+| Concise Communication | 4 | high_consensus | 5 |
+| Humble & Adaptable Leaders | 4 | high_consensus | 5 |
+| Strategic Acumen for PMs | 4 | high_consensus | 5 |
+
+### Expected Improvement
+KNN enrichment should boost insights with guest_count=4 up to 6-8 by finding additional supporting voices from the ~700+ chunk embeddings across the podcast.
+
