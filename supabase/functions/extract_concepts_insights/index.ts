@@ -1,3 +1,4 @@
+/// <reference path="../deno_shims.d.ts" />
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 

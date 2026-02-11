@@ -4,8 +4,6 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { sendMessage, ChatMessage } from '@/lib/api/chat'
 import { useSpeechToText } from '@/hooks/useSpeechToText'
 
-const MAX_VOICE_SECONDS = 30
-
 export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -17,12 +15,12 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
     isSupported: micSupported,
     isListening,
     transcript,
-    timeLeft,
+    elapsed,
     error: micError,
     startListening,
     stopAndKeep,
     cancelListening,
-  } = useSpeechToText({ maxDuration: MAX_VOICE_SECONDS })
+  } = useSpeechToText({ silenceTimeout: 3, maxDuration: 120 })
 
   // Sync transcript into input field while recording
   useEffect(() => {
@@ -31,16 +29,15 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
     }
   }, [isListening, transcript])
 
-  // Auto-submit when timer expires (isListening goes false, transcript exists)
+  // Auto-submit when silence auto-stops (isListening goes false, transcript exists)
   const prevListeningRef = useRef(false)
   useEffect(() => {
-    // Detect transition from listening → not listening (timer expired or stopped)
+    // Detect transition from listening → not listening (silence timeout or manual stop)
     if (prevListeningRef.current && !isListening && transcript.trim()) {
-      // Only auto-submit if it was the timer that stopped it (timeLeft === 0)
-      // For manual stopAndKeep, the text stays in input for editing
+      // Transcript stays in input — parent component decides to auto-submit
     }
     prevListeningRef.current = isListening
-  }, [isListening, transcript, timeLeft])
+  }, [isListening, transcript])
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -90,10 +87,6 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
     cancelListening()
     setInput('')
   }
-
-  // Circular progress for the 30s timer
-  const timerProgress = isListening ? ((MAX_VOICE_SECONDS - timeLeft) / MAX_VOICE_SECONDS) * 100 : 0
-  const circumference = 2 * Math.PI * 10 // radius = 10
 
   return (
     <>
@@ -155,19 +148,36 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center space-y-3 px-6 opacity-60">
-                <div className="w-10 h-10 bg-cream-200 rounded-full flex items-center justify-center text-xl">
-                  ✨
+              <div className="h-full flex flex-col items-center justify-center text-center space-y-3 px-6">
+                <h3 className="text-base text-charcoal-800">
+                  I&apos;m <span className="font-serif font-semibold">Bean</span>
+                </h3>
+                <p className="text-xs text-charcoal-500 max-w-[240px] leading-relaxed">
+                  Trained on 500+ hours of conversations. The more specific, the better.
+                </p>
+                <div className="flex flex-wrap justify-center gap-1.5 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setInput('What books do guests recommend most for PMs?')}
+                    className="text-[11px] px-2.5 py-1 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors"
+                  >
+                    Top PM books
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInput('What does Shreyas Doshi say about high-leverage work?')}
+                    className="text-[11px] px-2.5 py-1 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors"
+                  >
+                    Shreyas on leverage
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInput('Where do guests disagree on data vs. intuition?')}
+                    className="text-[11px] px-2.5 py-1 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors"
+                  >
+                    Data vs. intuition
+                  </button>
                 </div>
-                <p className="text-charcoal-600 text-sm font-serif italic leading-relaxed">
-                  &quot;What are the best books for product managers?&quot;
-                </p>
-                <p className="text-charcoal-600 text-sm font-serif italic leading-relaxed">
-                  &quot;Where do guests disagree on prioritization?&quot;
-                </p>
-                <p className="text-[11px] text-charcoal-400 mt-2">
-                  Try asking about insights from the podcast
-                </p>
               </div>
             ) : (
               messages.map((msg) => (
@@ -249,31 +259,19 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
                     Cancel
                   </button>
 
-                  {/* Timer ring */}
+                  {/* Recording indicator */}
                   <div className="flex items-center gap-2">
                     <div className="relative w-7 h-7">
-                      <svg className="w-7 h-7 -rotate-90" viewBox="0 0 24 24">
-                        {/* Background circle */}
+                      <svg className="w-7 h-7" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" fill="none" stroke="#E5E7EB" strokeWidth="2" />
-                        {/* Progress circle */}
-                        <circle
-                          cx="12" cy="12" r="10"
-                          fill="none"
-                          stroke="#EF4444"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeDasharray={circumference}
-                          strokeDashoffset={circumference - (timerProgress / 100) * circumference}
-                          className="transition-[stroke-dashoffset] duration-1000 ease-linear"
-                        />
                       </svg>
                       {/* Pulsing dot in center */}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                       </div>
                     </div>
-                    <span className="text-xs font-mono text-charcoal-500 tabular-nums w-4 text-right">
-                      {timeLeft}s
+                    <span className="text-xs font-mono text-charcoal-500 tabular-nums text-right">
+                      {elapsed}s
                     </span>
                   </div>
 
@@ -309,7 +307,7 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
                       type="button"
                       onClick={startListening}
                       className="p-1.5 text-charcoal-400 hover:text-accent-600 transition-colors rounded-lg hover:bg-accent-50"
-                      title="Voice input (30s)"
+                      title="Voice input (auto-stops on silence)"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="9" y="1" width="6" height="12" rx="3" />

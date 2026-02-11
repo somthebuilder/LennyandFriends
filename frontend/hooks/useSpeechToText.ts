@@ -29,14 +29,17 @@ interface SpeechRecognitionInstance extends EventTarget {
 type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance
 
 interface UseSpeechToTextOptions {
-  maxDuration?: number // seconds, default 30
+  /** Max silence gap in seconds before auto-stopping (default 3) */
+  silenceTimeout?: number
+  /** Absolute max duration in seconds as a safety net (default 120) */
+  maxDuration?: number
 }
 
 interface UseSpeechToTextReturn {
   isSupported: boolean
   isListening: boolean
   transcript: string
-  timeLeft: number // seconds remaining
+  elapsed: number // seconds since recording started
   error: string | null
   startListening: () => void
   stopAndKeep: () => void   // stop recording, keep transcript in place
@@ -54,24 +57,26 @@ function getSpeechRecognition(): SpeechRecognitionConstructor | null {
 }
 
 export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeechToTextReturn {
-  const { maxDuration = 30 } = options
+  const { silenceTimeout = 3, maxDuration = 120 } = options
 
   const [isSupported] = useState(() => getSpeechRecognition() !== null)
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState('')
-  const [timeLeft, setTimeLeft] = useState(maxDuration)
+  const [elapsed, setElapsed] = useState(0)
   const [error, setError] = useState<string | null>(null)
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const autoSubmitRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const transcriptRef = useRef('') // keeps final+interim for reading in callbacks
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const silenceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const maxRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const transcriptRef = useRef('')
   const isCancelledRef = useRef(false)
 
   // Clean up all timers
   const clearTimers = useCallback(() => {
-    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
-    if (autoSubmitRef.current) { clearTimeout(autoSubmitRef.current); autoSubmitRef.current = null }
+    if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null }
+    if (silenceRef.current) { clearTimeout(silenceRef.current); silenceRef.current = null }
+    if (maxRef.current) { clearTimeout(maxRef.current); maxRef.current = null }
   }, [])
 
   // Stop the recognition engine
@@ -83,6 +88,15 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
     clearTimers()
     setIsListening(false)
   }, [clearTimers])
+
+  // Reset the silence timer (called every time new speech arrives)
+  const resetSilenceTimer = useCallback(() => {
+    if (silenceRef.current) clearTimeout(silenceRef.current)
+    silenceRef.current = setTimeout(() => {
+      // 3 seconds of silence → auto-stop
+      stopRecognition()
+    }, silenceTimeout * 1000)
+  }, [silenceTimeout, stopRecognition])
 
   // Start listening
   const startListening = useCallback(() => {
@@ -97,7 +111,7 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
     setTranscript('')
     transcriptRef.current = ''
     isCancelledRef.current = false
-    setTimeLeft(maxDuration)
+    setElapsed(0)
 
     const recognition = new SpeechRecognitionClass()
     recognition.continuous = true
@@ -120,14 +134,19 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
       const combined = (finalTranscript + interim).trim()
       transcriptRef.current = combined
       setTranscript(combined)
+
+      // Speech detected → reset the silence timer
+      resetSilenceTimer()
     }
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      if (isCancelledRef.current) return // ignore errors from manual abort
+      if (isCancelledRef.current) return
       if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
         setError('Microphone access denied. Please allow microphone access.')
       } else if (event.error === 'no-speech') {
-        setError('No speech detected. Try again.')
+        // Don't show an error — just stop gracefully
+        stopRecognition()
+        return
       } else if (event.error !== 'aborted') {
         setError(`Speech error: ${event.error}`)
       }
@@ -135,8 +154,6 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
     }
 
     recognition.onend = () => {
-      // Recognition ended (could be auto-stop from browser, or our manual stop)
-      // Only update state — the caller decides what to do with the transcript
       setIsListening(false)
       clearTimers()
     }
@@ -147,28 +164,27 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
       recognition.start()
       setIsListening(true)
 
-      // Countdown timer (visual)
-      let remaining = maxDuration
-      timerRef.current = setInterval(() => {
-        remaining -= 1
-        setTimeLeft(remaining)
-        if (remaining <= 0) {
-          clearTimers()
-        }
+      // Elapsed-time tick (counts up)
+      let secs = 0
+      tickRef.current = setInterval(() => {
+        secs += 1
+        setElapsed(secs)
       }, 1000)
 
-      // Auto-stop after maxDuration
-      autoSubmitRef.current = setTimeout(() => {
+      // Start the initial silence timer (auto-stop if no speech at all)
+      resetSilenceTimer()
+
+      // Safety-net max duration
+      maxRef.current = setTimeout(() => {
         stopRecognition()
-        // transcript stays in state — parent component decides to auto-submit
       }, maxDuration * 1000)
     } catch {
       setError('Failed to start speech recognition.')
       stopRecognition()
     }
-  }, [maxDuration, stopRecognition, clearTimers])
+  }, [maxDuration, stopRecognition, clearTimers, resetSilenceTimer])
 
-  // Stop and keep transcript (user wants to edit or submit)
+  // Stop and keep transcript
   const stopAndKeep = useCallback(() => {
     stopRecognition()
   }, [stopRecognition])
@@ -184,9 +200,9 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
     setIsListening(false)
     setTranscript('')
     transcriptRef.current = ''
-    setTimeLeft(maxDuration)
+    setElapsed(0)
     setError(null)
-  }, [clearTimers, maxDuration])
+  }, [clearTimers])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -202,11 +218,10 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
     isSupported,
     isListening,
     transcript,
-    timeLeft,
+    elapsed,
     error,
     startListening,
     stopAndKeep,
     cancelListening,
   }
 }
-

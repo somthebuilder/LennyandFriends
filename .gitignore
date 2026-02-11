@@ -1,3 +1,11 @@
+# Environment & OS
 .env
 .DS_Store
 *.log
+
+# Pipeline cache (large binary embeddings)
+pipeline/.cache/
+
+# Node
+node_modules/
+.next/

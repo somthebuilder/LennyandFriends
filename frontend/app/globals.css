@@ -190,3 +190,25 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-charcoal-400;
 }
+
+/* Subtle scrollbar for right-hand insight breakdown */
+.scrollbar-subtle {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(55, 65, 81, 0.25) transparent;
+}
+.scrollbar-subtle::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-subtle::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-subtle::-webkit-scrollbar-thumb {
+  background-color: rgba(55, 65, 81, 0.25);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scrollbar-subtle::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(55, 65, 81, 0.4);
+}

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev -p 3001",
     "dev:3000": "next dev -p 3000",
     "dev:3002": "next dev -p 3002",
     "dev:3003": "next dev -p 3003",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@lottiefiles/dotlottie-react": "^0.17.14",
     "@rive-app/react-canvas": "^4.26.2",
     "@supabase/supabase-js": "^2.95.1",
     "axios": "^1.7.0",

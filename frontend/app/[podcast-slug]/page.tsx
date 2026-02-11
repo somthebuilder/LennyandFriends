@@ -29,9 +29,16 @@ function isPreviewEnabled(value: string | string[] | undefined) {
   return raw === '1' || raw === 'true' || raw === 'yes'
 }
 
+function getInitialTab(value: string | string[] | undefined) {
+  const raw = Array.isArray(value) ? value[0] : value
+  if (raw === 'concepts' || raw === 'chat' || raw === 'insights') return raw
+  return undefined
+}
+
 export default async function PodcastPage({ params, searchParams }: PodcastPageProps) {
   const slug = params['podcast-slug']
   const previewEnabled = isPreviewEnabled(searchParams?.preview)
+  const initialTab = getInitialTab(searchParams?.tab)
   const sampleChunks = getParamInt(searchParams?.sampleChunks, 240, 60, 500)
   const conceptCount = getParamInt(searchParams?.conceptCount, 10, 4, 24)
   const insightCount = getParamInt(searchParams?.insightCount, 10, 4, 24)
@@ -79,6 +86,7 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
         insights={insights}
         concepts={concepts}
         previewMode={previewEnabled}
+        initialTab={initialTab}
       />
     </div>
   )

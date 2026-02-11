@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Header from '@/components/Header'
 import { getConceptBySlug } from '@/lib/api/concepts'
 
 function formatSeconds(seconds?: number): string | null {
@@ -18,7 +19,8 @@ function deepLink(url?: string, seconds?: number): string | null {
 }
 
 export default async function ConceptPage({ params }: { params: { 'podcast-slug': string; slug: string } }) {
-  const concept = await getConceptBySlug(params.slug, params['podcast-slug'])
+  const podcastSlug = params['podcast-slug']
+  const concept = await getConceptBySlug(params.slug, podcastSlug)
 
   if (!concept) {
     return (
@@ -33,23 +35,92 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
     )
   }
 
+  const tabs = [
+    {
+      id: 'insights',
+      label: 'Insights',
+      href: `/${podcastSlug}?tab=insights`,
+      icon: (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+      ),
+    },
+    {
+      id: 'concepts',
+      label: 'Concepts',
+      href: `/${podcastSlug}?tab=concepts`,
+      icon: (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+      ),
+    },
+    {
+      id: 'chat',
+      label: 'Chat',
+      href: `/${podcastSlug}?tab=chat`,
+      icon: (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      ),
+    },
+  ]
+
   return (
-    <article className="min-h-screen bg-cream-50">
-      <header className="border-b border-charcoal-200 bg-white sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div className="min-h-screen bg-cream-50 flex flex-col">
+      <Header />
+
+      <div className="sticky top-14 z-30 bg-cream-50/95 backdrop-blur-md border-b border-charcoal-200/50">
+        <div className="max-w-5xl mx-auto px-4 md:px-6">
+          <nav className="flex gap-1" role="tablist">
+            {tabs.map((tab) => {
+              const isActive = tab.id === 'concepts'
+              const classes = `relative flex items-center gap-1.5 px-4 py-3 text-sm font-medium transition-colors ${
+                isActive ? 'text-charcoal-900' : 'text-charcoal-400 hover:text-charcoal-600'
+              }`
+              return isActive ? (
+                <span key={tab.id} role="tab" aria-selected="true" className={classes}>
+                  {tab.icon}
+                  {tab.label}
+                  <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-charcoal-900 rounded-full" />
+                </span>
+              ) : (
+                <Link key={tab.id} role="tab" aria-selected="false" href={tab.href} className={classes}>
+                  {tab.icon}
+                  {tab.label}
+                </Link>
+              )
+            })}
+          </nav>
+        </div>
+      </div>
+
+      <article className="flex-1">
+        {/* Sticky back + title */}
+        <div className="sticky top-[7.5rem] z-20 border-b border-charcoal-200/50 bg-cream-50/95 backdrop-blur-md">
+          <div className="max-w-5xl mx-auto px-4 md:px-6 py-2">
+            <div className="grid grid-cols-[40px_1fr] items-center gap-3">
           <Link
-            href={`/${params['podcast-slug']}`}
-            className="flex items-center gap-2 text-charcoal-500 hover:text-charcoal-900 transition-colors text-sm font-medium"
+                href={`/${podcastSlug}?tab=concepts`}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full text-charcoal-500 hover:text-charcoal-900 hover:bg-white transition-colors"
+                aria-label="Back to concepts"
+                title="Back to concepts"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            Back to Knowledge Base
           </Link>
+              <p className="text-sm font-medium text-charcoal-700 truncate">{concept.title}</p>
+            </div>
+          </div>
         </div>
-      </header>
 
-      <div className="max-w-3xl mx-auto px-6 py-12 space-y-12">
+        <div className="max-w-3xl mx-auto px-4 md:px-6 py-10 space-y-8">
         <div className="space-y-6">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="chip-accent">Core Concept</span>
@@ -70,7 +141,7 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
         <div className="prose-editorial">
           {concept.body
             .split(/\n{2,}/)
-            .map((paragraph, idx) => paragraph.trim())
+              .map((paragraph) => paragraph.trim())
             .filter(Boolean)
             .map((paragraph, idx) => (
               <p key={idx}>{paragraph}</p>
@@ -110,6 +181,7 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
         </div>
       </div>
     </article>
+    </div>
   )
 }
 

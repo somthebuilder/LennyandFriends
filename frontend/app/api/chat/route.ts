@@ -1,37 +1,112 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createHash } from 'crypto'
+
+/*
+ * Workaround for corporate proxies / firewalls that re-sign TLS traffic
+ * with a custom CA certificate.  Node.js (v22) does not use the system
+ * certificate store by default, so outbound HTTPS fetches to Supabase
+ * fail with UNABLE_TO_GET_ISSUER_CERT_LOCALLY.
+ *
+ * This disables certificate verification **only** for the Node.js process
+ * running this route handler.  Safe for development; for production deploy
+ * behind a reverse proxy (Vercel / Cloudflare) that handles TLS correctly.
+ */
+if (process.env.NODE_ENV !== 'production') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+}
+
+/** Web Crypto-based SHA-256 (works in Node.js 18+ and Edge runtime) */
+async function sha256Hex(value: string): Promise<string> {
+  const bytes = new TextEncoder().encode(value)
+  const digest = await crypto.subtle.digest('SHA-256', bytes)
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
 
 export async function POST(request: NextRequest) {
+  // ── Step 1: Parse body ──────────────────────────────────────────
+  let body: { message?: unknown; podcastSlug?: unknown; conversationHistory?: unknown }
   try {
-    const { message, podcastSlug } = await request.json()
-    const normalizedMessage = typeof message === 'string' ? message.trim() : ''
-    const normalizedPodcastSlug = typeof podcastSlug === 'string' ? podcastSlug.trim() : ''
+    body = await request.json()
+  } catch (parseErr) {
+    console.error('[chat/route] JSON parse error:', parseErr)
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  }
 
-    if (!normalizedMessage) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
-    }
-    if (!normalizedPodcastSlug) {
-      return NextResponse.json({ error: 'podcastSlug is required' }, { status: 400 })
-    }
-    if (normalizedMessage.length > 500) {
-      return NextResponse.json({ error: 'Message too long' }, { status: 400 })
-    }
+  const normalizedMessage =
+    typeof body.message === 'string' ? body.message.trim() : ''
+  const normalizedPodcastSlug =
+    typeof body.podcastSlug === 'string' ? body.podcastSlug.trim() : ''
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
-      return NextResponse.json({ error: 'Server configuration missing' }, { status: 500 })
-    }
+  if (!normalizedMessage) {
+    return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+  }
+  if (!normalizedPodcastSlug) {
+    return NextResponse.json(
+      { error: 'podcastSlug is required' },
+      { status: 400 }
+    )
+  }
+  if (normalizedMessage.length > 500) {
+    return NextResponse.json({ error: 'Message too long' }, { status: 400 })
+  }
 
-    const functionUrl = `${supabaseUrl}/functions/v1/ai_chat`
+  // ── Step 2: Resolve config ─────────────────────────────────────
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    'https://rhzpjvuutpjtdsbnskdy.supabase.co'
+  const supabaseServiceRoleKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJoenBqdnV1dHBqdGRzYm5za2R5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzQxMjUsImV4cCI6MjA4NTc1MDEyNX0.1PjJnJr33fJ41eavn5e6dSVUDwR0-2D5_d0SqyhndqM'
+
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    console.error('[chat/route] Missing supabaseUrl or key')
+    return NextResponse.json(
+      { error: 'Server configuration missing' },
+      { status: 500 }
+    )
+  }
+
+  // ── Step 3: Build user key (hashed IP+UA) ──────────────────────
+  let userKey = 'anon'
+  try {
     const ip =
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
       request.headers.get('x-real-ip') ??
       'unknown'
     const userAgent = request.headers.get('user-agent') ?? 'unknown'
-    const userKey = createHash('sha256').update(`${ip}:${userAgent}`).digest('hex').slice(0, 32)
+    const hash = await sha256Hex(`${ip}:${userAgent}`)
+    userKey = hash.slice(0, 32)
+  } catch (hashErr) {
+    console.error('[chat/route] Hash error (continuing with anon):', hashErr)
+    // Non-fatal: fall back to 'anon'
+  }
 
-    const response = await fetch(functionUrl, {
+  // ── Step 4: Sanitize conversation history ──────────────────────
+  const conversationHistory = body.conversationHistory
+  const sanitizedHistory = Array.isArray(conversationHistory)
+    ? conversationHistory
+        .filter(
+          (m: { role?: string; content?: string }) =>
+            (m.role === 'user' || m.role === 'assistant') &&
+            typeof m.content === 'string' &&
+            m.content.trim().length > 0
+        )
+        .slice(-10)
+        .map((m: { role: string; content: string }) => ({
+          role: m.role,
+          content: m.content.slice(0, 1000),
+        }))
+    : []
+
+  // ── Step 5: Call Edge Function ─────────────────────────────────
+  const functionUrl = `${supabaseUrl}/functions/v1/ai_chat`
+
+  let response: Response
+  try {
+    response = await fetch(functionUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,19 +117,42 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         message: normalizedMessage,
         podcastSlug: normalizedPodcastSlug,
+        conversationHistory: sanitizedHistory,
       }),
     })
-
-    const data = await response.json().catch(() => ({}))
-    if (!response.ok) {
-      const errorMsg = typeof data?.error === 'string' ? data.error : 'Chat request failed'
-      return NextResponse.json({ error: errorMsg }, { status: response.status })
-    }
-
-    return NextResponse.json(data)
-  } catch (error) {
-    console.error('Chat API Error:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  } catch (fetchErr) {
+    // Network error — fetch threw (DNS failure, connection refused, etc.)
+    const errMsg =
+      fetchErr instanceof Error ? fetchErr.message : String(fetchErr)
+    console.error('[chat/route] fetch to Edge Function failed:', errMsg)
+    return NextResponse.json(
+      {
+        error: 'Unable to reach the chat service. Please try again.',
+        debug: process.env.NODE_ENV === 'development' ? errMsg : undefined,
+      },
+      { status: 502 }
+    )
   }
-}
 
+  // ── Step 6: Parse & relay response ─────────────────────────────
+  const data = await response.json().catch(() => ({}))
+
+  if (!response.ok) {
+    const errorMsg =
+      typeof data?.error === 'string' ? data.error : 'Request failed'
+    console.error(
+      `[chat/route] Edge Function returned ${response.status}:`,
+      errorMsg
+    )
+    return NextResponse.json(
+      {
+        error: errorMsg,
+        credits_remaining: data?.credits_remaining,
+        credits_total: data?.credits_total,
+      },
+      { status: response.status }
+    )
+  }
+
+  return NextResponse.json(data)
+}

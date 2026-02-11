@@ -9,3 +9,6 @@ declare module "npm:@supabase/supabase-js@2" {
   export function createClient(...args: any[]): any;
 }
 
+declare module "jsr:@supabase/functions-js/edge-runtime.d.ts" {
+  // Edge runtime type declarations - ambient module
+}

@@ -309,19 +309,19 @@ export default function LandingPage() {
                   <div className="steam-wisp animate-steam-2 h-[14px]" />
                   <div className="steam-wisp animate-steam-3 h-[12px]" />
                 </div>
-                <img
-                  src="/espressologo.png"
+              <img
+                src="/espressologo.png"
                   alt=""
                   className="w-20 h-20 md:w-28 md:h-28 object-contain drop-shadow-lg"
-                />
+              />
               </div>
             </div>
 
             {/* App name — oversized editorial Playfair with warm gradient */}
             <div className="opacity-0 animate-hero-enter-delay flex flex-col items-center">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-cafe italic text-warm-gradient tracking-tight leading-[1.1] select-none pb-1">
-                espresso
-              </h1>
+              espresso
+            </h1>
             </div>
 
             {/* Decorative mid-rule */}
@@ -335,7 +335,7 @@ export default function LandingPage() {
               <p className="text-sm text-charcoal-400 font-sans max-w-sm mx-auto leading-relaxed">
                 Insights from the world&apos;s best operators, extracted,
                 synthesized, searchable.
-              </p>
+            </p>
             </div>
           </div>
 
@@ -356,48 +356,48 @@ export default function LandingPage() {
                   <Link
                     key={podcast.id}
                     href={`/${podcast.slug}`}
-                    className={`group relative block bg-white/80 backdrop-blur-sm border border-espresso-200/60 rounded-2xl p-8 transition-all duration-300 ${colors.border} hover:shadow-lg hover:shadow-espresso-200/30 text-left overflow-hidden`}
+                    className={`group relative block bg-white/80 backdrop-blur-sm border border-espresso-200/60 rounded-2xl p-6 md:p-7 transition-all duration-300 ${colors.border} hover:shadow-lg hover:shadow-espresso-200/30 text-left overflow-hidden`}
                   >
                     {/* Subtle warm gradient glow on hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-espresso-50/0 via-transparent to-accent-50/0 group-hover:from-espresso-50/40 group-hover:to-accent-50/30 transition-all duration-500 rounded-2xl" />
 
-                    <div className="relative flex flex-col gap-5">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="space-y-2.5 min-w-0 flex-1">
-                          {podcast.tagline && (
+                    <div className="relative flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2 min-w-0 flex-1">
+                        {podcast.tagline && (
                             <span className={`inline-block text-[10px] font-sans font-semibold uppercase tracking-[0.15em] ${colors.tagText} ${colors.tagBg} px-2.5 py-1 rounded-full`}>
-                              {podcast.tagline}
-                            </span>
-                          )}
-                          <h2 className={`text-2xl md:text-[1.7rem] font-serif font-semibold text-charcoal-900 ${colors.text} transition-colors leading-tight`}>
-                            {podcast.name}
-                          </h2>
-                          {podcast.host && (
+                            {podcast.tagline}
+                          </span>
+                        )}
+                          <h2 className={`text-xl md:text-2xl font-serif font-semibold text-charcoal-900 ${colors.text} transition-colors leading-tight`}>
+                          {podcast.name}
+                        </h2>
+                        {podcast.host && (
                             <p className="text-sm text-espresso-500 font-medium">
                               by {podcast.host}
-                            </p>
-                          )}
-                          <p className="text-charcoal-600 font-sans text-[15px] leading-relaxed">
+                          </p>
+                        )}
+                          <p className="text-charcoal-600 font-sans text-sm leading-relaxed">
                             {podcast.slug === 'lennys-podcast'
                               ? "Interviews with world-class product leaders and growth experts to uncover concrete, actionable, and tactical advice to help you build, launch, and grow your own product."
                               : podcast.description}
-                          </p>
-                        </div>
+                        </p>
+                      </div>
 
-                        <div className="flex-shrink-0 flex items-center">
-                          {podcast.cover_image ? (
-                            <img
-                              src={podcast.cover_image}
-                              alt=""
-                              className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
-                            />
-                          ) : (
-                            <div className={`text-charcoal-300 ${colors.arrow} transition-colors transform group-hover:translate-x-1 duration-300`}>
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                              </svg>
-                            </div>
-                          )}
+                      <div className="flex-shrink-0 flex items-center">
+                        {podcast.cover_image ? (
+                          <img
+                            src={podcast.cover_image}
+                            alt=""
+                              className="w-14 h-14 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
+                          />
+                        ) : (
+                          <div className={`text-charcoal-300 ${colors.arrow} transition-colors transform group-hover:translate-x-1 duration-300`}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                          </div>
+                        )}
                         </div>
                       </div>
 
@@ -461,23 +461,23 @@ export default function LandingPage() {
                           {podcast.description}
                         </p>
                       </div>
-                      <button
-                        onClick={() => handleVote(podcast.id)}
-                        disabled={hasVoted || isVoting}
+                        <button
+                          onClick={() => handleVote(podcast.id)}
+                          disabled={hasVoted || isVoting}
                         className={`mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 ${
-                          hasVoted
+                            hasVoted
                             ? 'bg-espresso-50 text-espresso-600 border border-espresso-200 cursor-default'
                             : 'bg-cream-100 text-charcoal-600 border border-espresso-200/40 hover:bg-espresso-50 hover:text-espresso-600 hover:border-espresso-300'
-                        }`}
-                      >
+                          }`}
+                        >
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill={hasVoted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 5l-7 7h14l-7-7z" />
-                        </svg>
-                        <span>
-                          {hasVoted ? 'Voted' : 'Vote'}
-                          {podcast.vote_count > 0 && <span className="ml-1 opacity-70">· {podcast.vote_count}</span>}
-                        </span>
-                      </button>
+                            <path d="M12 5l-7 7h14l-7-7z" />
+                          </svg>
+                          <span>
+                            {hasVoted ? 'Voted' : 'Vote'}
+                            {podcast.vote_count > 0 && <span className="ml-1 opacity-70">· {podcast.vote_count}</span>}
+                          </span>
+                        </button>
                     </div>
                   )
                 })}
@@ -523,8 +523,8 @@ export default function LandingPage() {
                       <div className="flex items-center gap-3">
                         <div className="h-px flex-1 bg-gradient-to-r from-espresso-200/40 to-transparent" />
                         <h4 className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-espresso-400">
-                          Community Suggestions
-                        </h4>
+                        Community Suggestions
+                      </h4>
                         <div className="h-px flex-1 bg-gradient-to-l from-espresso-200/40 to-transparent" />
                       </div>
                       <ul className="divide-y divide-espresso-100/60">
@@ -575,7 +575,7 @@ export default function LandingPage() {
                       <div className="space-y-3">
                         {/* Mode toggle */}
                         <div className="flex bg-cream-200/60 rounded-xl p-0.5">
-                          <button
+                      <button
                             type="button"
                             onClick={() => { setInlineAuthMode('signup'); setInlineAuthError(null); setInlineAuthSuccess(null) }}
                             className={`flex-1 py-2 text-xs font-medium rounded-lg transition-all ${

@@ -6,6 +6,13 @@ export interface ChatReference {
   episode_title: string
   quote?: string
   timestamp?: string
+  episode_url?: string
+  time_seconds?: number
+}
+
+export interface ClarificationQuestion {
+  text: string
+  quickReply?: string
 }
 
 export interface ChatMessage {
@@ -13,6 +20,10 @@ export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
   references?: ChatReference[]
+  needs_clarification?: boolean
+  clarification_questions?: ClarificationQuestion[]
+  credits_remaining?: number
+  credits_total?: number
 }
 
 export interface ConceptReference {
@@ -67,5 +78,3 @@ export const SIGNAL_LABELS: Record<SignalBadge, string> = {
   split_view: 'Split view',
   emerging: 'Emerging',
 }
-
-
