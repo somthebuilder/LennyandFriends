@@ -48,6 +48,7 @@ export default function PodcastTabs({
 }: PodcastTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>(initialTab ?? 'insights')
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -111,6 +112,10 @@ export default function PodcastTabs({
     if (typeof window !== 'undefined') {
       sessionStorage.setItem(insightStorageKey, insight.id)
     }
+    // Auto-scroll breakdown to top when switching insights
+    if (breakdownRef.current) {
+      breakdownRef.current.scrollTop = 0
+    }
   }
 
   useEffect(() => {
@@ -143,12 +148,26 @@ export default function PodcastTabs({
     }
     const hasSelected = selectedInsight && insights.some((i) => i.id === selectedInsight.id)
     if (hasSelected) return
+    
+    // Only auto-select first insight on desktop (lg breakpoint = 1024px)
+    // On mobile, start with no selection so user sees the list
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
+    
     let storedId: string | null = null
     if (typeof window !== 'undefined') {
       storedId = sessionStorage.getItem(insightStorageKey)
     }
     const storedInsight = storedId ? insights.find((i) => i.id === storedId) : null
-    setSelectedInsight(storedInsight ?? insights[0])
+    
+    // On mobile: only restore if there was a stored selection, otherwise show list
+    // On desktop: default to first insight for the 2-column layout
+    if (storedInsight) {
+      setSelectedInsight(storedInsight)
+    } else if (isDesktop) {
+      setSelectedInsight(insights[0])
+    } else {
+      setSelectedInsight(null)
+    }
   }, [insights, podcastSlug, selectedInsight])
 
   // Right-hand breakdown uses its own scroll; no auto-advance on scroll.
@@ -404,28 +423,44 @@ export default function PodcastTabs({
                     ))
                   ) : (
                     <div className="animate-slide-up">
-                      <button
-                        onClick={() => setSelectedInsight(null)}
-                        className="flex items-center gap-1.5 text-sm text-charcoal-500 hover:text-charcoal-700 transition-colors mb-4"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      {/* Sticky back button for mobile */}
+                      <div className="sticky top-[6.5rem] z-20 -mx-4 px-4 py-3 bg-cream-50/95 backdrop-blur-sm border-b border-charcoal-100">
+                        <button
+                          onClick={() => {
+                            setSelectedInsight(null)
+                            // Clear stored selection so list shows on refresh
+                            if (typeof window !== 'undefined') {
+                              sessionStorage.removeItem(insightStorageKey)
+                            }
+                          }}
+                          className="flex items-center gap-2 text-sm font-medium text-charcoal-600 hover:text-charcoal-900 active:text-charcoal-900 transition-colors"
                         >
-                          <path d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                        Back to Insights
-                      </button>
-                      <InsightBreakdown
-                        insight={selectedInsight}
-                        onClose={() => setSelectedInsight(null)}
-                        onDiscussInChat={handleDiscussInChat}
-                      />
+                          <svg
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                          </svg>
+                          Back to Insights
+                        </button>
+                      </div>
+                      <div className="pt-4">
+                        <InsightBreakdown
+                          insight={selectedInsight}
+                          onClose={() => {
+                            setSelectedInsight(null)
+                            if (typeof window !== 'undefined') {
+                              sessionStorage.removeItem(insightStorageKey)
+                            }
+                          }}
+                          onDiscussInChat={handleDiscussInChat}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -437,37 +472,154 @@ export default function PodcastTabs({
         {/* ════════════════════════════════════════
             CONCEPTS TAB
            ════════════════════════════════════════ */}
-        {activeTab === 'concepts' && (
-          <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-8">
-            {previewMode && (
-              <div className="mb-4 text-xs text-charcoal-500 bg-cream-100 border border-charcoal-200 rounded-lg px-3 py-2">
-                Showing temporary dry-run concepts preview. Open concept links
-                are disabled in preview mode.
-              </div>
-            )}
-            {concepts.length === 0 ? (
-              <div className="py-20 text-center">
-                <p className="text-charcoal-400 font-serif italic text-lg">
-                  Concepts are being generated…
-                </p>
-                <p className="text-sm text-charcoal-400 mt-2">
-                  Check back soon as we extract insights from the transcripts.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-0">
-                {concepts.map((concept) => (
-                  <ConceptCard
-                    key={concept.id}
-                    concept={concept}
-                    podcastSlug={podcastSlug}
-                    previewMode={previewMode}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        {activeTab === 'concepts' && (() => {
+          // Extract unique categories that have concepts
+          const categoryMap = new Map<string, number>()
+          concepts.forEach((c) => {
+            if (c.category) {
+              categoryMap.set(c.category, (categoryMap.get(c.category) || 0) + 1)
+            }
+          })
+          const availableCategories = Array.from(categoryMap.entries())
+            .sort((a, b) => b[1] - a[1]) // Sort by count descending
+            .map(([cat]) => cat)
+
+          // Filter concepts by selected category
+          const filteredConcepts = selectedCategory
+            ? concepts.filter((c) => c.category === selectedCategory)
+            : concepts
+
+          return (
+            <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8">
+              {previewMode && (
+                <div className="mb-4 text-xs text-charcoal-500 bg-cream-100 border border-charcoal-200 rounded-lg px-3 py-2">
+                  Showing temporary dry-run concepts preview. Open concept links
+                  are disabled in preview mode.
+                </div>
+              )}
+              {concepts.length === 0 ? (
+                <div className="py-20 text-center">
+                  <p className="text-charcoal-400 font-serif italic text-lg">
+                    Concepts are being generated…
+                  </p>
+                  <p className="text-sm text-charcoal-400 mt-2">
+                    Check back soon as we extract insights from the transcripts.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Mobile/Tablet: Category Pills */}
+                  <div className="lg:hidden mb-5">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
+                      <button
+                        onClick={() => setSelectedCategory(null)}
+                        className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                          selectedCategory === null
+                            ? 'bg-charcoal-900 text-white shadow-sm'
+                            : 'bg-cream-100 text-charcoal-600 hover:bg-cream-200'
+                        }`}
+                      >
+                        All
+                        <span className={`ml-1.5 ${selectedCategory === null ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
+                          {concepts.length}
+                        </span>
+                      </button>
+                      {availableCategories.map((category) => {
+                        const count = categoryMap.get(category) || 0
+                        const isSelected = selectedCategory === category
+                        return (
+                          <button
+                            key={category}
+                            onClick={() => setSelectedCategory(category)}
+                            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                              isSelected
+                                ? 'bg-charcoal-900 text-white shadow-sm'
+                                : 'bg-cream-100 text-charcoal-600 hover:bg-cream-200'
+                            }`}
+                          >
+                            {category}
+                            <span className={`ml-1.5 ${isSelected ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
+                              {count}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Desktop: Grid Layout with Sidebar */}
+                  <div className="flex gap-8">
+                    {/* Category Sidebar - Desktop Only */}
+                    <div className="hidden lg:block w-44 flex-shrink-0">
+                      <div className="sticky top-24 space-y-1.5">
+                        <h3 className="text-xs font-semibold text-charcoal-500 uppercase tracking-wider mb-3">Categories</h3>
+                        <button
+                          onClick={() => setSelectedCategory(null)}
+                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                            selectedCategory === null
+                              ? 'bg-charcoal-900 text-white font-medium'
+                              : 'text-charcoal-600 hover:bg-cream-100'
+                          }`}
+                        >
+                          <span className="flex items-center justify-between">
+                            All
+                            <span className={`text-xs ${selectedCategory === null ? 'text-charcoal-400' : 'text-charcoal-400'}`}>
+                              {concepts.length}
+                            </span>
+                          </span>
+                        </button>
+                        {availableCategories.map((category) => {
+                          const count = categoryMap.get(category) || 0
+                          const isSelected = selectedCategory === category
+                          return (
+                            <button
+                              key={category}
+                              onClick={() => setSelectedCategory(category)}
+                              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                                isSelected
+                                  ? 'bg-charcoal-900 text-white font-medium'
+                                  : 'text-charcoal-600 hover:bg-cream-100'
+                              }`}
+                            >
+                              <span className="flex items-center justify-between">
+                                {category}
+                                <span className={`text-xs ${isSelected ? 'text-charcoal-400' : 'text-charcoal-400'}`}>
+                                  {count}
+                                </span>
+                              </span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Concepts List */}
+                    <div className="flex-1 min-w-0">
+                      {filteredConcepts.length === 0 ? (
+                        <div className="py-20 text-center">
+                          <p className="text-charcoal-400 font-serif italic text-lg">
+                            No concepts found in this category.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-0">
+                          {filteredConcepts.map((concept) => (
+                            <ConceptCard
+                              key={concept.id}
+                              concept={concept}
+                              podcastSlug={podcastSlug}
+                              previewMode={previewMode}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        })()}
 
         {/* ════════════════════════════════════════
             BEAN CHAT TAB
@@ -525,14 +677,9 @@ export default function PodcastTabs({
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 px-6 py-12">
                   {/* Bean avatar */}
                   <BeanAnimation size={56} />
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl text-charcoal-800">
-                      I&apos;m <span className="font-serif font-semibold">Bean</span>
-                    </h3>
-                    <p className="text-[13px] text-charcoal-500 max-w-xs leading-relaxed">
-                      Trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
-                    </p>
-                  </div>
+                  <p className="text-[14px] text-charcoal-600 max-w-sm leading-relaxed">
+                    I&apos;m a <span className="font-serif font-semibold">living Bean</span> trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
+                  </p>
                   <div className="w-full max-w-sm space-y-2 pt-2">
                     <p className="text-[10px] font-medium uppercase tracking-wider text-charcoal-400">Try something specific</p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -745,7 +892,7 @@ export default function PodcastTabs({
             </div>
 
             {/* Input area */}
-            <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0">
+            <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0 z-50">
               {/* Credits display */}
               {creditsRemaining !== null && creditsTotal !== null && (
                 <div className="flex items-center justify-between mb-2 px-1">

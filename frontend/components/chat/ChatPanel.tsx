@@ -149,11 +149,8 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center space-y-3 px-6">
-                <h3 className="text-base text-charcoal-800">
-                  I&apos;m <span className="font-serif font-semibold">Bean</span>
-                </h3>
-                <p className="text-xs text-charcoal-500 max-w-[240px] leading-relaxed">
-                  Trained on 500+ hours of conversations. The more specific, the better.
+                <p className="text-[13px] text-charcoal-600 max-w-[260px] leading-relaxed">
+                  I&apos;m a <span className="font-serif font-semibold">living Bean</span> trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
                 </p>
                 <div className="flex flex-wrap justify-center gap-1.5 pt-1">
                   <button

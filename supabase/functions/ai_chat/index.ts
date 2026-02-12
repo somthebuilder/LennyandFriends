@@ -134,28 +134,28 @@ async function embedWithGemini(
   let lastError: Error | null = null;
   for (let attempt = 0; attempt < EMBED_MAX_RETRIES; attempt++) {
     try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/${GEMINI_EMBED_MODEL}:embedContent?key=${encodeURIComponent(apiKey)}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: GEMINI_EMBED_MODEL,
-            content: { parts: [{ text }] },
-            taskType,
-            outputDimensionality: 1536,
-          }),
-        }
-      );
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`Gemini embedding failed: ${res.status} ${err}`);
-      }
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/${GEMINI_EMBED_MODEL}:embedContent?key=${encodeURIComponent(apiKey)}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: GEMINI_EMBED_MODEL,
+        content: { parts: [{ text }] },
+        taskType,
+        outputDimensionality: 1536,
+      }),
+    }
+  );
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Gemini embedding failed: ${res.status} ${err}`);
+  }
       const data = await res.json();
       const values = data?.embedding?.values as number[] | undefined;
       if (!values?.length)
         throw new Error("Gemini embedding response missing values");
-      return values;
+  return values;
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
       if (attempt < EMBED_MAX_RETRIES - 1) {
@@ -195,7 +195,7 @@ async function geminiChat(
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_CHAT_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
     {
-      method: "POST",
+    method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }
@@ -566,18 +566,18 @@ async function logUsage(
     errorCode?: string;
   }
 ): Promise<void> {
-  await supabase.from("ai_usage_logs").insert({
-    user_key: params.userKey,
-    podcast_slug: params.podcastSlug,
-    model: params.model ?? null,
-    request_chars: params.requestChars,
-    context_chunks: params.contextChunks ?? 0,
-    best_similarity: params.bestSimilarity ?? null,
-    tokens_in: params.tokensIn ?? 0,
-    tokens_out: params.tokensOut ?? 0,
-    status: params.status,
-    error_code: params.errorCode ?? null,
-  });
+    await supabase.from("ai_usage_logs").insert({
+      user_key: params.userKey,
+      podcast_slug: params.podcastSlug,
+      model: params.model ?? null,
+      request_chars: params.requestChars,
+      context_chunks: params.contextChunks ?? 0,
+      best_similarity: params.bestSimilarity ?? null,
+      tokens_in: params.tokensIn ?? 0,
+      tokens_out: params.tokensOut ?? 0,
+      status: params.status,
+      error_code: params.errorCode ?? null,
+    });
 }
 
 /* ================================================================== */
@@ -783,16 +783,16 @@ Deno.serve(async (req: Request) => {
   // Embed the query
   let queryEmbedding: number[];
   try {
-    queryEmbedding = await embedWithGemini(geminiKey, message, "RETRIEVAL_QUERY");
+      queryEmbedding = await embedWithGemini(geminiKey, message, "RETRIEVAL_QUERY");
   } catch (err) {
     await logUsage(supabase, {
-      userKey,
-      podcastSlug,
+        userKey,
+        podcastSlug,
       model: `gemini:${GEMINI_CHAT_MODEL}`,
-      requestChars: message.length,
-      status: "failed",
-      errorCode: "embedding_failed",
-    });
+        requestChars: message.length,
+        status: "failed",
+        errorCode: "embedding_failed",
+      });
     console.error("Embedding error:", err);
     return json(502, {
       error: "Having trouble processing that right now. Try again in a moment.",
@@ -805,12 +805,12 @@ Deno.serve(async (req: Request) => {
   const { data: chunkData, error: chunkError } = await supabase.rpc(
     "match_chunks",
     {
-      query_embedding: queryEmbedding,
-      match_threshold: 0.0,
-      match_count: MAX_CONTEXT_CHUNKS,
-      filter_guest_id: null,
-      filter_theme_id: null,
-      filter_segment_types: ["interview", "lightning_round"],
+    query_embedding: queryEmbedding,
+    match_threshold: 0.0,
+    match_count: MAX_CONTEXT_CHUNKS,
+    filter_guest_id: null,
+    filter_theme_id: null,
+    filter_segment_types: ["interview", "lightning_round"],
     }
   );
 

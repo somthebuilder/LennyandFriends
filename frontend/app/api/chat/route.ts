@@ -38,18 +38,18 @@ export async function POST(request: NextRequest) {
   const normalizedPodcastSlug =
     typeof body.podcastSlug === 'string' ? body.podcastSlug.trim() : ''
 
-  if (!normalizedMessage) {
-    return NextResponse.json({ error: 'Message is required' }, { status: 400 })
-  }
-  if (!normalizedPodcastSlug) {
+    if (!normalizedMessage) {
+      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+    }
+    if (!normalizedPodcastSlug) {
     return NextResponse.json(
       { error: 'podcastSlug is required' },
       { status: 400 }
     )
-  }
-  if (normalizedMessage.length > 500) {
-    return NextResponse.json({ error: 'Message too long' }, { status: 400 })
-  }
+    }
+    if (normalizedMessage.length > 500) {
+      return NextResponse.json({ error: 'Message too long' }, { status: 400 })
+    }
 
   // ── Step 2: Resolve config ─────────────────────────────────────
   const supabaseUrl =
@@ -61,13 +61,13 @@ export async function POST(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJoenBqdnV1dHBqdGRzYm5za2R5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzQxMjUsImV4cCI6MjA4NTc1MDEyNX0.1PjJnJr33fJ41eavn5e6dSVUDwR0-2D5_d0SqyhndqM'
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
     console.error('[chat/route] Missing supabaseUrl or key')
     return NextResponse.json(
       { error: 'Server configuration missing' },
       { status: 500 }
     )
-  }
+    }
 
   // ── Step 3: Build user key (hashed IP+UA) ──────────────────────
   let userKey = 'anon'
@@ -135,9 +135,9 @@ export async function POST(request: NextRequest) {
   }
 
   // ── Step 6: Parse & relay response ─────────────────────────────
-  const data = await response.json().catch(() => ({}))
+    const data = await response.json().catch(() => ({}))
 
-  if (!response.ok) {
+    if (!response.ok) {
     const errorMsg =
       typeof data?.error === 'string' ? data.error : 'Request failed'
     console.error(
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
       },
       { status: response.status }
     )
-  }
+    }
 
-  return NextResponse.json(data)
+    return NextResponse.json(data)
 }
