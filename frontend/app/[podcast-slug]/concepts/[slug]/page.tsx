@@ -141,9 +141,9 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
         <div className="prose-editorial">
           {concept.body
             .split(/\n{2,}/)
-              .map((paragraph) => paragraph.trim())
+              .map((paragraph: string) => paragraph.trim())
             .filter(Boolean)
-            .map((paragraph, idx) => (
+            .map((paragraph: string, idx: number) => (
               <p key={idx}>{paragraph}</p>
             ))}
         </div>
