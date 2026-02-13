@@ -61,22 +61,31 @@ export async function getInsights(podcastSlug: string): Promise<Insight[]> {
     evidenceByInsight.set(ev.insight_id, existing)
   }
 
-  return insightRows.map((row) => ({
-    id: row.id,
-    title: row.title,
-    takeaway: row.takeaway,
-    signal: row.signal,
-    category: row.category ?? undefined,
-    theme_label: row.theme_label ?? undefined,
-    guest_count: row.guest_count ?? 0,
-    episode_count: row.episode_count ?? 0,
-    explanation: Array.isArray(row.explanation)
-      ? row.explanation.filter((item): item is string => typeof item === 'string')
-      : [],
-    evidence: evidenceByInsight.get(row.id) ?? [],
-    trend: row.trend ?? undefined,
-    valuable_count: row.valuable_count ?? 0,
-    created_at: row.created_at,
-  }))
+  return insightRows.map((row) => {
+    const evidence = evidenceByInsight.get(row.id) ?? []
+    // Compute counts from actual evidence instead of relying on (possibly stale) DB values
+    const uniqueGuests = new Set(evidence.map((e) => e.guest_name).filter((n) => n && n !== 'Unknown guest'))
+    const uniqueEpisodes = new Set(evidence.map((e) => e.episode_title).filter((t) => t && t !== 'Unknown episode'))
+    const computedGuestCount = uniqueGuests.size
+    const computedEpisodeCount = uniqueEpisodes.size
+
+    return {
+      id: row.id,
+      title: row.title,
+      takeaway: row.takeaway,
+      signal: row.signal,
+      category: row.category ?? undefined,
+      theme_label: row.theme_label ?? undefined,
+      guest_count: computedGuestCount || (row.guest_count ?? 0),
+      episode_count: computedEpisodeCount || (row.episode_count ?? 0),
+      explanation: Array.isArray(row.explanation)
+        ? row.explanation.filter((item): item is string => typeof item === 'string')
+        : [],
+      evidence,
+      trend: row.trend ?? undefined,
+      valuable_count: row.valuable_count ?? 0,
+      created_at: row.created_at,
+    }
+  })
 }
 

@@ -23,8 +23,8 @@ function cleanLine(line: string): string {
   // Remove trailing URL patterns: - [https://...] or - [url=https://...]
   cleaned = cleaned.replace(/\s*-\s*\[(?:url=)?https?:\/\/[^\]]*\]/g, '')
 
-  // Remove standalone [url=https://...] patterns
-  cleaned = cleaned.replace(/\[url=https?:\/\/[^\]]*\]/g, '')
+  // Remove standalone [url=https://...] or [url=n/a] patterns
+  cleaned = cleaned.replace(/\[url=[^\]]*\]/gi, '')
 
   // Remove standalone [https://...] patterns
   cleaned = cleaned.replace(/\[https?:\/\/[^\]]*\]/g, '')
@@ -35,8 +35,8 @@ function cleanLine(line: string): string {
   // Clean up "at [HH:MM:SS]:" timestamp references — keep guest name, remove timestamp
   cleaned = cleaned.replace(/\s+at\s+\[\d{1,2}:\d{2}(?::\d{2})?\]\s*:?/g, '')
 
-  // Remove [timestamp=HH:MM:SS] patterns
-  cleaned = cleaned.replace(/\[timestamp=\d{1,2}:\d{2}(?::\d{2})?\]/g, '')
+  // Remove [timestamp=HH:MM:SS] or [timestamp=n/a] patterns
+  cleaned = cleaned.replace(/\[timestamp=[^\]]*\]/gi, '')
 
   // Remove just bare [HH:MM:SS] timestamps
   cleaned = cleaned.replace(/\[\d{1,2}:\d{2}(?::\d{2})?\]/g, '')

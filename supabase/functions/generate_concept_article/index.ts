@@ -632,12 +632,16 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Build reference block
+    // Build reference block — omit n/a values so the LLM doesn't echo them
     const referenceBlock = allRefs
-      .map(
-        (ref, idx) =>
-          `[${idx + 1}] ${ref.guest} | ${ref.episode} | timestamp=${ref.timestamp} | url=${ref.url} | quote="${ref.quote}"`
-      )
+      .map((ref, idx) => {
+        const parts = [`[${idx + 1}] ${ref.guest} | ${ref.episode}`];
+        if (ref.timestamp && ref.timestamp !== "n/a")
+          parts.push(`timestamp=${ref.timestamp}`);
+        if (ref.url && ref.url !== "n/a") parts.push(`url=${ref.url}`);
+        parts.push(`quote="${ref.quote}"`);
+        return parts.join(" | ");
+      })
       .join("\n");
 
     // Fetch theme hints
