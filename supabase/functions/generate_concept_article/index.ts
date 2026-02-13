@@ -29,38 +29,37 @@ const SECTION_BATCHES = [
   {
     id: "A",
     sections: [
-      "1. Concept Overview",
-      "2. Why This Concept Matters",
-      "3. How the Concept Works in Practice",
+      "Concept Overview",
+      "Why This Concept Matters",
+      "How the Concept Works in Practice",
     ],
     wordTarget: 400,
-    guidance: `Section 1 (Concept Overview, ~120 words): 2-3 paragraphs explaining the concept clearly. Set context: where it is used, why it exists, and why it matters today. Weave in at least one speaker quote with attribution and timestamp link.
-Section 2 (Why This Concept Matters, ~120 words): The real problems it solves, business/product/career impact, and what goes wrong when teams ignore it. Reinforce with inline speaker quotes.
-Section 3 (How the Concept Works in Practice, ~160 words): Break down key components, step-by-step flow, metrics or signals, and decision logic. Anchor explanations with inline source callouts.`,
+    guidance: `Section "Concept Overview" (~120 words): 2-3 paragraphs explaining the concept clearly. Set context: where it is used, why it exists, and why it matters today. Attribute ideas to speakers by name (e.g. "As Sarah Tavel explains...") but do NOT include timestamps, URLs, or bracketed references.
+Section "Why This Concept Matters" (~120 words): The real problems it solves, business/product/career impact, and what goes wrong when teams ignore it. Attribute key ideas to speakers by name only.
+Section "How the Concept Works in Practice" (~160 words): Break down key components, step-by-step flow, metrics or signals, and decision logic. Attribute insights to speakers by name only.`,
   },
   {
     id: "B",
     sections: [
-      "4. Real-World Applications",
-      "5. Common Mistakes & Anti-Patterns",
-      "6. Advanced Insights & Nuances",
+      "Real-World Applications",
+      "Common Mistakes & Anti-Patterns",
+      "Advanced Insights & Nuances",
     ],
     wordTarget: 350,
-    guidance: `Section 4 (Real-World Applications, ~130 words): Concrete examples across product teams, growth, leadership, career, team building. Each major example gets a reference link.
-Section 5 (Common Mistakes & Anti-Patterns, ~110 words): Misinterpretations, shallow implementations, what experts warn against. Include at least one direct quote.
-Section 6 (Advanced Insights & Nuances, ~110 words): Tradeoffs, when NOT to use it, scaling complexity, long-term impact. Premium content.`,
+    guidance: `Section "Real-World Applications" (~130 words): Concrete examples across product teams, growth, leadership, career, team building. Attribute to speakers by name only.
+Section "Common Mistakes & Anti-Patterns" (~110 words): Misinterpretations, shallow implementations, what experts warn against. Include speaker quotes attributed by name.
+Section "Advanced Insights & Nuances" (~110 words): Tradeoffs, when NOT to use it, scaling complexity, long-term impact. Premium content.`,
   },
   {
     id: "C",
     sections: [
-      "7. How This Connects to Other Concepts",
-      "8. Key Takeaways (Actionable)",
-      "9. Source References",
+      "How This Connects to Other Concepts",
+      "Key Takeaways",
     ],
-    wordTarget: 250,
-    guidance: `Section 7 (How This Connects, ~80 words): Narrative form - what this concept builds on, enables, or is often confused with.
-Section 8 (Key Takeaways, ~80 words): Bulleted practical summary - when to use, how to start, what to measure. Use checkmark bullets.
-Section 9 (Source References, ~90 words): Clean numbered list of ALL cited speakers/episodes with timestamps and URLs. Format: [N] Speaker - Episode - Timestamp - URL.`,
+    wordTarget: 200,
+    guidance: `Section "How This Connects to Other Concepts" (~100 words): Narrative form - what this concept builds on, enables, or is often confused with. Attribute to speakers by name only.
+Section "Key Takeaways" (~100 words): Bulleted practical summary - when to use, how to start, what to measure.
+DO NOT include a Source References section - references are rendered separately from the database.`,
   },
 ] as const;
 
@@ -341,9 +340,13 @@ async function generateBatch(
     batchDef.guidance,
     "",
     "CRITICAL RULES:",
-    "- Use the EXACT section headings (e.g. '## 1. Concept Overview').",
-    "- Weave interview quotes INLINE between paragraphs, like:",
-    '  As [Speaker] explains at [timestamp]: "quote excerpt..." - [url]',
+    "- Use markdown headings with ## prefix (e.g. '## Concept Overview').",
+    "- DO NOT include section numbers in headings (no '## 1.' or '## 2.').",
+    "- Attribute ideas to speakers by NAME ONLY (e.g. 'As Shreyas Doshi explains...').",
+    "- DO NOT embed URLs, timestamps, or bracketed references like [url=...], [HH:MM:SS], [https://...] in the text.",
+    "- DO NOT include a Source References section. References are stored separately.",
+    "- DO NOT use back-reference numbers like [1], [7] in the text.",
+    "- You may include direct quotes from speakers, attributed by name only.",
     "- Ground all claims in the provided references ONLY. Do not invent.",
     "- Do NOT use em dashes or en dashes. Use hyphen '-' only.",
     "- Lens: product, growth, career, team building, leadership, operations.",

@@ -47,6 +47,16 @@ export default function InsightCard({ insight, isSelected, onSelect }: InsightCa
             <span className={`w-1.5 h-1.5 rounded-full ${signal.dot}`} />
             {SIGNAL_LABELS[insight.signal]}
           </span>
+
+          {/* Bulb icon with count (shown only if count > 0) */}
+          {insight.valuable_count > 0 && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700 ml-auto">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" />
+              </svg>
+              {insight.valuable_count}
+            </span>
+          )}
         </div>
 
         {/* Title */}
@@ -57,11 +67,6 @@ export default function InsightCard({ insight, isSelected, onSelect }: InsightCa
         >
           {insight.title}
         </h3>
-
-        {/* Body — 1-2 line takeaway */}
-        <p className="text-sm md:text-base text-charcoal-600 leading-relaxed line-clamp-2">
-          {insight.takeaway}
-        </p>
       </div>
 
       {/* Footer */}
@@ -98,4 +103,3 @@ export default function InsightCard({ insight, isSelected, onSelect }: InsightCa
     </button>
   )
 }
-

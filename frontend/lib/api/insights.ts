@@ -15,7 +15,7 @@ export async function getInsights(podcastSlug: string): Promise<Insight[]> {
   const { data: insightRows, error: insightsError } = await supabase
     .from('insights')
     .select(
-      'id,title,takeaway,signal,category,theme_label,guest_count,episode_count,explanation,trend,created_at'
+      'id,title,takeaway,signal,category,theme_label,guest_count,episode_count,explanation,trend,valuable_count,created_at'
     )
     .eq('podcast_id', podcast.id)
     .order('guest_count', { ascending: false })
@@ -34,22 +34,24 @@ export async function getInsights(podcastSlug: string): Promise<Insight[]> {
 
   const [{ data: guests }, { data: episodes }] = await Promise.all([
     guestIds.length
-      ? supabase.from('guests').select('id,full_name').in('id', guestIds)
-      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string }> }),
+      ? supabase.from('guests').select('id,full_name,current_role,current_company').in('id', guestIds)
+      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string; current_role: string | null; current_company: string | null }> }),
     episodeIds.length
       ? supabase.from('episodes').select('id,title,youtube_url').in('id', episodeIds)
       : Promise.resolve({ data: [] as Array<{ id: string; title: string; youtube_url: string | null }> }),
   ])
 
-  const guestMap = new Map((guests ?? []).map((g) => [g.id, g.full_name]))
+  const guestMap = new Map((guests ?? []).map((g) => [g.id, { name: g.full_name, role: [g.current_role, g.current_company].filter(Boolean).join(' at ') || undefined }]))
   const episodeMap = new Map((episodes ?? []).map((e) => [e.id, { title: e.title, youtube_url: e.youtube_url }]))
   const evidenceByInsight = new Map<string, Insight['evidence']>()
 
   for (const ev of evidenceRows ?? []) {
     const existing = evidenceByInsight.get(ev.insight_id) ?? []
     const episodeMeta = ev.episode_id ? episodeMap.get(ev.episode_id) : null
+    const guestInfo = ev.guest_id ? guestMap.get(ev.guest_id) : null
     existing.push({
-      guest_name: ev.guest_id ? guestMap.get(ev.guest_id) ?? 'Unknown guest' : 'Unknown guest',
+      guest_name: guestInfo?.name ?? 'Unknown guest',
+      guest_role: guestInfo?.role,
       episode_title: episodeMeta?.title ?? 'Unknown episode',
       episode_url: ev.episode_url ?? episodeMeta?.youtube_url ?? undefined,
       timestamp: ev.timestamp ?? undefined,
@@ -73,6 +75,7 @@ export async function getInsights(podcastSlug: string): Promise<Insight[]> {
       : [],
     evidence: evidenceByInsight.get(row.id) ?? [],
     trend: row.trend ?? undefined,
+    valuable_count: row.valuable_count ?? 0,
     created_at: row.created_at,
   }))
 }

@@ -14,7 +14,7 @@ export async function getConcepts(podcastSlug: string) {
   const { data: conceptRows, error: conceptsError } = await supabase
     .from('concepts')
     .select(
-      'id,title,slug,summary,body,category,theme_label,guest_count,episode_count,created_at'
+      'id,title,slug,summary,body,category,theme_label,guest_count,episode_count,valuable_count,created_at'
     )
     .eq('podcast_id', podcast.id)
     .eq('status', 'published')
@@ -68,6 +68,7 @@ export async function getConcepts(podcastSlug: string) {
     theme_label: row.theme_label ?? undefined,
     guest_count: row.guest_count ?? 0,
     episode_count: row.episode_count ?? 0,
+    valuable_count: row.valuable_count ?? 0,
     created_at: row.created_at,
     references: refsByConcept.get(row.id) ?? [],
   }))

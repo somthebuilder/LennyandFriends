@@ -549,7 +549,7 @@ Deno.serve(async (req: Request) => {
       '      "title": "string",',
       '      "slug": "string (kebab-case)",',
       '      "summary": "string (2-3 sentences)",',
-      '      "body": "string markdown, 400-600 words. Concise overview only. No numbered section headings.",',
+      '      "body": "string markdown, 400-600 words. Concise overview only. No numbered section headings. Do NOT embed URLs, timestamps, or bracketed references in the text. Attribute ideas to speakers by name only (e.g. As Shreyas Doshi explains...). No [url=...], [HH:MM:SS], or [N] back-references.",',
       '      "category": "string (e.g. product, growth, people, leadership, technology, operations, strategy, career)",',
       '      "theme_label": "string (specific theme name)",',
       '      "references": [{"evidence_index": 0, "quote": "direct quote snippet"}]',

@@ -45,12 +45,14 @@ export interface Concept {
   theme_label?: string
   guest_count?: number
   episode_count?: number
+  valuable_count: number
   created_at: string
   references?: ConceptReference[]
 }
 
 export interface InsightReference {
   guest_name: string
+  guest_role?: string
   episode_title: string
   episode_url?: string
   timestamp?: string
@@ -70,6 +72,7 @@ export interface Insight {
   explanation: string[]
   evidence: InsightReference[]
   trend?: InsightTrend
+  valuable_count: number
   created_at: string
 }
 

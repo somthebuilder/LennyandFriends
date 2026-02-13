@@ -13,18 +13,26 @@ export default function ConceptCard({ concept, podcastSlug, previewMode = false 
 
   const content = (
     <div className="space-y-3">
-      {/* Meta */}
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-charcoal-400">
-          Concept
-        </span>
-        <span className="text-charcoal-300">·</span>
-        <span className="text-xs text-charcoal-400">5 min read</span>
-        {previewMode && (
-          <>
-            <span className="text-charcoal-300">·</span>
-            <span className="text-xs text-accent-700">Preview</span>
-          </>
+      {/* Meta row with bulb on the right */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-charcoal-400">5 min read</span>
+          {previewMode && (
+            <>
+              <span className="text-charcoal-300">·</span>
+              <span className="text-xs text-accent-700">Preview</span>
+            </>
+          )}
+        </div>
+
+        {/* Bulb icon with count (shown only if count > 0) */}
+        {concept.valuable_count > 0 && (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" />
+            </svg>
+            {concept.valuable_count}
+          </span>
         )}
       </div>
 
@@ -38,7 +46,7 @@ export default function ConceptCard({ concept, podcastSlug, previewMode = false 
         {concept.summary || concept.body}
       </p>
 
-      {/* Reference Chips — Surface Subtle bg, Secondary ink, no border */}
+      {/* Reference Chips */}
       {concept.references && concept.references.length > 0 && (
         <div className="pt-2 flex flex-wrap gap-2">
           {concept.references.slice(0, 3).map((ref, idx) => (

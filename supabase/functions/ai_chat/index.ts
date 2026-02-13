@@ -17,6 +17,7 @@ const corsHeaders = {
 /* ================================================================== */
 const GEMINI_CHAT_MODEL = "gemini-2.0-flash";
 const GEMINI_EMBED_MODEL = "models/text-embedding-004";
+const OPENAI_EMBED_MODEL = "text-embedding-3-small";
 
 const MAX_INPUT_LENGTH = 500;
 const MAX_CONTEXT_CHUNKS = 8;
@@ -26,7 +27,7 @@ const EMBED_MAX_RETRIES = 3;
 const EMBED_RETRY_DELAY_MS = 800;
 
 // Guardrails
-const DAILY_QUERY_LIMIT = 10;
+const DAILY_QUERY_LIMIT = 5;
 const PER_MINUTE_LIMIT = 5;
 const REPEATED_INPUT_WINDOW_MS = 30_000;
 
@@ -167,6 +168,53 @@ async function embedWithGemini(
 }
 
 /* ================================================================== */
+/*  OPENAI EMBEDDING (fallback — matches stored 1536-dim vectors)      */
+/* ================================================================== */
+async function embedWithOpenAi(
+  apiKey: string,
+  text: string
+): Promise<number[]> {
+  const res = await fetch("https://api.openai.com/v1/embeddings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({ model: OPENAI_EMBED_MODEL, input: [text] }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`OpenAI embedding failed: ${res.status} ${err}`);
+  }
+  const data = await res.json();
+  const embedding = data?.data?.[0]?.embedding as number[] | undefined;
+  if (!embedding?.length) throw new Error("OpenAI embedding response missing values");
+  return embedding;
+}
+
+/* ================================================================== */
+/*  EMBED TEXT (Gemini first, OpenAI fallback)                         */
+/* ================================================================== */
+async function embedText(
+  geminiKey: string | null,
+  openAiKey: string | null,
+  text: string,
+  taskType: "RETRIEVAL_QUERY" | "RETRIEVAL_DOCUMENT" = "RETRIEVAL_QUERY"
+): Promise<number[]> {
+  if (geminiKey) {
+    try {
+      return await embedWithGemini(geminiKey, text, taskType);
+    } catch (geminiErr) {
+      console.error("Gemini embedding failed, trying OpenAI fallback:", geminiErr);
+      if (openAiKey) return await embedWithOpenAi(openAiKey, text);
+      throw geminiErr;
+    }
+  }
+  if (openAiKey) return await embedWithOpenAi(openAiKey, text);
+  throw new Error("No embedding API key available");
+}
+
+/* ================================================================== */
 /*  GEMINI CHAT GENERATION                                             */
 /* ================================================================== */
 async function geminiChat(
@@ -302,6 +350,25 @@ const CLASSIFY_SCHEMA = {
   required: ["needs_clarification", "reason", "clarification_questions"],
 };
 
+// Detect greetings & casual chitchat that have no searchable podcast topic
+const GREETING_PATTERNS: RegExp[] = [
+  /^(?:hey|hi|hello|howdy|yo|sup|hiya|heya)\b/i,
+  /^what'?s?\s*up\b/i,
+  /^how(?:'s|\s+is|\s+are)\s+(?:it|you|things|everything|life)\b/i,
+  /^(?:good\s+)?(?:morning|afternoon|evening)\b/i,
+  /^how\s+(?:are\s+you|do\s+you\s+do)\b/i,
+  /^what\s+is\s+(?:happening|going\s+on|up)\b/i,
+  /^(?:thanks|thank\s+you|thx|cheers)\b/i,
+  /^(?:bye|goodbye|see\s+ya|later)\b/i,
+  /^who\s+are\s+you\b/i,
+  /^tell\s+me\s+about\s+(?:yourself|you)\b/i,
+];
+
+function isGreetingOrChitchat(input: string): boolean {
+  const cleaned = input.replace(/[?.!,]+/g, "").trim();
+  return GREETING_PATTERNS.some((re) => re.test(cleaned));
+}
+
 async function classifyIntent(
   geminiKey: string,
   message: string,
@@ -316,7 +383,21 @@ async function classifyIntent(
     return { needs_clarification: false, reason: "has_history", clarification_questions: [] };
   }
 
-  // If the message has 3+ words, just answer it
+  // Catch greetings & casual chitchat BEFORE word-count check
+  if (isGreetingOrChitchat(message)) {
+    return {
+      needs_clarification: true,
+      reason: "greeting",
+      clarification_questions: [
+        {
+          text: "I'm doing great! I've been absorbing hundreds of conversations with incredible product leaders, founders, and operators — so I'm ready to dig in whenever you are. What's on your mind? I can help with things like product strategy, growth tactics, hiring, leadership, or even book recommendations.",
+          quickReply: "What are the best books?",
+        },
+      ],
+    };
+  }
+
+  // If the message has 3+ words and isn't a greeting, just answer it
   const wordCount = message.trim().split(/\s+/).length;
   if (wordCount >= 3) {
     return { needs_clarification: false, reason: "sufficient_words", clarification_questions: [] };
@@ -380,7 +461,7 @@ const ANSWER_SCHEMA = {
     answer: {
       type: "STRING",
       description:
-        "The complete answer in Bean's voice, with inline speaker attributions and timestamps",
+        "The complete answer in Bean's voice, with inline speaker attributions by name only. Do NOT include timestamps.",
     },
     has_sufficient_evidence: {
       type: "BOOLEAN",
@@ -412,7 +493,7 @@ async function generateAnswer(
     role: "user",
     parts: [
       {
-        text: `Here is relevant context from podcast transcripts:\n\n${context}\n\n---\nUser's question: ${message}\n\nProvide a grounded answer using ONLY the context above. Include speaker names and timestamps inline. If evidence is insufficient, say so honestly.`,
+        text: `Here is relevant context from podcast transcripts:\n\n${context}\n\n---\nUser's question: ${message}\n\nProvide a grounded answer using ONLY the context above. Attribute ideas to speakers by name (e.g. "As Shreyas Doshi explains...") but do NOT include timestamps like (00:41:43) or [00:41:43] in your response text. Timestamps are shown separately in the sources section. If evidence is insufficient, say so honestly.`,
       },
     ],
   });
@@ -594,6 +675,7 @@ Deno.serve(async (req: Request) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const geminiKey = getFirstEnv(["GEMINI_API_KEY", "GOOGLE_API_KEY"]);
+  const openAiKey = getFirstEnv(["OPENAI_API_KEY", "OpenAI_API_KEY"]);
 
   if (!supabaseUrl || !supabaseServiceRoleKey || !geminiKey) {
     return json(500, { error: "Missing required server configuration" });
@@ -733,21 +815,26 @@ Deno.serve(async (req: Request) => {
     classification.needs_clarification &&
     classification.clarification_questions.length > 0
   ) {
-    // Build a natural clarification response in Bean's voice
+    // For greetings, use the pre-written response directly (saves an LLM call)
+    // For other clarifications, build a natural response in Bean's voice
     let clarificationText: string;
-    try {
-      clarificationText = await buildClarificationResponse(
-        geminiKey,
-        message,
-        classification.clarification_questions,
-        conversationHistory
-      );
-    } catch {
-      // Fallback to simple text
-      clarificationText =
-        classification.clarification_questions
-          .map((q) => q.text)
-          .join(" Also, ");
+    if (classification.reason === "greeting") {
+      clarificationText = classification.clarification_questions[0].text;
+    } else {
+      try {
+        clarificationText = await buildClarificationResponse(
+          geminiKey,
+          message,
+          classification.clarification_questions,
+          conversationHistory
+        );
+      } catch {
+        // Fallback to simple text
+        clarificationText =
+          classification.clarification_questions
+            .map((q) => q.text)
+            .join(" Also, ");
+      }
     }
 
     // Clarifications do NOT consume a credit
@@ -780,10 +867,10 @@ Deno.serve(async (req: Request) => {
   await incrementUsage(supabase, userKey, usage, inputHash);
   const newCreditsRemaining = creditsRemaining - 1;
 
-  // Embed the query
+  // Embed the query (Gemini first, OpenAI fallback to match stored 1536-dim vectors)
   let queryEmbedding: number[];
   try {
-      queryEmbedding = await embedWithGemini(geminiKey, message, "RETRIEVAL_QUERY");
+      queryEmbedding = await embedText(geminiKey, openAiKey, message, "RETRIEVAL_QUERY");
   } catch (err) {
     await logUsage(supabase, {
         userKey,

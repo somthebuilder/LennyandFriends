@@ -90,6 +90,7 @@ export async function getDryRunPreview(
     guest_count: asNumber(item.guest_count),
     episode_count: asNumber(item.episode_count),
     created_at: asString(item.created_at, new Date().toISOString()),
+    valuable_count: asNumber(item.valuable_count),
     references: Array.isArray(item.references)
       ? item.references.map((ref) => ({
           guest_name: asString((ref as Record<string, unknown>).guest_name, 'Unknown guest'),
@@ -130,6 +131,7 @@ export async function getDryRunPreview(
       ? asString(item.trend)
       : undefined) as Insight['trend'],
     created_at: asString(item.created_at, new Date().toISOString()),
+    valuable_count: asNumber(item.valuable_count),
   }))
 
   return {

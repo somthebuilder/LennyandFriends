@@ -10,6 +10,19 @@ import { sendMessage, ConversationTurn } from '@/lib/api/chat'
 import { ChatMessage, ClarificationQuestion } from '@/lib/types/rag'
 import { useSpeechToText } from '@/hooks/useSpeechToText'
 import BeanAnimation from '@/components/BeanAnimation'
+import ReactMarkdown from 'react-markdown'
+import { supabase } from '@/lib/supabase'
+
+/* ── Helper: get or create a stable voter ID (matches podcast voting pattern) ── */
+function getVoterId(): string {
+  if (typeof window === 'undefined') return ''
+  let id = localStorage.getItem('espresso_voter_id')
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem('espresso_voter_id', id)
+  }
+  return id
+}
 
 type TabId = 'insights' | 'concepts' | 'chat'
 
@@ -49,6 +62,11 @@ export default function PodcastTabs({
   const [activeTab, setActiveTab] = useState<TabId>(initialTab ?? 'insights')
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [insightFilter, setInsightFilter] = useState<'all' | 'most_valuable'>('all')
+  // Track updated valuable counts from user interactions
+  const [valuableCounts, setValuableCounts] = useState<Record<string, number>>({})
+  // Track which insights this voter has already marked as valuable
+  const [votedInsightIds, setVotedInsightIds] = useState<Set<string>>(new Set())
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -85,6 +103,22 @@ export default function PodcastTabs({
     }
   }, [messages, isChatLoading])
 
+  // Fetch which insights this voter has already marked as valuable
+  useEffect(() => {
+    if (!insights.length) return
+    const voterId = getVoterId()
+    if (!voterId) return
+    supabase
+      .from('insight_valuable_votes')
+      .select('insight_id')
+      .eq('voter_id', voterId)
+      .then(({ data }) => {
+        if (data) {
+          setVotedInsightIds(new Set(data.map((v) => v.insight_id)))
+        }
+      })
+  }, [insights])
+
   function syncTabToUrl(tabId: TabId) {
     if (typeof window === 'undefined') return
     const url = new URL(window.location.href)
@@ -103,6 +137,38 @@ export default function PodcastTabs({
     handleTabChange('chat')
     setChatInput(`Tell me more about: "${insightTitle}"`)
   }
+
+  // Handle valuable vote from InsightBreakdown (uses same pattern as podcast request voting)
+  async function handleInsightVote(insightId: string): Promise<boolean> {
+    const voterId = getVoterId()
+    if (!voterId || votedInsightIds.has(insightId)) return false
+
+    const { data, error } = await supabase.rpc('vote_insight_valuable', {
+      p_insight_id: insightId,
+      p_voter_id: voterId,
+    })
+
+    if (!error && data === true) {
+      setVotedInsightIds((prev) => new Set(prev).add(insightId))
+      setValuableCounts((prev) => {
+        const current = prev[insightId] ?? insights.find((i) => i.id === insightId)?.valuable_count ?? 0
+        return { ...prev, [insightId]: current + 1 }
+      })
+      return true
+    }
+    return false
+  }
+
+  // Build insights with updated valuable counts
+  const insightsWithCounts = insights.map((i) => ({
+    ...i,
+    valuable_count: valuableCounts[i.id] ?? i.valuable_count,
+  }))
+
+  // Filter insights based on selected filter
+  const filteredInsights = insightFilter === 'most_valuable'
+    ? [...insightsWithCounts].filter((i) => i.valuable_count > 0).sort((a, b) => b.valuable_count - a.valuable_count)
+    : insightsWithCounts
 
   const insightStorageKey = `espresso_last_insight_${podcastSlug}`
   const tabStorageKey = `espresso_last_tab_${podcastSlug}`
@@ -358,11 +424,44 @@ export default function PodcastTabs({
               </div>
             ) : (
               <>
+                {/* Filter pills: All / Most Valuable */}
+                <div className="flex items-center gap-2 mb-5">
+                  <button
+                    onClick={() => setInsightFilter('all')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      insightFilter === 'all'
+                        ? 'bg-charcoal-900 text-white shadow-sm'
+                        : 'bg-cream-100 text-charcoal-600 hover:bg-cream-200'
+                    }`}
+                  >
+                    All
+                    <span className={`ml-1.5 ${insightFilter === 'all' ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
+                      {insightsWithCounts.length}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setInsightFilter('most_valuable')}
+                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      insightFilter === 'most_valuable'
+                        ? 'bg-charcoal-900 text-white shadow-sm'
+                        : 'bg-cream-100 text-charcoal-600 hover:bg-cream-200'
+                    }`}
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                      <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" />
+                    </svg>
+                    Most Valuable
+                    <span className={`${insightFilter === 'most_valuable' ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
+                      {insightsWithCounts.filter((i) => i.valuable_count > 0).length}
+                    </span>
+                  </button>
+                </div>
+
                 {/* Desktop: 2-column, Mobile: single column with modal */}
                 <div className="hidden lg:grid lg:grid-cols-5 lg:gap-6">
                   {/* Left: Insight Feed */}
                   <div className="lg:col-span-2 space-y-3">
-                    {insights.map((insight) => (
+                    {filteredInsights.map((insight) => (
                       <InsightCard
                         key={insight.id}
                         insight={insight}
@@ -380,7 +479,12 @@ export default function PodcastTabs({
                     >
                     {selectedInsight ? (
                       <InsightBreakdown
-                        insight={selectedInsight}
+                        insight={{
+                          ...selectedInsight,
+                          valuable_count: valuableCounts[selectedInsight.id] ?? selectedInsight.valuable_count,
+                        }}
+                        isVoted={votedInsightIds.has(selectedInsight.id)}
+                        onVote={handleInsightVote}
                         onClose={() => setSelectedInsight(null)}
                         onDiscussInChat={handleDiscussInChat}
                       />
@@ -414,7 +518,7 @@ export default function PodcastTabs({
                 {/* Mobile: Single column feed + full-screen breakdown */}
                 <div className="lg:hidden space-y-3">
                   {!selectedInsight ? (
-                    insights.map((insight) => (
+                    filteredInsights.map((insight) => (
                       <InsightCard
                         key={insight.id}
                         insight={insight}
@@ -451,7 +555,12 @@ export default function PodcastTabs({
                       </div>
                       <div className="pt-4">
                         <InsightBreakdown
-                          insight={selectedInsight}
+                          insight={{
+                            ...selectedInsight,
+                            valuable_count: valuableCounts[selectedInsight.id] ?? selectedInsight.valuable_count,
+                          }}
+                          isVoted={votedInsightIds.has(selectedInsight.id)}
+                          onVote={handleInsightVote}
                           onClose={() => {
                             setSelectedInsight(null)
                             if (typeof window !== 'undefined') {
@@ -721,8 +830,21 @@ export default function PodcastTabs({
                     </div>
                   </div>
                   {creditsRemaining !== null && creditsTotal !== null && (
-                    <div className="text-[11px] text-charcoal-400 pt-1">
-                      {creditsRemaining}/{creditsTotal} questions remaining today
+                    <div className="flex items-center gap-1.5 pt-1">
+                      <div className="flex gap-0.5">
+                        {Array.from({ length: creditsTotal }).map((_, i) => (
+                          <img
+                            key={i}
+                            src={i < creditsRemaining ? '/beansfilled.svg' : '/beanempty.svg'}
+                            alt=""
+                            className="w-3.5 h-3.5 transition-opacity"
+                            style={{ opacity: i < creditsRemaining ? 1 : 0.35 }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[11px] text-charcoal-400">
+                        {creditsRemaining}/{creditsTotal} questions remaining today
+                      </span>
                     </div>
                   )}
                 </div>
@@ -735,10 +857,10 @@ export default function PodcastTabs({
                     }`}
                   >
                     <div
-                      className={`max-w-[85%] ${
+                      className={`${
                         msg.role === 'user'
-                          ? 'bg-charcoal-900 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm'
-                          : 'w-full'
+                          ? 'max-w-[85%] bg-charcoal-900 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm'
+                          : 'w-full max-w-none'
                       }`}
                     >
                       {msg.role === 'user' ? (
@@ -751,16 +873,22 @@ export default function PodcastTabs({
                             <span className="text-xs font-semibold text-charcoal-600">
                               Bean
                             </span>
-                            {msg.needs_clarification && (
-                              <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded-full font-medium">
-                                Needs more context
-                              </span>
-                            )}
+                            {/* Badge removed — quick-reply chips already signal Bean needs more context */}
                           </div>
 
-                          {/* Answer text */}
-                          <div className="text-sm text-charcoal-700 leading-relaxed whitespace-pre-wrap">
-                            {msg.content}
+                          {/* Answer text — strip inline timestamps, render markdown */}
+                          <div className="text-sm text-charcoal-700 leading-relaxed prose prose-sm prose-charcoal max-w-none
+                            prose-p:my-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5
+                            prose-strong:text-charcoal-900 prose-strong:font-semibold
+                            prose-headings:text-charcoal-800 prose-headings:font-semibold prose-headings:mt-3 prose-headings:mb-1
+                            prose-a:text-accent-600 prose-a:no-underline hover:prose-a:underline">
+                            <ReactMarkdown>
+                              {msg.content
+                                .replace(/\s*\(?\d{1,2}:\d{2}:\d{2}\)?\s*/g, ' ')
+                                .replace(/\s*\[\d{1,2}:\d{2}:\d{2}\]\s*/g, ' ')
+                                .replace(/  +/g, ' ')
+                                .trim()}
+                            </ReactMarkdown>
                           </div>
 
                           {/* Quick reply chips for clarification */}
@@ -784,80 +912,68 @@ export default function PodcastTabs({
                               </div>
                             )}
 
-                          {/* Source references with deep links */}
-                          {msg.references && msg.references.length > 0 && (
-                            <div className="bg-cream-100/80 rounded-lg p-3 space-y-2 mt-2">
-                              <div className="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">
-                                Sources
-                              </div>
-                              <div className="grid gap-2 sm:grid-cols-2">
-                                {msg.references.map((ref, idx) => {
-                                  const clickable = deepLink(
-                                    ref.episode_url,
-                                    ref.time_seconds
-                                  )
-                                  const label =
-                                    formatSeconds(ref.time_seconds) ??
-                                    ref.timestamp ??
-                                    null
-                                  return (
-                                    <div
-                                      key={idx}
-                                      className="flex items-start gap-2 text-[11px]"
-                                    >
-                                      <span className="text-charcoal-400 mt-0.5 font-mono">
-                                        [{idx + 1}]
-                                      </span>
-                                      <div className="min-w-0">
-                                        <span className="font-medium text-charcoal-700">
-                                          {ref.guest_name}
-                                        </span>
-                                        <span className="text-charcoal-300">
-                                          {' '}
-                                          ·{' '}
-                                        </span>
-                                        <span className="text-charcoal-500 truncate">
-                                          {ref.episode_title}
-                                        </span>
-                                        {label && (
-                                          <span className="text-charcoal-400 font-mono ml-1">
-                                            @{label}
+                          {/* Source references — compact clickable cards */}
+                          {msg.references && msg.references.length > 0 && (() => {
+                            // Deduplicate by guest_name + episode_title
+                            const seen = new Set<string>()
+                            const unique = msg.references!.filter((ref) => {
+                              const key = `${ref.guest_name}::${ref.episode_title}`
+                              if (seen.has(key)) return false
+                              seen.add(key)
+                              return true
+                            })
+                            return (
+                              <div className="space-y-2 mt-3">
+                                <p className="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">
+                                  Sources
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                  {unique.map((ref, idx) => {
+                                    const url = deepLink(ref.episode_url, ref.time_seconds)
+                                    const ts = formatSeconds(ref.time_seconds) ?? ref.timestamp ?? null
+                                    const Tag = url ? 'a' : 'div'
+                                    const linkProps = url
+                                      ? { href: url, target: '_blank' as const, rel: 'noopener noreferrer' }
+                                      : {}
+                                    return (
+                                      <Tag
+                                        key={idx}
+                                        {...linkProps}
+                                        className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border text-[11px] leading-tight transition-colors ${
+                                          url
+                                            ? 'border-charcoal-200/60 bg-white hover:bg-cream-50 hover:border-accent-300 cursor-pointer'
+                                            : 'border-charcoal-100 bg-cream-50'
+                                        }`}
+                                      >
+                                        {/* Play icon for linked sources */}
+                                        {url && (
+                                          <svg className="w-3.5 h-3.5 text-accent-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z" />
+                                          </svg>
+                                        )}
+                                        <span className="min-w-0">
+                                          <span className="font-semibold text-charcoal-800">{ref.guest_name}</span>
+                                          {ts && (
+                                            <span className="text-charcoal-400 font-mono ml-1">{ts}</span>
+                                          )}
+                                          <span className="block text-charcoal-500 truncate max-w-[220px] sm:max-w-[280px]">
+                                            {ref.episode_title}
                                           </span>
+                                        </span>
+                                        {url && (
+                                          <svg className="w-3 h-3 text-charcoal-300 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                            <polyline points="15 3 21 3 21 9" />
+                                            <line x1="10" y1="14" x2="21" y2="3" />
+                                          </svg>
                                         )}
-                                        {clickable && (
-                                          <a
-                                            href={clickable}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-0.5 ml-1 text-accent-700 hover:text-accent-600"
-                                          >
-                                            <svg
-                                              className="w-3 h-3"
-                                              viewBox="0 0 24 24"
-                                              fill="none"
-                                              stroke="currentColor"
-                                              strokeWidth="2"
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                            >
-                                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                              <polyline points="15 3 21 3 21 9" />
-                                              <line
-                                                x1="10"
-                                                y1="14"
-                                                x2="21"
-                                                y2="3"
-                                              />
-                                            </svg>
-                                          </a>
-                                        )}
-                                      </div>
-                                    </div>
-                                  )
-                                })}
+                                      </Tag>
+                                    )
+                                  })}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )
+                          })()}
                         </div>
                       )}
                     </div>
@@ -899,13 +1015,12 @@ export default function PodcastTabs({
                   <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
                       {Array.from({ length: creditsTotal }).map((_, i) => (
-                        <div
+                        <img
                           key={i}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            i < creditsRemaining
-                              ? 'bg-amber-400'
-                              : 'bg-charcoal-200'
-                          }`}
+                          src={i < creditsRemaining ? '/beansfilled.svg' : '/beanempty.svg'}
+                          alt=""
+                          className="w-4 h-4 transition-opacity"
+                          style={{ opacity: i < creditsRemaining ? 1 : 0.35 }}
                         />
                       ))}
                     </div>

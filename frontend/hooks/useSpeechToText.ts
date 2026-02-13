@@ -59,7 +59,12 @@ function getSpeechRecognition(): SpeechRecognitionConstructor | null {
 export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeechToTextReturn {
   const { silenceTimeout = 3, maxDuration = 120 } = options
 
-  const [isSupported] = useState(() => getSpeechRecognition() !== null)
+  const [isSupported, setIsSupported] = useState(false)
+
+  // Detect browser support after mount to avoid SSR hydration mismatch
+  useEffect(() => {
+    setIsSupported(getSpeechRecognition() !== null)
+  }, [])
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState('')
   const [elapsed, setElapsed] = useState(0)

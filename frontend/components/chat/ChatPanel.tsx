@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { sendMessage, ChatMessage } from '@/lib/api/chat'
 import { useSpeechToText } from '@/hooks/useSpeechToText'
+import ReactMarkdown from 'react-markdown'
 
 export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
   const [open, setOpen] = useState(false)
@@ -188,8 +189,17 @@ export default function ChatPanel({ podcastSlug }: { podcastSlug: string }) {
                       <p className="font-sans">{msg.content}</p>
                     ) : (
                       <div className="space-y-3">
-                        <div className="text-sm text-charcoal-700 leading-relaxed">
-                          <p>{msg.content}</p>
+                        <div className="text-sm text-charcoal-700 leading-relaxed prose prose-sm prose-charcoal max-w-none
+                          prose-p:my-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5
+                          prose-strong:text-charcoal-900 prose-strong:font-semibold
+                          prose-a:text-accent-600 prose-a:no-underline hover:prose-a:underline">
+                          <ReactMarkdown>
+                            {msg.content
+                              .replace(/\s*\(?\d{1,2}:\d{2}:\d{2}\)?\s*/g, ' ')
+                              .replace(/\s*\[\d{1,2}:\d{2}:\d{2}\]\s*/g, ' ')
+                              .replace(/  +/g, ' ')
+                              .trim()}
+                          </ReactMarkdown>
                         </div>
                         {msg.references && msg.references.length > 0 && (
                           <div className="bg-cream-100 rounded-lg p-2.5 space-y-1.5">
