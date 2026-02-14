@@ -10,73 +10,47 @@ interface AuthModalProps {
   initialMode?: 'signin' | 'signup'
 }
 
-export default function AuthModal({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) {
-  const [mode, setMode] = useState<'signin' | 'signup'>(initialMode)
+export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
-  const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [role, setRole] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   if (!isOpen) return null
 
   const resetForm = () => {
     setEmail('')
-    setPassword('')
     setFullName('')
-    setAgreedToTerms(false)
+    setRole('')
     setError(null)
-    setSuccess(null)
+    setSuccess(false)
   }
 
-  const switchMode = (newMode: 'signin' | 'signup') => {
-    setMode(newMode)
-    resetForm()
-  }
-
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!agreedToTerms) {
-      setError('Please agree to the Terms of Service and Privacy Policy.')
-      return
-    }
     setLoading(true)
     setError(null)
 
-    const { error: signUpError } = await supabase.auth.signUp({
+    const redirectTo = `${window.location.origin}/auth/callback`
+
+    const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: {
-        data: { full_name: fullName },
+        emailRedirectTo: redirectTo,
+        data: {
+          ...(fullName ? { full_name: fullName } : {}),
+          ...(role ? { role } : {}),
+        },
       },
     })
 
-    if (signUpError) {
-      setError(signUpError.message)
+    if (otpError) {
+      setError(otpError.message)
     } else {
       if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
-      setSuccess('Check your email to confirm your account.')
-    }
-    setLoading(false)
-  }
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (signInError) {
-      setError(signInError.message)
-    } else {
-      if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
-      onClose()
+      setSuccess(true)
     }
     setLoading(false)
   }
@@ -86,14 +60,14 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'signup' }: A
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-charcoal-900/40 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={() => { resetForm(); onClose() }}
       />
 
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-xl border border-charcoal-200 w-full max-w-md p-8 animate-slide-up">
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={() => { resetForm(); onClose() }}
           className="absolute top-4 right-4 text-charcoal-400 hover:text-charcoal-600 transition-colors"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -109,52 +83,66 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'signup' }: A
             <span className="font-cafe italic text-xl text-espresso-700">espresso</span>
           </div>
           <p className="text-sm text-charcoal-500">
-            {mode === 'signup' ? 'Create your account' : 'Welcome back'}
+            {success ? 'Check your inbox' : 'Sign in with a magic link'}
           </p>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="flex mb-6 bg-charcoal-50 rounded-lg p-1">
-          <button
-            onClick={() => switchMode('signup')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              mode === 'signup'
-                ? 'bg-white text-charcoal-900 shadow-sm'
-                : 'text-charcoal-500 hover:text-charcoal-700'
-            }`}
-          >
-            Sign Up
-          </button>
-          <button
-            onClick={() => switchMode('signin')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              mode === 'signin'
-                ? 'bg-white text-charcoal-900 shadow-sm'
-                : 'text-charcoal-500 hover:text-charcoal-700'
-            }`}
-          >
-            Sign In
-          </button>
-        </div>
-
-        {/* Error / Success */}
+        {/* Error */}
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
             {error}
           </div>
         )}
+
+        {/* Success state */}
         {success && (
-          <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-700">
-            {success}
+          <div className="text-center space-y-4">
+            <div className="mx-auto w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-charcoal-800 mb-1">
+                Magic link sent to
+              </p>
+              <p className="text-sm font-semibold text-espresso-600">{email}</p>
+            </div>
+            <p className="text-xs text-charcoal-500 leading-relaxed max-w-xs mx-auto">
+              Click the link in the email to sign in. You can close this modal - you&apos;ll be signed in automatically when you click the link.
+            </p>
+            <button
+              onClick={() => { resetForm(); onClose() }}
+              className="text-xs font-medium text-charcoal-500 hover:text-espresso-600 transition-colors"
+            >
+              Close
+            </button>
           </div>
         )}
 
-        {/* Sign Up Form */}
-        {mode === 'signup' && !success && (
-          <form onSubmit={handleSignUp} className="space-y-4">
+        {/* Magic Link Form */}
+        {!success && (
+          <form onSubmit={handleMagicLink} className="space-y-4">
+            <div>
+              <label htmlFor="magicEmail" className="block text-sm font-medium text-charcoal-700 mb-1.5">
+                Email
+              </label>
+              <input
+                id="magicEmail"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@company.com"
+                required
+                autoFocus
+                className="input-editorial"
+                disabled={loading}
+              />
+            </div>
+
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-charcoal-700 mb-1.5">
-                Full Name
+                Name <span className="text-charcoal-400 font-normal">(optional)</span>
               </label>
               <input
                 id="fullName"
@@ -162,103 +150,21 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'signup' }: A
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Jane Doe"
-                required
-                className="input-editorial"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="signupEmail" className="block text-sm font-medium text-charcoal-700 mb-1.5">
-                Email
-              </label>
-              <input
-                id="signupEmail"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                required
-                className="input-editorial"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="signupPassword" className="block text-sm font-medium text-charcoal-700 mb-1.5">
-                Password
-              </label>
-              <input
-                id="signupPassword"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 6 characters"
-                required
-                minLength={6}
                 className="input-editorial"
                 disabled={loading}
               />
             </div>
 
-            {/* Terms & Privacy */}
-            <div className="flex items-start gap-3">
-              <input
-                id="terms"
-                type="checkbox"
-                checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-charcoal-300 text-charcoal-900 focus:ring-charcoal-900/20"
-              />
-              <label htmlFor="terms" className="text-xs text-charcoal-600 leading-relaxed">
-                I agree to the{' '}
-                <Link href="/terms" target="_blank" className="text-charcoal-800 underline underline-offset-2 hover:text-accent-600 transition-colors">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link href="/privacy" target="_blank" className="text-charcoal-800 underline underline-offset-2 hover:text-accent-600 transition-colors">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || !agreedToTerms}
-              className="btn-primary w-full"
-            >
-              {loading ? 'Creating account…' : 'Create Account'}
-            </button>
-          </form>
-        )}
-
-        {/* Sign In Form */}
-        {mode === 'signin' && (
-          <form onSubmit={handleSignIn} className="space-y-4">
             <div>
-              <label htmlFor="signinEmail" className="block text-sm font-medium text-charcoal-700 mb-1.5">
-                Email
+              <label htmlFor="role" className="block text-sm font-medium text-charcoal-700 mb-1.5">
+                What do you do? <span className="text-charcoal-400 font-normal">(optional)</span>
               </label>
               <input
-                id="signinEmail"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                required
-                className="input-editorial"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label htmlFor="signinPassword" className="block text-sm font-medium text-charcoal-700 mb-1.5">
-                Password
-              </label>
-              <input
-                id="signinPassword"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Your password"
-                required
+                id="role"
+                type="text"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                placeholder="e.g. Product Manager at Stripe"
                 className="input-editorial"
                 disabled={loading}
               />
@@ -269,13 +175,22 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'signup' }: A
               disabled={loading}
               className="btn-primary w-full"
             >
-              {loading ? 'Signing in…' : 'Sign In'}
+              {loading ? 'Sending link…' : 'Send Magic Link'}
             </button>
+
+            <p className="text-[11px] text-charcoal-400 text-center leading-relaxed">
+              By continuing, you agree to the{' '}
+              <Link href="/terms" target="_blank" className="text-charcoal-600 underline underline-offset-2 hover:text-accent-600 transition-colors">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link href="/privacy" target="_blank" className="text-charcoal-600 underline underline-offset-2 hover:text-accent-600 transition-colors">
+                Privacy Policy
+              </Link>
+            </p>
           </form>
         )}
-
       </div>
     </div>
   )
 }
-

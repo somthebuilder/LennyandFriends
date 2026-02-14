@@ -5,6 +5,8 @@ import ConceptBody from '@/components/concepts/ConceptBody'
 import { getConceptBySlug } from '@/lib/api/concepts'
 import { extractBodyReferences, mergeReferences } from '@/lib/extract-body-references'
 
+export const revalidate = 300
+
 function formatSeconds(seconds?: number): string | null {
   if (typeof seconds !== 'number' || Number.isNaN(seconds) || seconds < 0) return null
   const hrs = Math.floor(seconds / 3600)
@@ -109,7 +111,7 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
 
       <article className="flex-1">
         {/* Sticky back + title + bulb */}
-        <div className="sticky top-[7.5rem] z-20 border-b border-charcoal-200/50 bg-cream-50/95 backdrop-blur-md">
+        <div className="sticky top-[5.75rem] z-20 border-b border-charcoal-200/50 bg-cream-50/95 backdrop-blur-md">
           <div className="max-w-5xl mx-auto px-4 md:px-6 py-2">
             <div className="grid grid-cols-[40px_1fr_auto] items-center gap-3">
               <Link
@@ -128,7 +130,7 @@ export default async function ConceptPage({ params }: { params: { 'podcast-slug'
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-10 space-y-6 md:space-y-8">
+        <div className="max-w-3xl mx-auto px-4 md:px-6 py-3 md:py-5 space-y-5 md:space-y-6">
           {/* Title section — responsive sizing */}
           <div className="space-y-4 md:space-y-6">
             {(concept.theme_label || concept.category) && (

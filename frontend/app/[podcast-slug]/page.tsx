@@ -5,7 +5,8 @@ import { getInsights } from '@/lib/api/insights'
 import { getDryRunPreview } from '@/lib/api/preview'
 import type { Concept, Insight } from '@/lib/types/rag'
 
-export const dynamic = 'force-dynamic'
+// Revalidate every 5 minutes — balances freshness with speed
+export const revalidate = 300
 
 type PodcastPageProps = {
   params: { 'podcast-slug': string }

@@ -79,16 +79,7 @@ export default function InsightCard({ insight, isSelected, onSelect }: InsightCa
               <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            <span className="font-medium text-charcoal-500">{insight.guest_count}</span> guests
-          </span>
-          <span className="text-charcoal-300">·</span>
-          <span className="flex items-center gap-1">
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 11a9 9 0 0 1 9 9" />
-              <path d="M4 4a16 16 0 0 1 16 16" />
-              <circle cx="5" cy="19" r="1" />
-            </svg>
-            <span className="font-medium text-charcoal-500">{insight.episode_count}</span> episodes
+            <span className="font-medium text-charcoal-500">{insight.guest_count}</span> guest{insight.guest_count !== 1 ? 's' : ''}
           </span>
         </div>
 

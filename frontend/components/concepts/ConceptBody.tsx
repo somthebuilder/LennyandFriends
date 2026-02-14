@@ -56,6 +56,20 @@ function cleanLine(line: string): string {
   return cleaned.trim()
 }
 
+/** Strip the word "Concept" from common AI-generated section headings */
+function cleanHeading(text: string): string {
+  let h = text
+  // "Concept Overview" → "Overview"
+  h = h.replace(/^Concept\s+/i, '')
+  // "Why This Concept Matters" → "Why This Matters"
+  h = h.replace(/\bThis Concept\b/i, 'This')
+  // "How the Concept Works in Practice" → "How It Works in Practice"
+  h = h.replace(/\bthe Concept Works\b/i, 'It Works')
+  h = h.replace(/\bthe Concept\b/ig, 'It')
+  // "Understanding the Concept" → "Understanding It" (catch-all)
+  return h.trim()
+}
+
 /** Parse the concept body into structured blocks */
 interface Block {
   type: 'heading' | 'paragraph' | 'quote' | 'bullet-list' | 'numbered-list'
@@ -97,7 +111,7 @@ function parseBody(body: string): Block[] {
     const headingMatch = line.match(/^(#{1,4})\s*(?:\d+\.\s*)?(.+)$/)
     if (headingMatch) {
       flushList()
-      const cleaned = cleanLine(headingMatch[2])
+      const cleaned = cleanHeading(cleanLine(headingMatch[2]))
       if (cleaned) {
         blocks.push({
           type: 'heading',

@@ -12,6 +12,8 @@ import { useSpeechToText } from '@/hooks/useSpeechToText'
 import BeanAnimation from '@/components/BeanAnimation'
 import ReactMarkdown from 'react-markdown'
 import { supabase } from '@/lib/supabase'
+import AuthModal from '@/components/AuthModal'
+import type { User } from '@supabase/supabase-js'
 
 /* ── Helper: get or create a stable voter ID (matches podcast voting pattern) ── */
 function getVoterId(): string {
@@ -79,6 +81,10 @@ export default function PodcastTabs({
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const breakdownRef = useRef<HTMLDivElement>(null)
 
+  // Auth state for chat gating
+  const [user, setUser] = useState<User | null>(null)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+
   // Speech-to-text
   const {
     isSupported: sttSupported,
@@ -119,6 +125,15 @@ export default function PodcastTabs({
       })
   }, [insights])
 
+  // Track auth state for chat gating
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   function syncTabToUrl(tabId: TabId) {
     if (typeof window === 'undefined') return
     const url = new URL(window.location.href)
@@ -148,7 +163,12 @@ export default function PodcastTabs({
       p_voter_id: voterId,
     })
 
-    if (!error && data === true) {
+    if (error) {
+      console.error('[vote_insight_valuable] RPC error:', error.message, { insightId, voterId })
+      return false
+    }
+
+    if (data === true) {
       setVotedInsightIds((prev) => new Set(prev).add(insightId))
       setValuableCounts((prev) => {
         const current = prev[insightId] ?? insights.find((i) => i.id === insightId)?.valuable_count ?? 0
@@ -405,7 +425,7 @@ export default function PodcastTabs({
             INSIGHTS TAB
            ════════════════════════════════════════ */}
         {activeTab === 'insights' && (
-          <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8">
+          <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 md:py-5">
             {previewMode && (
               <div className="mb-4 text-xs text-charcoal-500 bg-cream-100 border border-charcoal-200 rounded-lg px-3 py-2">
                 Showing temporary dry-run insights preview. These are not saved
@@ -528,7 +548,7 @@ export default function PodcastTabs({
                   ) : (
                     <div className="animate-slide-up">
                       {/* Sticky back button for mobile */}
-                      <div className="sticky top-[6.5rem] z-20 -mx-4 px-4 py-3 bg-cream-50/95 backdrop-blur-sm border-b border-charcoal-100">
+                      <div className="sticky top-[5.75rem] z-20 -mx-4 px-4 py-2.5 bg-cream-50/95 backdrop-blur-sm border-b border-charcoal-100">
                         <button
                           onClick={() => {
                             setSelectedInsight(null)
@@ -599,7 +619,7 @@ export default function PodcastTabs({
             : concepts
 
           return (
-            <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8">
+            <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 md:py-5">
               {previewMode && (
                 <div className="mb-4 text-xs text-charcoal-500 bg-cream-100 border border-charcoal-200 rounded-lg px-3 py-2">
                   Showing temporary dry-run concepts preview. Open concept links
@@ -735,7 +755,7 @@ export default function PodcastTabs({
            ════════════════════════════════════════ */}
         {activeTab === 'chat' && (
           <div
-            className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col"
+            className="max-w-3xl mx-auto px-4 md:px-6 py-3 md:py-5 flex flex-col"
             style={{ minHeight: 'calc(100vh - 10rem)' }}
           >
             {/* Context pin (from insight discussion) */}
@@ -785,50 +805,65 @@ export default function PodcastTabs({
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 px-6 py-12">
                   {/* Bean avatar */}
-                  <BeanAnimation size={56} />
+                  <BeanAnimation size={84} />
                   <p className="text-[14px] text-charcoal-600 max-w-sm leading-relaxed">
                     I&apos;m a <span className="font-serif font-semibold">living Bean</span> trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
                   </p>
-                  <div className="w-full max-w-sm space-y-2 pt-2">
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-charcoal-400">Try something specific</p>
-                    <div className="flex flex-wrap justify-center gap-2">
+                  {user ? (
+                    <div className="w-full max-w-sm space-y-2 pt-2">
+                      <p className="text-[10px] font-medium uppercase tracking-wider text-charcoal-400">Try something specific</p>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setChatInput('What does Shreyas Doshi say about high-leverage work for PMs?')}
+                          className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        >
+                          Shreyas Doshi on high-leverage PM work
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setChatInput('How did Airbnb recover growth after COVID?')}
+                          className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        >
+                          Airbnb&apos;s post-COVID growth
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setChatInput('What books do guests recommend most for product managers?')}
+                          className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        >
+                          Top books for PMs
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setChatInput('Where do guests disagree on when to use data vs. intuition?')}
+                          className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        >
+                          Data vs. intuition debates
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setChatInput('What frameworks do guests use for prioritization?')}
+                          className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        >
+                          Prioritization frameworks
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-full max-w-sm space-y-4 pt-4">
+                      <div className="h-px bg-charcoal-200/50 w-12 mx-auto" />
+                      <p className="text-[13px] text-charcoal-500">
+                        Sign in to start chatting with Bean
+                      </p>
                       <button
-                        type="button"
-                        onClick={() => setChatInput('What does Shreyas Doshi say about high-leverage work for PMs?')}
-                        className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
+                        onClick={() => { setShowAuthModal(true) }}
+                        className="btn-primary text-sm"
                       >
-                        Shreyas Doshi on high-leverage PM work
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setChatInput('How did Airbnb recover growth after COVID?')}
-                        className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
-                      >
-                        Airbnb&apos;s post-COVID growth
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setChatInput('What books do guests recommend most for product managers?')}
-                        className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
-                      >
-                        Top books for PMs
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setChatInput('Where do guests disagree on when to use data vs. intuition?')}
-                        className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
-                      >
-                        Data vs. intuition debates
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setChatInput('What frameworks do guests use for prioritization?')}
-                        className="text-xs px-3 py-1.5 rounded-full bg-cream-100 text-charcoal-600 hover:bg-cream-200 transition-colors text-left"
-                      >
-                        Prioritization frameworks
+                        Sign In
                       </button>
                     </div>
-                  </div>
+                  )}
                   {creditsRemaining !== null && creditsTotal !== null && (
                     <div className="flex items-center gap-1.5 pt-1">
                       <div className="flex gap-0.5">
@@ -1008,113 +1043,43 @@ export default function PodcastTabs({
             </div>
 
             {/* Input area */}
-            <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0 z-50">
-              {/* Credits display */}
-              {creditsRemaining !== null && creditsTotal !== null && (
-                <div className="flex items-center justify-between mb-2 px-1">
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-0.5">
-                      {Array.from({ length: creditsTotal }).map((_, i) => (
-                        <img
-                          key={i}
-                          src={i < creditsRemaining ? '/beansfilled.svg' : '/beanempty.svg'}
-                          alt=""
-                          className="w-4 h-4 transition-opacity"
-                          style={{ opacity: i < creditsRemaining ? 1 : 0.35 }}
-                        />
-                      ))}
+            {user ? (
+              <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0 z-50">
+                {/* Credits display */}
+                {creditsRemaining !== null && creditsTotal !== null && (
+                  <div className="flex items-center justify-between mb-2 px-1">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {Array.from({ length: creditsTotal }).map((_, i) => (
+                          <img
+                            key={i}
+                            src={i < creditsRemaining ? '/beansfilled.svg' : '/beanempty.svg'}
+                            alt=""
+                            className="w-4 h-4 transition-opacity"
+                            style={{ opacity: i < creditsRemaining ? 1 : 0.35 }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[10px] text-charcoal-400">
+                        {creditsRemaining} question{creditsRemaining !== 1 ? 's' : ''} left today
+                      </span>
                     </div>
-                    <span className="text-[10px] text-charcoal-400">
-                      {creditsRemaining} question{creditsRemaining !== 1 ? 's' : ''} left today
-                    </span>
                   </div>
-                </div>
-              )}
+                )}
 
-              {sttError && (
-                <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-2">
-                  {sttError}
-                </p>
-              )}
-              {isListening && (
-                <div className="flex items-center justify-between mb-2 px-1">
-                  <button
-                    onClick={handleCancelSpeech}
-                    className="text-xs text-charcoal-500 hover:text-charcoal-700 transition-colors flex items-center gap-1"
-                  >
-                    <svg
-                      className="w-3 h-3"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                {sttError && (
+                  <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-2">
+                    {sttError}
+                  </p>
+                )}
+                {isListening && (
+                  <div className="flex items-center justify-between mb-2 px-1">
+                    <button
+                      onClick={handleCancelSpeech}
+                      className="text-xs text-charcoal-500 hover:text-charcoal-700 transition-colors flex items-center gap-1"
                     >
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                    Cancel
-                  </button>
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
-                    </span>
-                    <span className="text-xs font-mono text-red-600">
-                      {elapsed}s
-                    </span>
-                  </div>
-                </div>
-              )}
-              <form onSubmit={handleChatSubmit} className="relative">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => {
-                    if (isListening) stopAndKeep()
-                    setChatInput(e.target.value)
-                    setChatError(null)
-                  }}
-                  placeholder={
-                    isListening
-                      ? 'Listening…'
-                      : creditsRemaining === 0
-                        ? 'No questions left today. Come back tomorrow!'
-                        : 'Ask Bean anything about the podcast…'
-                  }
-                  className={`w-full px-4 py-3 ${
-                    sttSupported ? 'pr-20' : 'pr-12'
-                  } rounded-xl bg-cream-100 text-sm text-charcoal-900 placeholder:text-charcoal-400 focus:outline-none focus:ring-2 focus:ring-accent-600/20 focus:bg-white transition-all ${
-                    isListening ? 'italic text-charcoal-600 ring-2 ring-red-300/40' : ''
-                  }`}
-                  disabled={isChatLoading || creditsRemaining === 0}
-                />
-                {/* Mic button */}
-                {sttSupported && !isChatLoading && creditsRemaining !== 0 && (
-                  <button
-                    type="button"
-                    onClick={handleMicClick}
-                    className={`absolute right-11 top-1/2 -translate-y-1/2 p-1.5 transition-colors ${
-                      isListening
-                        ? 'text-red-500 hover:text-red-600'
-                        : 'text-charcoal-400 hover:text-accent-600'
-                    }`}
-                    title={isListening ? 'Stop recording' : 'Voice input'}
-                  >
-                    {isListening ? (
-                      /* Stop icon */
                       <svg
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <rect x="6" y="6" width="12" height="12" rx="2" />
-                      </svg>
-                    ) : (
-                      /* Mic icon */
-                      <svg
-                        className="w-4 h-4"
+                        className="w-3 h-3"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -1122,43 +1087,137 @@ export default function PodcastTabs({
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                        <line x1="12" y1="19" x2="12" y2="23" />
-                        <line x1="8" y1="23" x2="16" y2="23" />
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                       </svg>
-                    )}
-                  </button>
+                      Cancel
+                    </button>
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+                      </span>
+                      <span className="text-xs font-mono text-red-600">
+                        {elapsed}s
+                      </span>
+                    </div>
+                  </div>
                 )}
-                {/* Send button */}
-                <button
-                  type="submit"
-                  disabled={
-                    !chatInput.trim() || isChatLoading || creditsRemaining === 0
-                  }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-charcoal-400 hover:text-accent-600 disabled:opacity-40 transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                <form onSubmit={handleChatSubmit} className="relative">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => {
+                      if (isListening) stopAndKeep()
+                      setChatInput(e.target.value)
+                      setChatError(null)
+                    }}
+                    placeholder={
+                      isListening
+                        ? 'Listening…'
+                        : creditsRemaining === 0
+                          ? 'No questions left today. Come back tomorrow!'
+                          : 'Ask Bean anything about the podcast…'
+                    }
+                    className={`w-full px-4 py-3 ${
+                      sttSupported ? 'pr-20' : 'pr-12'
+                    } rounded-xl bg-cream-100 text-sm text-charcoal-900 placeholder:text-charcoal-400 focus:outline-none focus:ring-2 focus:ring-accent-600/20 focus:bg-white transition-all ${
+                      isListening ? 'italic text-charcoal-600 ring-2 ring-red-300/40' : ''
+                    }`}
+                    disabled={isChatLoading || creditsRemaining === 0}
+                  />
+                  {/* Mic button */}
+                  {sttSupported && !isChatLoading && creditsRemaining !== 0 && (
+                    <button
+                      type="button"
+                      onClick={handleMicClick}
+                      className={`absolute right-11 top-1/2 -translate-y-1/2 p-1.5 transition-colors ${
+                        isListening
+                          ? 'text-red-500 hover:text-red-600'
+                          : 'text-charcoal-400 hover:text-accent-600'
+                      }`}
+                      title={isListening ? 'Stop recording' : 'Voice input'}
+                    >
+                      {isListening ? (
+                        /* Stop icon */
+                        <svg
+                          className="w-4 h-4"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <rect x="6" y="6" width="12" height="12" rx="2" />
+                        </svg>
+                      ) : (
+                        /* Mic icon */
+                        <svg
+                          className="w-4 h-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                          <line x1="12" y1="19" x2="12" y2="23" />
+                          <line x1="8" y1="23" x2="16" y2="23" />
+                        </svg>
+                      )}
+                    </button>
+                  )}
+                  {/* Send button */}
+                  <button
+                    type="submit"
+                    disabled={
+                      !chatInput.trim() || isChatLoading || creditsRemaining === 0
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-charcoal-400 hover:text-accent-600 disabled:opacity-40 transition-colors"
                   >
-                    <line x1="22" y1="2" x2="11" y2="13" />
-                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    <svg
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="22" y1="2" x2="11" y2="13" />
+                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    </svg>
+                  </button>
+                </form>
+                <p className="text-center text-[10px] text-charcoal-400 mt-2 pb-1">
+                  Powered by podcast transcripts · Always verify with original sources
+                </p>
+              </div>
+            ) : (
+              <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0">
+                <button
+                  onClick={() => { setShowAuthModal(true) }}
+                  className="w-full px-4 py-3 rounded-xl bg-cream-100 text-sm text-charcoal-400 text-left hover:bg-cream-200 transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4 text-charcoal-300 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
+                  Sign in to ask Bean anything…
                 </button>
-              </form>
-              <p className="text-center text-[10px] text-charcoal-400 mt-2 pb-1">
-                Powered by podcast transcripts · Always verify with original sources
-              </p>
-            </div>
+                <p className="text-center text-[10px] text-charcoal-400 mt-2 pb-1">
+                  Powered by podcast transcripts · Always verify with original sources
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {/* Auth modal for chat gating */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode="signin"
+      />
     </div>
   )
 }

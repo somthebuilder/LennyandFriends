@@ -4,6 +4,8 @@ import ConceptBody from '@/components/concepts/ConceptBody'
 import { getConceptBySlug } from '@/lib/api/concepts'
 import { extractBodyReferences, mergeReferences } from '@/lib/extract-body-references'
 
+export const revalidate = 300
+
 function formatSeconds(seconds?: number): string | null {
   if (typeof seconds !== 'number' || Number.isNaN(seconds) || seconds < 0) return null
   const hrs = Math.floor(seconds / 3600)
@@ -59,7 +61,7 @@ export default async function ConceptPage({ params }: { params: { slug: string }
         </div>
       </header>
 
-      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-12 space-y-8 md:space-y-12">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-3 md:py-5 space-y-5 md:space-y-6">
         {/* Title Section */}
         <div className="space-y-4 md:space-y-6">
           <div className="flex items-center gap-3 text-xs md:text-sm text-charcoal-500">

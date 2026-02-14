@@ -196,9 +196,7 @@ export default function InsightBreakdown({ insight, isVoted, onVote, onClose, on
               </span>
             )}
           </div>
-          <p className="text-[11px] text-charcoal-400">
-            {relevantGuests.length} guest{relevantGuests.length !== 1 ? 's' : ''} across {insight.episode_count} episode{insight.episode_count !== 1 ? 's' : ''}
-          </p>
+          
         </div>
 
         {/* Section B: What this means */}

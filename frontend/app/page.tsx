@@ -104,10 +104,7 @@ export default function LandingPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
   // ── Inline auth in suggest section ──
-  const [inlineAuthMode, setInlineAuthMode] = useState<'signup' | 'signin'>('signup')
   const [inlineEmail, setInlineEmail] = useState('')
-  const [inlinePassword, setInlinePassword] = useState('')
-  const [inlineName, setInlineName] = useState('')
   const [inlineAuthLoading, setInlineAuthLoading] = useState(false)
   const [inlineAuthError, setInlineAuthError] = useState<string | null>(null)
   const [inlineAuthSuccess, setInlineAuthSuccess] = useState<string | null>(null)
@@ -243,41 +240,24 @@ export default function LandingPage() {
     setSubmitting(false)
   }
 
-  async function handleInlineSignUp(e: React.FormEvent) {
+  async function handleInlineMagicLink(e: React.FormEvent) {
     e.preventDefault()
     setInlineAuthLoading(true)
     setInlineAuthError(null)
     setInlineAuthSuccess(null)
 
-    const { error } = await supabase.auth.signUp({
+    const redirectTo = `${window.location.origin}/auth/callback`
+
+    const { error } = await supabase.auth.signInWithOtp({
       email: inlineEmail,
-      password: inlinePassword,
-      options: { data: { full_name: inlineName } },
+      options: { emailRedirectTo: redirectTo },
     })
 
     if (error) {
       setInlineAuthError(error.message)
     } else {
       if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
-      setInlineAuthSuccess('Check your email to confirm, then you can suggest.')
-    }
-    setInlineAuthLoading(false)
-  }
-
-  async function handleInlineSignIn(e: React.FormEvent) {
-    e.preventDefault()
-    setInlineAuthLoading(true)
-    setInlineAuthError(null)
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: inlineEmail,
-      password: inlinePassword,
-    })
-
-    if (error) {
-      setInlineAuthError(error.message)
-    } else {
-      if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
+      setInlineAuthSuccess('Check your email for a magic link to sign in.')
     }
     setInlineAuthLoading(false)
   }
@@ -286,13 +266,13 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-cream-50">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-16">
-        <div className="max-w-3xl w-full space-y-16 text-center">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 md:py-10">
+        <div className="max-w-3xl w-full space-y-8 md:space-y-10 text-center">
 
           {/* ── Hero: The Espresso Masthead ── */}
           <div className="space-y-0">
             {/* Top decorative rule + dateline */}
-            <div className="opacity-0 animate-hero-enter flex items-center gap-4 justify-center mb-8">
+            <div className="opacity-0 animate-hero-enter flex items-center gap-4 justify-center mb-4 md:mb-6">
               <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-espresso-300" />
               <span className="text-[9px] md:text-[10px] font-sans font-medium uppercase tracking-[0.35em] text-espresso-400 select-none">
                 Vol. I · 2026
@@ -301,7 +281,7 @@ export default function LandingPage() {
             </div>
 
             {/* Logo with animated steam */}
-            <div className="opacity-0 animate-hero-enter-delay flex flex-col items-center mb-5">
+            <div className="opacity-0 animate-hero-enter-delay flex flex-col items-center mb-3">
               <div className="relative">
                 {/* Steam wisps */}
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2 flex gap-3 pointer-events-none">
@@ -312,27 +292,27 @@ export default function LandingPage() {
               <img
                 src="/espressologo.png"
                   alt=""
-                  className="w-20 h-20 md:w-28 md:h-28 object-contain drop-shadow-lg"
+                  className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-lg"
               />
               </div>
             </div>
 
             {/* App name — oversized editorial Playfair with warm gradient */}
             <div className="opacity-0 animate-hero-enter-delay flex flex-col items-center">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-cafe italic text-warm-gradient tracking-tight leading-[1.1] select-none pb-1">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-cafe italic text-warm-gradient tracking-tight leading-[1.1] select-none pb-1">
               espresso
             </h1>
             </div>
 
             {/* Decorative mid-rule */}
-            <div className="rule-animated mx-auto max-w-[180px] md:max-w-[240px] mt-6 mb-6" />
+            <div className="rule-animated mx-auto max-w-[180px] md:max-w-[240px] mt-4 mb-4" />
 
             {/* Tagline — serif italic, refined */}
-            <div className="opacity-0 animate-hero-enter-delay-2 flex flex-col items-center gap-3">
-              <p className="font-serif italic text-lg md:text-xl text-espresso-500/90 tracking-wide leading-relaxed">
+            <div className="opacity-0 animate-hero-enter-delay-2 flex flex-col items-center gap-2">
+              <p className="font-serif italic text-base md:text-lg text-espresso-500/90 tracking-wide leading-relaxed">
                 Collective wisdom, distilled.
               </p>
-              <p className="text-sm text-charcoal-400 font-sans max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs md:text-sm text-charcoal-400 font-sans max-w-sm mx-auto leading-relaxed">
                 Insights from the world&apos;s best operators, extracted,
                 synthesized, searchable.
             </p>
@@ -573,31 +553,7 @@ export default function LandingPage() {
                     {/* Not signed in — inline sign-up / sign-in form */}
                     {!user && (
                       <div className="space-y-3">
-                        {/* Mode toggle */}
-                        <div className="flex bg-cream-200/60 rounded-xl p-0.5">
-                      <button
-                            type="button"
-                            onClick={() => { setInlineAuthMode('signup'); setInlineAuthError(null); setInlineAuthSuccess(null) }}
-                            className={`flex-1 py-2 text-xs font-medium rounded-lg transition-all ${
-                              inlineAuthMode === 'signup'
-                                ? 'bg-white text-charcoal-900 shadow-sm'
-                                : 'text-charcoal-500 hover:text-charcoal-700'
-                            }`}
-                          >
-                            Sign Up
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => { setInlineAuthMode('signin'); setInlineAuthError(null); setInlineAuthSuccess(null) }}
-                            className={`flex-1 py-2 text-xs font-medium rounded-lg transition-all ${
-                              inlineAuthMode === 'signin'
-                                ? 'bg-white text-charcoal-900 shadow-sm'
-                                : 'text-charcoal-500 hover:text-charcoal-700'
-                            }`}
-                          >
-                            Sign In
-                          </button>
-                        </div>
+                        <p className="text-xs text-charcoal-500">Sign in to suggest a podcast</p>
 
                         {inlineAuthError && (
                           <p className="text-xs text-red-600 bg-red-50 rounded-xl px-3 py-2.5">{inlineAuthError}</p>
@@ -608,36 +564,15 @@ export default function LandingPage() {
 
                         {!inlineAuthSuccess && (
                           <form
-                            onSubmit={inlineAuthMode === 'signup' ? handleInlineSignUp : handleInlineSignIn}
+                            onSubmit={handleInlineMagicLink}
                             className="space-y-2.5"
                           >
-                            {inlineAuthMode === 'signup' && (
-                              <input
-                                type="text"
-                                placeholder="Your name"
-                                value={inlineName}
-                                onChange={(e) => setInlineName(e.target.value)}
-                                required
-                                className="w-full px-4 py-2.5 text-sm border border-espresso-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-espresso-300/30 focus:border-espresso-300 bg-cream-50 placeholder:text-charcoal-400 transition-all"
-                                disabled={inlineAuthLoading}
-                              />
-                            )}
                             <input
                               type="email"
-                              placeholder="Email"
+                              placeholder="you@company.com"
                               value={inlineEmail}
                               onChange={(e) => setInlineEmail(e.target.value)}
                               required
-                              className="w-full px-4 py-2.5 text-sm border border-espresso-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-espresso-300/30 focus:border-espresso-300 bg-cream-50 placeholder:text-charcoal-400 transition-all"
-                              disabled={inlineAuthLoading}
-                            />
-                            <input
-                              type="password"
-                              placeholder={inlineAuthMode === 'signup' ? 'Create a password (min. 6 chars)' : 'Password'}
-                              value={inlinePassword}
-                              onChange={(e) => setInlinePassword(e.target.value)}
-                              required
-                              minLength={inlineAuthMode === 'signup' ? 6 : undefined}
                               className="w-full px-4 py-2.5 text-sm border border-espresso-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-espresso-300/30 focus:border-espresso-300 bg-cream-50 placeholder:text-charcoal-400 transition-all"
                               disabled={inlineAuthLoading}
                             />
@@ -646,10 +581,7 @@ export default function LandingPage() {
                               disabled={inlineAuthLoading}
                               className="w-full text-sm font-medium text-white bg-espresso-600 hover:bg-espresso-700 disabled:opacity-50 rounded-xl py-2.5 transition-all duration-200 shadow-sm hover:shadow-md"
                             >
-                              {inlineAuthLoading
-                                ? (inlineAuthMode === 'signup' ? 'Creating account…' : 'Signing in…')
-                                : (inlineAuthMode === 'signup' ? 'Create Account & Suggest' : 'Sign In & Suggest')
-                              }
+                              {inlineAuthLoading ? 'Sending link…' : 'Send Magic Link'}
                             </button>
                           </form>
                         )}
