@@ -25,7 +25,7 @@ async function sha256Hex(value: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
   // ── Step 1: Parse body ──────────────────────────────────────────
-  let body: { message?: unknown; podcastSlug?: unknown; conversationHistory?: unknown }
+  let body: { message?: unknown; podcastSlug?: unknown; conversationHistory?: unknown; sessionId?: unknown; deviceId?: unknown }
   try {
     body = await request.json()
   } catch (parseErr) {
@@ -66,8 +66,9 @@ export async function POST(request: NextRequest) {
     )
     }
 
-  // ── Step 3: Build user key (hashed IP+UA) ──────────────────────
+  // ── Step 3: Build user key (hashed IP+UA) + extract deviceId ──
   let userKey = 'anon'
+  const deviceId = typeof body.deviceId === 'string' ? body.deviceId.trim().slice(0, 64) : ''
   try {
     const ip =
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
@@ -110,11 +111,13 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${supabaseServiceRoleKey}`,
         apikey: supabaseServiceRoleKey,
         'x-user-key': userKey,
+        'x-device-id': deviceId,
       },
       body: JSON.stringify({
         message: normalizedMessage,
         podcastSlug: normalizedPodcastSlug,
         conversationHistory: sanitizedHistory,
+        sessionId: typeof body.sessionId === 'string' ? body.sessionId.trim() : undefined,
       }),
     })
   } catch (fetchErr) {

@@ -8,7 +8,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-user-key",
+    "authorization, x-client-info, apikey, content-type, x-user-key, x-device-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -34,16 +34,26 @@ const REPEATED_INPUT_WINDOW_MS = 30_000;
 const BLOCKED_PHRASES = [
   "ignore previous instructions",
   "ignore all previous instructions",
+  "ignore above instructions",
+  "disregard previous instructions",
   "system prompt",
   "developer instructions",
   "bypass guardrails",
   "reveal your prompt",
   "what is your system prompt",
+  "show me your prompt",
+  "repeat your instructions",
   "you are now",
   "act as",
   "pretend to be",
   "jailbreak",
   "dan mode",
+  "do anything now",
+  "override safety",
+  "<script",
+  "javascript:",
+  "onerror=",
+  "onload=",
 ];
 
 /* ================================================================== */
@@ -87,6 +97,7 @@ type ChatResponse = {
   clarification_questions?: ClarificationQuestion[];
   credits_remaining: number;
   credits_total: number;
+  session_id?: string;
 };
 
 /* ================================================================== */
@@ -101,6 +112,15 @@ function json(status: number, body: unknown) {
 
 function normalizeInput(input: string): string {
   return input.replace(/\s+/g, " ").trim();
+}
+
+/** Strip HTML/script tags to prevent stored XSS in chat messages */
+function sanitizeHtml(input: string): string {
+  return input
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
 }
 
 function hasBlockedPhrase(input: string): boolean {
@@ -662,6 +682,63 @@ async function logUsage(
 }
 
 /* ================================================================== */
+/*  CHAT PERSISTENCE                                                   */
+/* ================================================================== */
+async function getOrCreateSession(
+  supabase: ReturnType<typeof createClient>,
+  sessionId: string | null,
+  podcastId: string,
+  userKey: string
+): Promise<string> {
+  // If a session ID was provided, verify it exists
+  if (sessionId) {
+    const { data } = await supabase
+      .from("chat_sessions")
+      .select("id")
+      .eq("id", sessionId)
+      .maybeSingle();
+    if (data) return data.id;
+  }
+
+  // Create a new session
+  const { data, error } = await supabase
+    .from("chat_sessions")
+    .insert({
+      podcast_id: podcastId,
+      user_id: null,
+      context_type: "general",
+    })
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    console.error("Failed to create chat session:", error);
+    throw new Error("Failed to create chat session");
+  }
+  return data.id;
+}
+
+async function saveChatMessage(
+  supabase: ReturnType<typeof createClient>,
+  sessionId: string,
+  role: "user" | "assistant",
+  content: string,
+  citations: unknown[] = []
+): Promise<void> {
+  // Sanitize user content to prevent stored XSS
+  const safeContent = role === "user" ? sanitizeHtml(content) : content;
+  const { error } = await supabase.from("chat_messages").insert({
+    session_id: sessionId,
+    role,
+    content: safeContent,
+    citations: JSON.stringify(citations),
+  });
+  if (error) {
+    console.error(`Failed to save ${role} message:`, error);
+  }
+}
+
+/* ================================================================== */
 /*  MAIN HANDLER                                                       */
 /* ================================================================== */
 Deno.serve(async (req: Request) => {
@@ -688,6 +765,7 @@ Deno.serve(async (req: Request) => {
     message?: string;
     podcastSlug?: string;
     conversationHistory?: ConversationMessage[];
+    sessionId?: string;
   } = {};
   try {
     body = await req.json();
@@ -700,6 +778,7 @@ Deno.serve(async (req: Request) => {
   const conversationHistory = (body.conversationHistory ?? []).slice(
     -MAX_CONVERSATION_TURNS
   );
+  const incomingSessionId = body.sessionId?.trim() || null;
 
   if (!message) return json(400, { error: "Message is required" });
   if (!podcastSlug) return json(400, { error: "podcastSlug is required" });
@@ -714,19 +793,45 @@ Deno.serve(async (req: Request) => {
   }
 
   const userKey = req.headers.get("x-user-key")?.trim() || "anon";
+  const rawDeviceId = req.headers.get("x-device-id")?.trim() || "";
+  // Only accept valid UUID format device IDs to prevent header injection
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const deviceId = UUID_RE.test(rawDeviceId) ? rawDeviceId : "";
   const inputHash = await sha256Hex(`${podcastSlug}:${message.toLowerCase()}`);
 
-  // ── Rate limiting ──
+  // ── Rate limiting (check BOTH userKey and deviceId) ──
   const usage = await getOrCreateUsage(supabase, userKey);
-  const creditsRemaining = Math.max(0, DAILY_QUERY_LIMIT - usage.dayCount);
 
-  // Check repeated input
-  if (
+  // Also check deviceId-based usage (if provided) to prevent IP-rotation bypass
+  let deviceUsage: Awaited<ReturnType<typeof getOrCreateUsage>> | null = null;
+  if (deviceId && deviceId !== userKey) {
+    const deviceKey = `dev:${deviceId}`;
+    deviceUsage = await getOrCreateUsage(supabase, deviceKey);
+  }
+
+  // Use the MORE restrictive of the two (higher count = closer to limit)
+  const effectiveDayCount = Math.max(
+    usage.dayCount,
+    deviceUsage?.dayCount ?? 0
+  );
+  const effectiveMinuteCount = Math.max(
+    usage.minuteCount,
+    deviceUsage?.minuteCount ?? 0
+  );
+  const creditsRemaining = Math.max(0, DAILY_QUERY_LIMIT - effectiveDayCount);
+
+  // Check repeated input (on either key)
+  const isRepeatedOnUserKey =
     usage.lastInputHash === inputHash &&
     usage.lastInputAt &&
-    new Date().getTime() - usage.lastInputAt.getTime() <
-      REPEATED_INPUT_WINDOW_MS
-  ) {
+    new Date().getTime() - usage.lastInputAt.getTime() < REPEATED_INPUT_WINDOW_MS;
+  const isRepeatedOnDevice =
+    deviceUsage &&
+    deviceUsage.lastInputHash === inputHash &&
+    deviceUsage.lastInputAt &&
+    new Date().getTime() - deviceUsage.lastInputAt.getTime() < REPEATED_INPUT_WINDOW_MS;
+
+  if (isRepeatedOnUserKey || isRepeatedOnDevice) {
     await logUsage(supabase, {
       userKey,
       podcastSlug,
@@ -744,7 +849,7 @@ Deno.serve(async (req: Request) => {
   }
 
   // Per-minute limit
-  if (usage.minuteCount >= PER_MINUTE_LIMIT) {
+  if (effectiveMinuteCount >= PER_MINUTE_LIMIT) {
     await logUsage(supabase, {
       userKey,
       podcastSlug,
@@ -762,7 +867,7 @@ Deno.serve(async (req: Request) => {
   }
 
   // Daily limit
-  if (usage.dayCount >= DAILY_QUERY_LIMIT) {
+  if (effectiveDayCount >= DAILY_QUERY_LIMIT) {
     await logUsage(supabase, {
       userKey,
       podcastSlug,
@@ -846,6 +951,16 @@ Deno.serve(async (req: Request) => {
       status: "clarification",
     });
 
+    // Persist chat session + messages
+    let sessionId: string | undefined;
+    try {
+      sessionId = await getOrCreateSession(supabase, incomingSessionId, podcastData.id, userKey);
+      await saveChatMessage(supabase, sessionId, "user", message);
+      await saveChatMessage(supabase, sessionId, "assistant", clarificationText);
+    } catch (e) {
+      console.error("Chat persistence error (clarification):", e);
+    }
+
     const response: ChatResponse = {
       id: crypto.randomUUID(),
       role: "assistant",
@@ -854,6 +969,7 @@ Deno.serve(async (req: Request) => {
       clarification_questions: classification.clarification_questions,
       credits_remaining: creditsRemaining,
       credits_total: DAILY_QUERY_LIMIT,
+      session_id: sessionId,
     };
 
     return json(200, response);
@@ -863,8 +979,12 @@ Deno.serve(async (req: Request) => {
   //  STEP 2: RETRIEVE CONTEXT (only for actual answers)
   // ══════════════════════════════════════════════════════════════════
 
-  // Increment usage (this consumes a credit)
+  // Increment usage on BOTH keys (this consumes a credit)
   await incrementUsage(supabase, userKey, usage, inputHash);
+  if (deviceId && deviceId !== userKey) {
+    const deviceKey = `dev:${deviceId}`;
+    await incrementUsage(supabase, deviceKey, deviceUsage ?? usage, inputHash);
+  }
   const newCreditsRemaining = creditsRemaining - 1;
 
   // Embed the query (Gemini first, OpenAI fallback to match stored 1536-dim vectors)
@@ -1095,6 +1215,16 @@ Deno.serve(async (req: Request) => {
     };
   });
 
+  // ── Persist chat session + messages ──
+  let sessionId: string | undefined;
+  try {
+    sessionId = await getOrCreateSession(supabase, incomingSessionId, podcastData.id, userKey);
+    await saveChatMessage(supabase, sessionId, "user", message);
+    await saveChatMessage(supabase, sessionId, "assistant", answer, references);
+  } catch (e) {
+    console.error("Chat persistence error:", e);
+  }
+
   // ── Log success ──
   await logUsage(supabase, {
     userKey,
@@ -1113,6 +1243,7 @@ Deno.serve(async (req: Request) => {
     references,
     credits_remaining: newCreditsRemaining,
     credits_total: DAILY_QUERY_LIMIT,
+    session_id: sessionId,
   };
 
   return json(200, response);

@@ -77,6 +77,7 @@ export default function PodcastTabs({
   const [chatContext, setChatContext] = useState<string | null>(null)
   const [creditsRemaining, setCreditsRemaining] = useState<number | null>(null)
   const [creditsTotal, setCreditsTotal] = useState<number | null>(null)
+  const [chatSessionId, setChatSessionId] = useState<string | undefined>(undefined)
   const [chatError, setChatError] = useState<string | null>(null)
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const breakdownRef = useRef<HTMLDivElement>(null)
@@ -287,8 +288,12 @@ export default function PodcastTabs({
     setIsChatLoading(true)
 
     try {
-      const response = await sendMessage(chatInput, podcastSlug, history)
+      const response = await sendMessage(chatInput, podcastSlug, history, chatSessionId)
       setMessages((prev) => [...prev, response])
+      // Track session ID for multi-turn persistence
+      if (response.session_id) {
+        setChatSessionId(response.session_id)
+      }
       // Update credits from response
       if (response.credits_remaining !== undefined) {
         setCreditsRemaining(response.credits_remaining)

@@ -24,6 +24,7 @@ export interface ChatMessage {
   clarification_questions?: ClarificationQuestion[]
   credits_remaining?: number
   credits_total?: number
+  session_id?: string
 }
 
 export interface ConceptReference {

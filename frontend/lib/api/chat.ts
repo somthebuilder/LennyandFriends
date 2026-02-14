@@ -6,17 +6,34 @@ export type ConversationTurn = {
   content: string
 }
 
+/** Persistent device ID stored in localStorage to strengthen rate limiting */
+function getDeviceId(): string {
+  const STORAGE_KEY = 'espresso_device_id'
+  try {
+    let id = localStorage.getItem(STORAGE_KEY)
+    if (!id) {
+      id = crypto.randomUUID()
+      localStorage.setItem(STORAGE_KEY, id)
+    }
+    return id
+  } catch {
+    // SSR or localStorage blocked — fall back to empty
+    return ''
+  }
+}
+
 export async function sendMessage(
   message: string,
   podcastSlug: string,
-  conversationHistory: ConversationTurn[] = []
+  conversationHistory: ConversationTurn[] = [],
+  sessionId?: string
 ): Promise<ChatMessage> {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ message, podcastSlug, conversationHistory }),
+    body: JSON.stringify({ message, podcastSlug, conversationHistory, sessionId, deviceId: getDeviceId() }),
   })
 
   const data = await response.json().catch(() => ({}))
