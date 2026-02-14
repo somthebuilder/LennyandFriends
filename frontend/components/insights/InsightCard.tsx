@@ -51,7 +51,8 @@ export default function InsightCard({ insight, isSelected, onSelect }: InsightCa
           {/* Bulb icon with count (shown only if count > 0) */}
           {insight.valuable_count > 0 && (
             <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700 ml-auto">
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="url(#bulb-grad-card)" stroke="none">
+                <defs><linearGradient id="bulb-grad-card" x1="0" y1="0" x2="0.5" y2="1"><stop offset="0%" stopColor="#facc15"/><stop offset="50%" stopColor="#f59e0b"/><stop offset="100%" stopColor="#ea580c"/></linearGradient></defs>
                 <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" />
               </svg>
               {insight.valuable_count}

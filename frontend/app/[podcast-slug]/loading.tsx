@@ -33,12 +33,7 @@ export default function PodcastLoading() {
       <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 md:py-5 w-full">
         {/* Bean loading animation */}
         <div className="flex flex-col items-center justify-center py-16 gap-4">
-          <div className="relative">
-            {/* Coffee cup icon */}
-            <div className="w-12 h-12 rounded-full bg-espresso-100 flex items-center justify-center animate-pulse">
-              <img src="/espressologo.png" alt="" className="w-8 h-8 object-contain opacity-60" />
-            </div>
-          </div>
+          <img src="/loader1.png" alt="" className="w-16 h-16 object-contain animate-pulse" />
           <p className="text-sm text-charcoal-400 font-serif italic animate-pulse">
             Brewing your knowledge base…
           </p>

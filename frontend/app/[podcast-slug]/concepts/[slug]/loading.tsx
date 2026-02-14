@@ -5,8 +5,11 @@ export default function ConceptLoading() {
     <div className="min-h-screen bg-cream-50 flex flex-col">
       <Header />
       <main className="flex-1 max-w-3xl mx-auto px-4 md:px-6 py-8 w-full">
-        {/* Back link skeleton */}
-        <div className="h-4 bg-espresso-100/40 rounded-full w-32 mb-6 animate-pulse" />
+        {/* Loader */}
+        <div className="flex flex-col items-center justify-center py-12 gap-3">
+          <img src="/loader1.png" alt="" className="w-14 h-14 object-contain animate-pulse" />
+          <p className="text-sm text-charcoal-400 font-serif italic animate-pulse">Brewing this concept…</p>
+        </div>
 
         {/* Title skeleton */}
         <div className="space-y-3 mb-6">
