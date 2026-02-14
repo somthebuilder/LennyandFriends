@@ -94,6 +94,7 @@ export async function getDryRunPreview(
     references: Array.isArray(item.references)
       ? item.references.map((ref) => ({
           guest_name: asString((ref as Record<string, unknown>).guest_name, 'Unknown guest'),
+          guest_role: asString((ref as Record<string, unknown>).guest_role) || undefined,
           episode_title: asString((ref as Record<string, unknown>).episode_title, 'Unknown episode'),
           episode_url: asString((ref as Record<string, unknown>).episode_url) || undefined,
           timestamp: asString((ref as Record<string, unknown>).timestamp) || undefined,

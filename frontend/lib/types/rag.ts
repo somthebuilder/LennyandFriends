@@ -28,6 +28,7 @@ export interface ChatMessage {
 
 export interface ConceptReference {
   guest_name: string
+  guest_role?: string
   episode_title: string
   episode_url?: string
   timestamp?: string

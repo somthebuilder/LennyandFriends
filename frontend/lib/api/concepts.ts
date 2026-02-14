@@ -33,22 +33,24 @@ export async function getConcepts(podcastSlug: string) {
 
   const [{ data: guests }, { data: episodes }] = await Promise.all([
     guestIds.length
-      ? supabase.from('guests').select('id,full_name').in('id', guestIds)
-      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string }> }),
+      ? supabase.from('guests').select('id,full_name,current_role,current_company').in('id', guestIds)
+      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string; current_role: string | null; current_company: string | null }> }),
     episodeIds.length
       ? supabase.from('episodes').select('id,title,youtube_url').in('id', episodeIds)
       : Promise.resolve({ data: [] as Array<{ id: string; title: string; youtube_url: string | null }> }),
   ])
 
-  const guestMap = new Map((guests ?? []).map((g) => [g.id, g.full_name]))
+  const guestMap = new Map((guests ?? []).map((g) => [g.id, { name: g.full_name, role: [g.current_role, g.current_company].filter(Boolean).join(' at ') || undefined }]))
   const episodeMap = new Map((episodes ?? []).map((e) => [e.id, { title: e.title, youtube_url: e.youtube_url }]))
   const refsByConcept = new Map<string, NonNullable<Concept['references']>>()
 
   for (const ref of referenceRows ?? []) {
     const existing = refsByConcept.get(ref.concept_id) ?? []
     const episodeMeta = ref.episode_id ? episodeMap.get(ref.episode_id) : null
+    const guestInfo = ref.guest_id ? guestMap.get(ref.guest_id) : null
     existing.push({
-      guest_name: ref.guest_id ? guestMap.get(ref.guest_id) ?? 'Unknown guest' : 'Unknown guest',
+      guest_name: guestInfo?.name ?? 'Unknown guest',
+      guest_role: guestInfo?.role,
       episode_title: episodeMeta?.title ?? 'Unknown episode',
       timestamp: ref.timestamp ?? undefined,
       time_seconds: ref.time_seconds ?? undefined,
@@ -107,20 +109,22 @@ export async function getConceptBySlug(slug: string, podcastSlug = 'lennys-podca
 
   const [{ data: guests }, { data: episodes }] = await Promise.all([
     guestIds.length
-      ? supabase.from('guests').select('id,full_name').in('id', guestIds)
-      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string }> }),
+      ? supabase.from('guests').select('id,full_name,current_role,current_company').in('id', guestIds)
+      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string; current_role: string | null; current_company: string | null }> }),
     episodeIds.length
       ? supabase.from('episodes').select('id,title,youtube_url').in('id', episodeIds)
       : Promise.resolve({ data: [] as Array<{ id: string; title: string; youtube_url: string | null }> }),
   ])
 
-  const guestMap = new Map((guests ?? []).map((g) => [g.id, g.full_name]))
+  const guestMap = new Map((guests ?? []).map((g) => [g.id, { name: g.full_name, role: [g.current_role, g.current_company].filter(Boolean).join(' at ') || undefined }]))
   const episodeMap = new Map((episodes ?? []).map((e) => [e.id, { title: e.title, youtube_url: e.youtube_url }]))
 
   const references = (referenceRows ?? []).map((ref) => {
     const episodeMeta = ref.episode_id ? episodeMap.get(ref.episode_id) : null
+    const guestInfo = ref.guest_id ? guestMap.get(ref.guest_id) : null
     return {
-      guest_name: ref.guest_id ? guestMap.get(ref.guest_id) ?? 'Unknown guest' : 'Unknown guest',
+      guest_name: guestInfo?.name ?? 'Unknown guest',
+      guest_role: guestInfo?.role,
       episode_title: episodeMeta?.title ?? 'Unknown episode',
       timestamp: ref.timestamp ?? undefined,
       time_seconds: ref.time_seconds ?? undefined,
