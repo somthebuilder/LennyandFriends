@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import BuyMeACoffeeFloater from '@/components/BuyMeACoffeeFloater'
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         <BuyMeACoffeeFloater />
+        <Analytics />
       </body>
     </html>
   )
