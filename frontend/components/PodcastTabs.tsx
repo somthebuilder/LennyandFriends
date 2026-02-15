@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import InsightCard from '@/components/insights/InsightCard'
 import InsightBreakdown from '@/components/insights/InsightBreakdown'
 import ConceptCard from '@/components/concepts/ConceptCard'
@@ -36,6 +36,16 @@ interface PodcastTabsProps {
   initialTab?: TabId
 }
 
+/* ── Helper: Fisher-Yates shuffle (returns new array) ── */
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
 /* ── Helper: build deep-linked YouTube URL ── */
 function deepLink(url?: string, timeSeconds?: number): string | null {
   if (!url) return null
@@ -65,6 +75,13 @@ export default function PodcastTabs({
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [insightFilter, setInsightFilter] = useState<'all' | 'most_valuable'>('all')
+
+  // Shuffle key: increments on tab switch so card order feels fresh each time
+  const [shuffleKey, setShuffleKey] = useState(0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const shuffledInsights = useMemo(() => shuffleArray(insights), [insights, shuffleKey])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const shuffledConcepts = useMemo(() => shuffleArray(concepts), [concepts, shuffleKey])
   // Track updated valuable counts from user interactions
   const [valuableCounts, setValuableCounts] = useState<Record<string, number>>({})
   // Track which insights this voter has already marked as valuable
@@ -145,6 +162,7 @@ export default function PodcastTabs({
 
   function handleTabChange(tabId: TabId) {
     setActiveTab(tabId)
+    setShuffleKey((k) => k + 1) // re-shuffle cards on tab switch
   }
 
   // Handle "Discuss in Chat" CTA from insight breakdown
@@ -180,8 +198,8 @@ export default function PodcastTabs({
     return false
   }
 
-  // Build insights with updated valuable counts
-  const insightsWithCounts = insights.map((i) => ({
+  // Build insights with updated valuable counts (uses shuffled order)
+  const insightsWithCounts = shuffledInsights.map((i) => ({
     ...i,
     valuable_count: valuableCounts[i.id] ?? i.valuable_count,
   }))
@@ -251,7 +269,7 @@ export default function PodcastTabs({
     if (storedInsight) {
       setSelectedInsight(storedInsight)
     } else if (isDesktop) {
-      setSelectedInsight(insights[0])
+      setSelectedInsight(shuffledInsights[0])
     } else {
       setSelectedInsight(null)
     }
@@ -437,7 +455,7 @@ export default function PodcastTabs({
                 records.
               </div>
             )}
-            {insights.length === 0 ? (
+            {shuffledInsights.length === 0 ? (
               <div className="py-20 text-center">
                 <p className="text-charcoal-400 font-serif italic text-lg">
                   Insights are being generated…
@@ -609,7 +627,7 @@ export default function PodcastTabs({
         {activeTab === 'concepts' && (() => {
           // Extract unique categories that have concepts
           const categoryMap = new Map<string, number>()
-          concepts.forEach((c) => {
+          shuffledConcepts.forEach((c) => {
             if (c.category) {
               categoryMap.set(c.category, (categoryMap.get(c.category) || 0) + 1)
             }
@@ -620,8 +638,8 @@ export default function PodcastTabs({
 
           // Filter concepts by selected category
           const filteredConcepts = selectedCategory
-            ? concepts.filter((c) => c.category === selectedCategory)
-            : concepts
+            ? shuffledConcepts.filter((c) => c.category === selectedCategory)
+            : shuffledConcepts
 
           return (
             <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 md:py-5">
@@ -631,7 +649,7 @@ export default function PodcastTabs({
                   are disabled in preview mode.
                 </div>
               )}
-              {concepts.length === 0 ? (
+              {shuffledConcepts.length === 0 ? (
                 <div className="py-20 text-center">
                   <p className="text-charcoal-400 font-serif italic text-lg">
                     Concepts are being generated…
@@ -655,7 +673,7 @@ export default function PodcastTabs({
                       >
                         All
                         <span className={`ml-1.5 ${selectedCategory === null ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
-                          {concepts.length}
+                          {shuffledConcepts.length}
                         </span>
                       </button>
                       {availableCategories.map((category) => {
@@ -698,7 +716,7 @@ export default function PodcastTabs({
                           <span className="flex items-center justify-between">
                             All
                             <span className={`text-xs ${selectedCategory === null ? 'text-charcoal-400' : 'text-charcoal-400'}`}>
-                              {concepts.length}
+                              {shuffledConcepts.length}
                             </span>
                           </span>
                         </button>
