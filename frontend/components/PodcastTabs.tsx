@@ -876,7 +876,24 @@ export default function PodcastTabs({
                     I&apos;m a <span className="font-serif font-semibold">living Bean</span> trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
                   </p>
                   {user ? (
-                    <div className="w-full max-w-sm space-y-2 pt-2">
+                    <div className="w-full max-w-sm space-y-4 pt-2">
+                      {/* Lightning Quiz prominent entry */}
+                      <button
+                        type="button"
+                        onClick={() => setQuizActive(true)}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100 hover:border-amber-300 transition-all group"
+                      >
+                        <span className="text-lg group-hover:scale-110 transition-transform">&#9889;</span>
+                        <span className="text-sm font-medium">Lightning Quiz</span>
+                        <span className="text-[11px] text-amber-600 ml-1">- get personalized picks</span>
+                      </button>
+
+                      <div className="relative flex items-center justify-center">
+                        <div className="border-t border-charcoal-100 w-full" />
+                        <span className="absolute bg-cream-50 px-3 text-[10px] text-charcoal-400">or ask a question</span>
+                      </div>
+
+                      <div className="space-y-2">
                       <p className="text-[10px] font-medium uppercase tracking-wider text-charcoal-400">Try something specific</p>
                       <div className="flex flex-wrap justify-center gap-2">
                         <button
@@ -914,6 +931,7 @@ export default function PodcastTabs({
                         >
                           Prioritization frameworks
                         </button>
+                      </div>
                       </div>
                     </div>
                   ) : (
