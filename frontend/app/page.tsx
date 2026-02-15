@@ -569,7 +569,7 @@ export default function LandingPage() {
                           >
                             <input
                               type="email"
-                              placeholder="you@company.com"
+                              placeholder="Your email address"
                               value={inlineEmail}
                               onChange={(e) => setInlineEmail(e.target.value)}
                               required

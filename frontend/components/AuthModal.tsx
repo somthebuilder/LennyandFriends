@@ -132,7 +132,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
+                placeholder="Your email address"
                 required
                 autoFocus
                 className="input-editorial"
@@ -164,7 +164,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                placeholder="e.g. Product Manager at Stripe"
+                placeholder="e.g. PM, Designer, Founder..."
                 className="input-editorial"
                 disabled={loading}
               />
