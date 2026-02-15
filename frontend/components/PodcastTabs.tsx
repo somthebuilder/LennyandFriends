@@ -6,8 +6,9 @@ import InsightBreakdown from '@/components/insights/InsightBreakdown'
 import ConceptCard from '@/components/concepts/ConceptCard'
 import { Insight } from '@/lib/api/insights'
 import { Concept } from '@/lib/api/concepts'
-import { sendMessage, ConversationTurn } from '@/lib/api/chat'
-import { ChatMessage, ClarificationQuestion } from '@/lib/types/rag'
+import { sendMessage, submitQuiz, ConversationTurn } from '@/lib/api/chat'
+import { ChatMessage, ClarificationQuestion, QuizPath, QuizResponse } from '@/lib/types/rag'
+import LightningQuiz from '@/components/quiz/LightningQuiz'
 import { useSpeechToText } from '@/hooks/useSpeechToText'
 import BeanAnimation from '@/components/BeanAnimation'
 import ReactMarkdown from 'react-markdown'
@@ -96,6 +97,11 @@ export default function PodcastTabs({
   const [creditsTotal, setCreditsTotal] = useState<number | null>(null)
   const [chatSessionId, setChatSessionId] = useState<string | undefined>(undefined)
   const [chatError, setChatError] = useState<string | null>(null)
+
+  // Lightning Quiz state
+  const [quizActive, setQuizActive] = useState(false)
+  const [quizCredits, setQuizCredits] = useState<number | null>(null)
+  const [quizCreditsTotal, setQuizCreditsTotal] = useState<number | null>(null)
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const breakdownRef = useRef<HTMLDivElement>(null)
 
@@ -289,6 +295,13 @@ export default function PodcastTabs({
     e.preventDefault()
     if (!chatInput.trim() || isChatLoading) return
 
+    // Detect "start lightning quiz" text trigger
+    if (chatInput.trim().toLowerCase().replace(/[^a-z ]/g, '').includes('lightning quiz')) {
+      setChatInput('')
+      setQuizActive(true)
+      return
+    }
+
     // Stop any active speech session
     if (isListening) stopAndKeep()
 
@@ -340,6 +353,22 @@ export default function PodcastTabs({
   // Quick reply chip click (for clarification)
   function handleQuickReply(text: string) {
     setChatInput(text)
+  }
+
+  // Lightning Quiz submit handler
+  async function handleQuizSubmit(
+    path: QuizPath,
+    tags: Record<string, number>,
+    topTags: string[]
+  ): Promise<QuizResponse> {
+    const response = await submitQuiz(podcastSlug, path, tags, topTags)
+    if (response.quiz_credits_remaining !== undefined) {
+      setQuizCredits(response.quiz_credits_remaining)
+    }
+    if (response.quiz_credits_total !== undefined) {
+      setQuizCreditsTotal(response.quiz_credits_total)
+    }
+    return response
   }
 
   function handleMicClick() {
@@ -820,7 +849,21 @@ export default function PodcastTabs({
               </div>
             )}
 
+            {/* Lightning Quiz Overlay */}
+            {quizActive && (
+              <div className="flex-1 flex flex-col bg-gradient-to-b from-amber-50/30 to-cream-50 rounded-xl border border-amber-100/50 overflow-y-auto">
+                <LightningQuiz
+                  podcastSlug={podcastSlug}
+                  onExit={() => setQuizActive(false)}
+                  onSubmitQuiz={handleQuizSubmit}
+                  quizCredits={quizCredits}
+                  quizCreditsTotal={quizCreditsTotal}
+                />
+              </div>
+            )}
+
             {/* Messages */}
+            {!quizActive && (
             <div
               ref={chatScrollRef}
               className="flex-1 overflow-y-auto space-y-5 pb-4"
@@ -1064,10 +1107,22 @@ export default function PodcastTabs({
                 </div>
               )}
             </div>
+            )}
 
             {/* Input area */}
             {user ? (
               <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0 z-50">
+                {/* Lightning Quiz entry chip */}
+                {!quizActive && !isChatLoading && (
+                  <div className="mb-2 px-1">
+                    <button
+                      onClick={() => setQuizActive(true)}
+                      className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 hover:border-amber-300 transition-all"
+                    >
+                      <span>&#9889;</span> Lightning Quiz
+                    </button>
+                  </div>
+                )}
                 {/* Credits display */}
                 {creditsRemaining !== null && creditsTotal !== null && (
                   <div className="flex items-center justify-between mb-2 px-1">

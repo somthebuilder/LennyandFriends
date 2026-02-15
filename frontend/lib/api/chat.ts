@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/lib/types/rag'
+import type { ChatMessage, QuizPath, QuizResponse } from '@/lib/types/rag'
 export type { ChatMessage } from '@/lib/types/rag'
 
 export type ConversationTurn = {
@@ -51,4 +51,33 @@ export async function sendMessage(
   }
 
   return data as ChatMessage
+}
+
+/** Submit completed quiz answers for recommendation generation */
+export async function submitQuiz(
+  podcastSlug: string,
+  path: QuizPath,
+  tags: Record<string, number>,
+  topTags: string[]
+): Promise<QuizResponse> {
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: `Lightning Quiz: ${path}`,
+      podcastSlug,
+      deviceId: getDeviceId(),
+      quizMode: { path, tags, topTags },
+    }),
+  })
+
+  const data = await response.json().catch(() => ({}))
+
+  if (!response.ok) {
+    const errorMsg =
+      typeof data?.error === 'string' ? data.error : 'Quiz failed'
+    throw new Error(errorMsg)
+  }
+
+  return data as QuizResponse
 }

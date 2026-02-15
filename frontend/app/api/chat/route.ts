@@ -25,7 +25,7 @@ async function sha256Hex(value: string): Promise<string> {
 
 export async function POST(request: NextRequest) {
   // ── Step 1: Parse body ──────────────────────────────────────────
-  let body: { message?: unknown; podcastSlug?: unknown; conversationHistory?: unknown; sessionId?: unknown; deviceId?: unknown }
+  let body: { message?: unknown; podcastSlug?: unknown; conversationHistory?: unknown; sessionId?: unknown; deviceId?: unknown; quizMode?: unknown }
   try {
     body = await request.json()
   } catch (parseErr) {
@@ -33,23 +33,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
-  const normalizedMessage =
-    typeof body.message === 'string' ? body.message.trim() : ''
   const normalizedPodcastSlug =
     typeof body.podcastSlug === 'string' ? body.podcastSlug.trim() : ''
+  const isQuizMode = body.quizMode && typeof body.quizMode === 'object'
 
-    if (!normalizedMessage) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
-    }
-    if (!normalizedPodcastSlug) {
+  // Quiz mode only requires podcastSlug + quizMode payload; normal chat requires message
+  const normalizedMessage =
+    typeof body.message === 'string' ? body.message.trim() : ''
+
+  if (!isQuizMode && !normalizedMessage) {
+    return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+  }
+  if (!normalizedPodcastSlug) {
     return NextResponse.json(
       { error: 'podcastSlug is required' },
       { status: 400 }
     )
-    }
-    if (normalizedMessage.length > 500) {
-      return NextResponse.json({ error: 'Message too long' }, { status: 400 })
-    }
+  }
+  if (!isQuizMode && normalizedMessage.length > 500) {
+    return NextResponse.json({ error: 'Message too long' }, { status: 400 })
+  }
 
   // ── Step 2: Resolve config ─────────────────────────────────────
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -118,6 +121,7 @@ export async function POST(request: NextRequest) {
         podcastSlug: normalizedPodcastSlug,
         conversationHistory: sanitizedHistory,
         sessionId: typeof body.sessionId === 'string' ? body.sessionId.trim() : undefined,
+        ...(isQuizMode ? { quizMode: body.quizMode } : {}),
       }),
     })
   } catch (fetchErr) {

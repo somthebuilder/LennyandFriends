@@ -650,6 +650,58 @@ async function incrementUsage(
 }
 
 /* ================================================================== */
+/*  QUIZ USAGE / RATE LIMITING                                         */
+/* ================================================================== */
+async function getQuizUsage(
+  supabase: ReturnType<typeof createClient>,
+  userKey: string
+): Promise<{ dayCount: number; dayWindowStart: Date }> {
+  const { data: row } = await supabase
+    .from("usage_limits")
+    .select("quiz_day_window_start, quiz_day_count")
+    .eq("user_key", userKey)
+    .maybeSingle();
+
+  const now = new Date();
+  if (!row) return { dayCount: 0, dayWindowStart: now };
+
+  const dayStart = new Date(row.quiz_day_window_start);
+  const dayElapsed = now.getTime() - dayStart.getTime();
+  return {
+    dayCount: dayElapsed < 86_400_000 ? row.quiz_day_count : 0,
+    dayWindowStart: dayElapsed < 86_400_000 ? dayStart : now,
+  };
+}
+
+async function incrementQuizUsage(
+  supabase: ReturnType<typeof createClient>,
+  userKey: string,
+  usage: Awaited<ReturnType<typeof getQuizUsage>>
+): Promise<void> {
+  const now = new Date();
+  // Try updating existing row first (preserves non-quiz columns)
+  const { data } = await supabase
+    .from("usage_limits")
+    .update({
+      quiz_day_window_start: usage.dayWindowStart.toISOString(),
+      quiz_day_count: usage.dayCount + 1,
+      updated_at: now.toISOString(),
+    })
+    .eq("user_key", userKey)
+    .select("user_key");
+
+  // If no row existed, insert with defaults for other columns
+  if (!data || data.length === 0) {
+    await supabase.from("usage_limits").insert({
+      user_key: userKey,
+      quiz_day_window_start: usage.dayWindowStart.toISOString(),
+      quiz_day_count: usage.dayCount + 1,
+      updated_at: now.toISOString(),
+    });
+  }
+}
+
+/* ================================================================== */
 /*  LOGGING                                                            */
 /* ================================================================== */
 async function logUsage(
@@ -766,6 +818,7 @@ Deno.serve(async (req: Request) => {
     podcastSlug?: string;
     conversationHistory?: ConversationMessage[];
     sessionId?: string;
+    quizMode?: { path: string; tags: Record<string, number>; topTags: string[] };
   } = {};
   try {
     body = await req.json();
@@ -773,15 +826,189 @@ Deno.serve(async (req: Request) => {
     return json(400, { error: "Invalid JSON body" });
   }
 
-  const message = normalizeInput(body.message ?? "");
   const podcastSlug = normalizeInput(body.podcastSlug ?? "");
+  if (!podcastSlug) return json(400, { error: "podcastSlug is required" });
+
+  // ══════════════════════════════════════════════════════════════════
+  //  LIGHTNING QUIZ MODE
+  // ══════════════════════════════════════════════════════════════════
+  if (body.quizMode && typeof body.quizMode === "object") {
+    const userKey = req.headers.get("x-user-key")?.trim() || "anon";
+    const rawDeviceId = req.headers.get("x-device-id")?.trim() || "";
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const deviceId = UUID_RE.test(rawDeviceId) ? rawDeviceId : "";
+
+    const quizPath = String(body.quizMode.path || "book");
+    const quizTags = body.quizMode.tags || {};
+    const topTags = Array.isArray(body.quizMode.topTags) ? body.quizMode.topTags.slice(0, 10).map(String) : [];
+
+    // Quiz rate limiting (separate 5/day pool)
+    const QUIZ_DAILY_LIMIT = 5;
+    const quizUsage = await getQuizUsage(supabase, userKey);
+    let deviceQuizUsage: Awaited<ReturnType<typeof getQuizUsage>> | null = null;
+    if (deviceId && deviceId !== userKey) {
+      deviceQuizUsage = await getQuizUsage(supabase, `dev:${deviceId}`);
+    }
+    const effectiveQuizCount = Math.max(quizUsage.dayCount, deviceQuizUsage?.dayCount ?? 0);
+    const quizCreditsRemaining = Math.max(0, QUIZ_DAILY_LIMIT - effectiveQuizCount);
+
+    if (effectiveQuizCount >= QUIZ_DAILY_LIMIT) {
+      return json(429, {
+        error: `You've used all ${QUIZ_DAILY_LIMIT} quizzes for today. Come back tomorrow!`,
+        quiz_credits_remaining: 0,
+        quiz_credits_total: QUIZ_DAILY_LIMIT,
+      });
+    }
+
+    // Podcast lookup
+    const { data: podcastData } = await supabase
+      .from("podcasts").select("id, slug").eq("slug", podcastSlug).maybeSingle();
+    if (!podcastData) return json(404, { error: "Podcast not found" });
+
+    // Query candidates based on path
+    let candidateContext = "";
+    if (quizPath === "book") {
+      const { data: books } = await supabase
+        .from("books")
+        .select("title, author, genre, summary")
+        .limit(100);
+      const { data: recs } = await supabase
+        .from("book_recommendations")
+        .select("guest_name, guest_role, quote, source_summary, book_id, books(title)")
+        .limit(150);
+      candidateContext = "=== BOOKS ===\n" +
+        (books ?? []).map((b: { title: string; author: string | null; genre: string | null; summary: string | null }) =>
+          `- "${b.title}" by ${b.author ?? "Unknown"} [Genre: ${b.genre ?? "general"}] ${b.summary ? "Summary: " + b.summary.slice(0, 200) : ""}`
+        ).join("\n") +
+        "\n\n=== GUEST RECOMMENDATIONS ===\n" +
+        (recs ?? []).slice(0, 80).map((r: { guest_name: string | null; quote: string | null; books: { title: string } | null }) =>
+          `- ${r.guest_name ?? "Guest"} recommended "${(r.books as { title: string } | null)?.title ?? "a book"}": ${r.quote ? r.quote.slice(0, 150) : "no quote"}`
+        ).join("\n");
+    } else if (quizPath === "mentor") {
+      const { data: guests } = await supabase
+        .from("guests")
+        .select("full_name, current_role, current_company, previous_roles")
+        .limit(150);
+      candidateContext = "=== POTENTIAL MENTORS (Podcast Guests) ===\n" +
+        (guests ?? []).map((g: { full_name: string; current_role: string | null; current_company: string | null; previous_roles: unknown }) =>
+          `- ${g.full_name} | ${g.current_role ?? "Unknown role"} at ${g.current_company ?? "Unknown"} | Previous: ${JSON.stringify(g.previous_roles ?? []).slice(0, 150)}`
+        ).join("\n");
+    } else {
+      // show path
+      const { data: lr } = await supabase
+        .from("lightning_round_answers")
+        .select("entertainment, episode_id, episodes(guest_name)")
+        .not("entertainment", "is", null)
+        .limit(100);
+      candidateContext = "=== SHOW/ENTERTAINMENT RECOMMENDATIONS FROM GUESTS ===\n" +
+        (lr ?? []).map((r: { entertainment: string; episodes: { guest_name: string | null } | null }) =>
+          `- ${(r.episodes as { guest_name: string | null } | null)?.guest_name ?? "Guest"}: ${r.entertainment.slice(0, 200)}`
+        ).join("\n");
+    }
+
+    // Build Gemini prompt
+    const tagProfile = topTags.length > 0
+      ? `User's top personality tags (ranked): ${topTags.join(", ")}.\nFull tag scores: ${JSON.stringify(quizTags)}`
+      : "No specific tags.";
+
+    const quizPrompt = `You are Bean in Quiz Master mode. The user just completed a Lightning Quiz and you need to recommend ${quizPath === "book" ? "books" : quizPath === "mentor" ? "mentors/operators to follow" : "TV shows/movies"}.
+
+${tagProfile}
+
+Here are the candidates to choose from:
+${candidateContext}
+
+RULES:
+- Pick 3 recommendations: a TOP PICK, an ALTERNATIVE, and a STRETCH PICK
+- The stretch pick should be something slightly uncomfortable but high upside
+- Be decisive and slightly bold. No safe middle-of-the-road picks.
+- Keep explanations to 1-2 sentences each. No fluff.
+- For the "why" field, connect it to the user's tag profile
+- For "what_it_changes", describe the transformation in one sentence (top pick only)
+- If a guest recommended it, include their name in guest_attribution
+- Generate an archetype label (2-3 words) that captures the user's pattern based on their tags
+
+Return valid JSON matching this exact schema:
+{
+  "archetype": "Strategic Systems Builder",
+  "top_pick": { "title": "...", "author": "...", "why": "...", "what_it_changes": "...", "guest_attribution": "..." },
+  "alternative": { "title": "...", "author": "...", "why": "...", "guest_attribution": "..." },
+  "stretch_pick": { "title": "...", "author": "...", "why": "...", "guest_attribution": "..." }
+}
+
+For mentor path: use person's name as "title" and their role as "author".
+For show path: use show name as "title" and omit "author" or use genre.`;
+
+    let quizResult;
+    try {
+      const raw = await geminiChat(
+        geminiKey,
+        "You are Bean in Quiz Master mode. Be decisive, slightly bold, intellectually sharp. No safe picks. Return only valid JSON.",
+        [{ role: "user", parts: [{ text: quizPrompt }] }],
+        0.5,
+        1024
+      );
+      // Parse the JSON response (strip markdown fences if present)
+      const cleaned = raw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+      quizResult = JSON.parse(cleaned);
+    } catch (err) {
+      console.error("Quiz generation error:", err);
+      return json(502, {
+        error: "Hit a snag generating your quiz results. Try again.",
+        quiz_credits_remaining: quizCreditsRemaining,
+        quiz_credits_total: QUIZ_DAILY_LIMIT,
+      });
+    }
+
+    // Increment quiz usage
+    await incrementQuizUsage(supabase, userKey, quizUsage);
+    if (deviceId && deviceId !== userKey) {
+      await incrementQuizUsage(supabase, `dev:${deviceId}`, deviceQuizUsage ?? quizUsage);
+    }
+    const newQuizCredits = quizCreditsRemaining - 1;
+
+    // Persist quiz session
+    let sessionId: string | undefined;
+    try {
+      sessionId = await getOrCreateSession(supabase, null, podcastData.id, userKey);
+      // Update context_type to quiz
+      await supabase.from("chat_sessions").update({ context_type: "quiz" }).eq("id", sessionId);
+      await saveChatMessage(supabase, sessionId, "user", `Lightning Quiz: ${quizPath} | Tags: ${topTags.join(", ")}`);
+      await saveChatMessage(supabase, sessionId, "assistant", JSON.stringify(quizResult));
+    } catch (e) {
+      console.error("Quiz persistence error:", e);
+    }
+
+    // Log usage
+    await logUsage(supabase, {
+      userKey,
+      podcastSlug,
+      model: `gemini:${GEMINI_CHAT_MODEL}`,
+      requestChars: quizPrompt.length,
+      status: "success",
+    });
+
+    return json(200, {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      quiz_result: quizResult,
+      quiz_path: quizPath,
+      quiz_credits_remaining: newQuizCredits,
+      quiz_credits_total: QUIZ_DAILY_LIMIT,
+      session_id: sessionId,
+    });
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  //  NORMAL CHAT MODE
+  // ══════════════════════════════════════════════════════════════════
+  const message = normalizeInput(body.message ?? "");
   const conversationHistory = (body.conversationHistory ?? []).slice(
     -MAX_CONVERSATION_TURNS
   );
   const incomingSessionId = body.sessionId?.trim() || null;
 
   if (!message) return json(400, { error: "Message is required" });
-  if (!podcastSlug) return json(400, { error: "podcastSlug is required" });
   if (message.length > MAX_INPUT_LENGTH)
     return json(400, { error: "Message too long (max 500 characters)" });
 

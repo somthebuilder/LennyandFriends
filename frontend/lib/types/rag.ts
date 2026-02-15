@@ -83,3 +83,32 @@ export const SIGNAL_LABELS: Record<SignalBadge, string> = {
   split_view: 'Split view',
   emerging: 'Emerging',
 }
+
+/* ── Lightning Quiz Types ── */
+
+export type QuizPath = 'book' | 'show' | 'mentor' | 'surprise'
+
+export interface QuizPick {
+  title: string
+  author?: string
+  why: string
+  what_it_changes?: string
+  guest_attribution?: string
+}
+
+export interface QuizResult {
+  archetype: string
+  top_pick: QuizPick
+  alternative: QuizPick
+  stretch_pick: QuizPick
+}
+
+export interface QuizResponse {
+  id: string
+  role: 'assistant'
+  quiz_result: QuizResult
+  quiz_path: QuizPath
+  quiz_credits_remaining: number
+  quiz_credits_total: number
+  session_id?: string
+}
