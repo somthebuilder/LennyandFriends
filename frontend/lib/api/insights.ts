@@ -3,6 +3,17 @@ import type { Insight } from '@/lib/types/rag'
 export { SIGNAL_LABELS } from '@/lib/types/rag'
 export type { Insight, SignalBadge } from '@/lib/types/rag'
 
+const IN_BATCH_SIZE = 40
+
+function chunkArray<T>(items: T[], size: number): T[][] {
+  if (items.length <= size) return [items]
+  const chunks: T[][] = []
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size))
+  }
+  return chunks
+}
+
 export async function getInsights(podcastSlug: string): Promise<Insight[]> {
   const supabase = createServerSupabase()
   const { data: podcast, error: podcastError } = await supabase
@@ -23,23 +34,38 @@ export async function getInsights(podcastSlug: string): Promise<Insight[]> {
   if (insightsError || !insightRows?.length) return []
 
   const insightIds = insightRows.map((r) => r.id)
-  const { data: evidenceRows } = await supabase
-    .from('insight_evidence')
-    .select('insight_id,guest_id,episode_id,quote,timestamp,time_seconds,episode_url,display_order')
-    .in('insight_id', insightIds)
-    .order('display_order', { ascending: true })
+  const evidenceBatches = await Promise.all(
+    chunkArray(insightIds, IN_BATCH_SIZE).map((ids) =>
+      supabase
+        .from('insight_evidence')
+        .select('insight_id,guest_id,episode_id,quote,timestamp,time_seconds,episode_url,display_order')
+        .in('insight_id', ids)
+        .order('display_order', { ascending: true })
+    )
+  )
+  const evidenceRows = evidenceBatches.flatMap((r) => r.data ?? [])
 
   const guestIds = Array.from(new Set((evidenceRows ?? []).map((r) => r.guest_id).filter(Boolean)))
   const episodeIds = Array.from(new Set((evidenceRows ?? []).map((r) => r.episode_id).filter(Boolean)))
 
-  const [{ data: guests }, { data: episodes }] = await Promise.all([
+  const [guestBatches, episodeBatches] = await Promise.all([
     guestIds.length
-      ? supabase.from('guests').select('id,full_name,current_role,current_company').in('id', guestIds)
-      : Promise.resolve({ data: [] as Array<{ id: string; full_name: string; current_role: string | null; current_company: string | null }> }),
+      ? Promise.all(
+          chunkArray(guestIds, IN_BATCH_SIZE).map((ids) =>
+            supabase.from('guests').select('id,full_name,current_role,current_company').in('id', ids)
+          )
+        )
+      : Promise.resolve([] as Array<{ data: Array<{ id: string; full_name: string; current_role: string | null; current_company: string | null }> | null }>),
     episodeIds.length
-      ? supabase.from('episodes').select('id,title,youtube_url').in('id', episodeIds)
-      : Promise.resolve({ data: [] as Array<{ id: string; title: string; youtube_url: string | null }> }),
+      ? Promise.all(
+          chunkArray(episodeIds, IN_BATCH_SIZE).map((ids) =>
+            supabase.from('episodes').select('id,title,youtube_url').in('id', ids)
+          )
+        )
+      : Promise.resolve([] as Array<{ data: Array<{ id: string; title: string; youtube_url: string | null }> | null }>),
   ])
+  const guests = guestBatches.flatMap((r) => r.data ?? [])
+  const episodes = episodeBatches.flatMap((r) => r.data ?? [])
 
   const guestMap = new Map((guests ?? []).map((g) => [g.id, { name: g.full_name, role: [g.current_role, g.current_company].filter(Boolean).join(' at ') || undefined }]))
   const episodeMap = new Map((episodes ?? []).map((e) => [e.id, { title: e.title, youtube_url: e.youtube_url }]))

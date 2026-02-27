@@ -11,8 +11,8 @@ export default function Header() {
   const [showAuth, setShowAuth] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
