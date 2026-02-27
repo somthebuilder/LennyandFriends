@@ -14,7 +14,6 @@ import BeanAnimation from '@/components/BeanAnimation'
 import ReactMarkdown from 'react-markdown'
 import { supabase } from '@/lib/supabase'
 import AuthModal from '@/components/AuthModal'
-import type { User } from '@supabase/supabase-js'
 
 /* ── Helper: get or create a stable voter ID (matches podcast voting pattern) ── */
 function getVoterId(): string {
@@ -105,8 +104,8 @@ export default function PodcastTabs({
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const breakdownRef = useRef<HTMLDivElement>(null)
 
-  // Auth state for chat gating
-  const [user, setUser] = useState<User | null>(null)
+  // Local auth hint for chat gating (avoids client Supabase auth refresh calls)
+  const [hasAccount, setHasAccount] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   // Speech-to-text
@@ -149,13 +148,10 @@ export default function PodcastTabs({
       })
   }, [insights])
 
-  // Track auth state for chat gating
+  // Track account hint for chat gating
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-    return () => subscription.unsubscribe()
+    if (typeof window === 'undefined') return
+    setHasAccount(localStorage.getItem('espresso_has_account') === '1')
   }, [])
 
   function syncTabToUrl(tabId: TabId) {
@@ -875,7 +871,7 @@ export default function PodcastTabs({
                   <p className="text-[14px] text-charcoal-600 max-w-sm leading-relaxed">
                     I&apos;m a <span className="font-serif font-semibold">living Bean</span> trained on 500+ hours of conversations with top operators. The more specific your question, the better I can help.
                   </p>
-                  {user ? (
+                  {hasAccount ? (
                     <div className="w-full max-w-sm space-y-4 pt-2">
                       {/* Lightning Quiz prominent entry */}
                       <button
@@ -1128,7 +1124,7 @@ export default function PodcastTabs({
             )}
 
             {/* Input area */}
-            {user ? (
+            {hasAccount ? (
               <div className="pt-3 border-t border-charcoal-200/60 bg-cream-50 sticky bottom-0 z-50">
                 {/* Lightning Quiz entry chip */}
                 {!quizActive && !isChatLoading && (

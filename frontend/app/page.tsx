@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabase'
-import type { User } from '@supabase/supabase-js'
 
 interface Podcast {
   id: string
@@ -89,8 +88,8 @@ export default function LandingPage() {
   const [votedIds, setVotedIds] = useState<Set<string>>(new Set())
   const [votingId, setVotingId] = useState<string | null>(null)
 
-  // ── Auth state ──
-  const [user, setUser] = useState<User | null>(null)
+  // ── Local request identity state (avoids client Supabase auth refresh calls) ──
+  const [requestEmail, setRequestEmail] = useState<string | null>(null)
 
   // ── Community request state ──
   const [requests, setRequests] = useState<PodcastRequest[]>([])
@@ -109,22 +108,12 @@ export default function LandingPage() {
   const [inlineAuthError, setInlineAuthError] = useState<string | null>(null)
   const [inlineAuthSuccess, setInlineAuthSuccess] = useState<string | null>(null)
 
-  // ── Auth listener (lazy: only when suggest panel opens) ──
+  // ── Restore local request identity ──
   useEffect(() => {
-    if (!showSuggest) return
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-    }).catch((error) => {
-      console.error('Failed to read auth session:', error)
-    })
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [showSuggest])
+    if (typeof window === 'undefined') return
+    const savedEmail = localStorage.getItem('espresso_request_email')
+    if (savedEmail) setRequestEmail(savedEmail)
+  }, [])
 
   const fetchPodcasts = useCallback(async () => {
     try {
@@ -237,14 +226,14 @@ export default function LandingPage() {
 
   async function handleSubmitRequest(e: React.FormEvent) {
     e.preventDefault()
-    if (!newName.trim() || !user) return
+    if (!newName.trim() || !requestEmail) return
     setSubmitting(true)
     const { error } = await supabase.from('podcast_requests').insert({
       podcast_name: newName.trim(),
       podcast_host: newHost.trim() || null,
       podcast_url: newUrl.trim() || null,
-      requested_by_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anonymous',
-      requested_by_email: user.email,
+      requested_by_name: requestEmail.split('@')[0] || 'Anonymous',
+      requested_by_email: requestEmail,
     })
     if (!error) {
       setNewName(''); setNewHost(''); setNewUrl('')
@@ -274,7 +263,11 @@ export default function LandingPage() {
       if (!response.ok) {
         setInlineAuthError(payload.error || 'Unable to send magic link right now')
       } else {
-        if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('espresso_has_account', '1')
+          localStorage.setItem('espresso_request_email', inlineEmail)
+        }
+        setRequestEmail(inlineEmail)
         setInlineAuthSuccess('Check your email for a magic link to sign in.')
       }
     } catch (error) {
@@ -573,7 +566,7 @@ export default function LandingPage() {
                   {/* Divider + Actions */}
                   <div className="border-t border-espresso-100/60 pt-4">
                     {/* Not signed in — inline sign-up / sign-in form */}
-                    {!user && (
+                    {!requestEmail && (
                       <div className="space-y-3">
                         <p className="text-xs text-charcoal-500">Sign in to suggest a podcast</p>
 
@@ -610,11 +603,11 @@ export default function LandingPage() {
                       </div>
                     )}
 
-                    {/* Signed in via Supabase — show submit form */}
-                    {user && !submitSuccess && (
+                    {/* Local identity available — show submit form */}
+                    {requestEmail && !submitSuccess && (
                       <form onSubmit={handleSubmitRequest} className="space-y-3">
                         <p className="text-xs text-charcoal-500 font-sans">
-                          Suggesting as <span className="font-semibold text-espresso-600">{user.user_metadata?.full_name || user.email?.split('@')[0]}</span>
+                          Suggesting as <span className="font-semibold text-espresso-600">{requestEmail.split('@')[0]}</span>
                         </p>
                         <input
                           type="text"
