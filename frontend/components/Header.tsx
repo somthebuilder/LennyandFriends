@@ -2,31 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import AuthModal from './AuthModal'
-import type { User } from '@supabase/supabase-js'
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null)
+  const [hasAccount, setHasAccount] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-    })
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      if (session?.user) setShowAuth(false)
-    })
-
-    return () => subscription.unsubscribe()
+    if (typeof window === 'undefined') return
+    setHasAccount(localStorage.getItem('espresso_has_account') === '1')
   }, [])
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-  }
 
   return (
     <>
@@ -42,26 +27,12 @@ export default function Header() {
 
           {/* Auth — only Sign In or user info */}
           <div className="flex items-center gap-3">
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-medium text-espresso-500 hidden sm:block tracking-wide">
-                  {user.user_metadata?.full_name || user.email?.split('@')[0]}
-                </span>
-                <button
-                  onClick={handleSignOut}
-                  className="text-xs font-medium text-charcoal-400 hover:text-espresso-600 transition-colors"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowAuth(true)}
-                className="text-xs font-medium text-charcoal-500 hover:text-espresso-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-espresso-50/60"
-              >
-                Sign In
-              </button>
-            )}
+            <button
+              onClick={() => setShowAuth(true)}
+              className="text-xs font-medium text-charcoal-500 hover:text-espresso-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-espresso-50/60"
+            >
+              {hasAccount ? 'Continue' : 'Sign In'}
+            </button>
           </div>
         </div>
       </header>

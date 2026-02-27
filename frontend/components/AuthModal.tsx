@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 
 interface AuthModalProps {
   isOpen: boolean
@@ -35,22 +34,30 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     const redirectTo = `${window.location.origin}/auth/callback`
 
-    const { error: otpError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: redirectTo,
-        data: {
-          ...(fullName ? { full_name: fullName } : {}),
-          ...(role ? { role } : {}),
-        },
-      },
-    })
+    try {
+      const response = await fetch('/api/auth/magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          redirectTo,
+          userData: {
+            ...(fullName ? { full_name: fullName } : {}),
+            ...(role ? { role } : {}),
+          },
+        }),
+      })
+      const payload = (await response.json().catch(() => ({}))) as { error?: string }
 
-    if (otpError) {
-      setError(otpError.message)
-    } else {
-      if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
-      setSuccess(true)
+      if (!response.ok) {
+        setError(payload.error || 'Unable to send magic link right now')
+      } else {
+        if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
+        setSuccess(true)
+      }
+    } catch (err) {
+      console.error('Magic link request failed:', err)
+      setError('Unable to send magic link right now')
     }
     setLoading(false)
   }

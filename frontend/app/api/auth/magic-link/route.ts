@@ -8,9 +8,13 @@ export async function POST(request: NextRequest) {
   const body = (await request.json().catch(() => ({}))) as {
     email?: unknown
     redirectTo?: unknown
+    userData?: unknown
   }
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const redirectTo = typeof body.redirectTo === 'string' ? body.redirectTo.trim() : ''
+  const userData = typeof body.userData === 'object' && body.userData !== null
+    ? (body.userData as Record<string, unknown>)
+    : undefined
 
   if (!email) {
     return NextResponse.json({ error: 'Email is required' }, { status: 400 })
@@ -26,7 +30,10 @@ export async function POST(request: NextRequest) {
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+      options: {
+        ...(redirectTo ? { emailRedirectTo: redirectTo } : {}),
+        ...(userData ? { data: userData } : {}),
+      },
     })
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 })
