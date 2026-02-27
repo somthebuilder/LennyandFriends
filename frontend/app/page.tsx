@@ -109,10 +109,14 @@ export default function LandingPage() {
   const [inlineAuthError, setInlineAuthError] = useState<string | null>(null)
   const [inlineAuthSuccess, setInlineAuthSuccess] = useState<string | null>(null)
 
-  // ── Auth listener ──
+  // ── Auth listener (lazy: only when suggest panel opens) ──
   useEffect(() => {
+    if (!showSuggest) return
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
+    }).catch((error) => {
+      console.error('Failed to read auth session:', error)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -120,18 +124,21 @@ export default function LandingPage() {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [showSuggest])
 
   const fetchPodcasts = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('podcasts')
-      .select('id, name, host, description, slug, accent_color, tagline, cover_image, status, featured, vote_count')
-      .in('status', ['active', 'coming_soon'])
-      .order('display_order', { ascending: true })
-
-    if (!error && data) {
+    try {
+      const response = await fetch('/api/podcasts', { cache: 'no-store' })
+      if (!response.ok) {
+        throw new Error(`Podcasts request failed (${response.status})`)
+      }
+      const data = (await response.json()) as Podcast[]
       setFeaturedPodcasts(data.filter((p) => p.status === 'active'))
       setComingSoonPodcasts(data.filter((p) => p.status === 'coming_soon'))
+    } catch (error) {
+      console.error('Failed to load podcasts:', error)
+      setFeaturedPodcasts([])
+      setComingSoonPodcasts([])
     }
     setLoading(false)
   }, [])
@@ -174,27 +181,35 @@ export default function LandingPage() {
   }, [showSuggest, fetchRequests])
 
   async function handleVote(podcastId: string) {
-    const voterId = getVoterId()
-    if (!voterId || votedIds.has(podcastId)) return
+    if (votedIds.has(podcastId)) return
 
     setVotingId(podcastId)
     const podcast = comingSoonPodcasts.find((p) => p.id === podcastId)
-    if (!podcast) return
+    if (!podcast) {
+      setVotingId(null)
+      return
+    }
 
-    const { error } = await supabase
-      .from('podcasts')
-      .update({ vote_count: podcast.vote_count + 1 })
-      .eq('id', podcastId)
-
-    if (!error) {
+    try {
+      const response = await fetch('/api/podcasts/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ podcastId }),
+      })
+      if (!response.ok) {
+        throw new Error(`Vote failed (${response.status})`)
+      }
+      const result = (await response.json()) as { vote_count?: number }
       setComingSoonPodcasts((prev) =>
         prev.map((p) =>
-          p.id === podcastId ? { ...p, vote_count: p.vote_count + 1 } : p
+          p.id === podcastId ? { ...p, vote_count: result.vote_count ?? p.vote_count + 1 } : p
         )
       )
       const newVoted = new Set(votedIds).add(podcastId)
       setVotedIds(newVoted)
       localStorage.setItem('espresso_podcast_votes', JSON.stringify([...newVoted]))
+    } catch (error) {
+      console.error('Failed to submit vote:', error)
     }
     setVotingId(null)
   }
@@ -248,16 +263,23 @@ export default function LandingPage() {
 
     const redirectTo = `${window.location.origin}/auth/callback`
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email: inlineEmail,
-      options: { emailRedirectTo: redirectTo },
-    })
+    try {
+      const response = await fetch('/api/auth/magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inlineEmail, redirectTo }),
+      })
+      const payload = (await response.json().catch(() => ({}))) as { error?: string }
 
-    if (error) {
-      setInlineAuthError(error.message)
-    } else {
-      if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
-      setInlineAuthSuccess('Check your email for a magic link to sign in.')
+      if (!response.ok) {
+        setInlineAuthError(payload.error || 'Unable to send magic link right now')
+      } else {
+        if (typeof window !== 'undefined') localStorage.setItem('espresso_has_account', '1')
+        setInlineAuthSuccess('Check your email for a magic link to sign in.')
+      }
+    } catch (error) {
+      console.error('Failed to request magic link:', error)
+      setInlineAuthError('Unable to send magic link right now. Please try again.')
     }
     setInlineAuthLoading(false)
   }
