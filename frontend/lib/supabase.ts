@@ -5,7 +5,11 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 // Some mobile/in-app browsers abort the auth lock unexpectedly.
 // A no-op lock keeps auth initialization from failing on those clients.
-const noOpLock = async (_name: string, _timeout: number, fn: () => Promise<unknown>) => fn()
+const noOpLock = async <R>(
+  _name: string,
+  _timeout: number,
+  fn: () => Promise<R>
+): Promise<R> => fn()
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
