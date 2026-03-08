@@ -1,12 +1,13 @@
 import Header from '@/components/Header'
 import PodcastTabs from '@/components/PodcastTabs'
-import { getConcepts } from '@/lib/api/concepts'
+import { getConceptsPage } from '@/lib/api/concepts'
 import { getInsights } from '@/lib/api/insights'
 import { getDryRunPreview } from '@/lib/api/preview'
 import type { Concept, Insight } from '@/lib/types/rag'
 
 // Revalidate every 5 minutes — balances freshness with speed
 export const revalidate = 300
+const CONCEPTS_PER_PAGE = 10
 
 type PodcastPageProps = {
   params: { 'podcast-slug': string }
@@ -45,6 +46,7 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
   const insightCount = getParamInt(searchParams?.insightCount, 10, 4, 24)
 
   let concepts: Concept[] = []
+  let conceptsTotal = 0
   let insights: Insight[] = []
   let previewMeta: Awaited<ReturnType<typeof getDryRunPreview>>['meta'] | null = null
   let previewError: string | null = null
@@ -57,10 +59,26 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
       previewMeta = preview.meta
     } catch (error) {
       previewError = error instanceof Error ? error.message : 'Preview mode failed'
-      ;[concepts, insights] = await Promise.all([getConcepts(slug), getInsights(slug)])
+      const [conceptPage, insightsResult] = await Promise.all([
+        getConceptsPage(slug, { limit: CONCEPTS_PER_PAGE, offset: 0 }),
+        getInsights(slug),
+      ])
+      concepts = conceptPage.items
+      conceptsTotal = conceptPage.total
+      insights = insightsResult
     }
   } else {
-    ;[concepts, insights] = await Promise.all([getConcepts(slug), getInsights(slug)])
+    const [conceptPage, insightsResult] = await Promise.all([
+      getConceptsPage(slug, { limit: CONCEPTS_PER_PAGE, offset: 0 }),
+      getInsights(slug),
+    ])
+    concepts = conceptPage.items
+    conceptsTotal = conceptPage.total
+    insights = insightsResult
+  }
+
+  if (previewEnabled) {
+    conceptsTotal = concepts.length
   }
 
   return (
@@ -86,6 +104,8 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
         podcastSlug={slug}
         insights={insights}
         concepts={concepts}
+        conceptsTotal={conceptsTotal}
+        conceptsPerPage={CONCEPTS_PER_PAGE}
         previewMode={previewEnabled}
         initialTab={initialTab}
       />

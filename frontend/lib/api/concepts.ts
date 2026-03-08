@@ -3,6 +3,8 @@ import type { Concept } from '@/lib/types/rag'
 export type { Concept } from '@/lib/types/rag'
 
 const IN_BATCH_SIZE = 40
+const DEFAULT_CONCEPTS_PAGE_SIZE = 10
+const MAX_CONCEPTS_PAGE_SIZE = 50
 
 function chunkArray<T>(items: T[], size: number): T[][] {
   if (items.length <= size) return [items]
@@ -13,25 +15,45 @@ function chunkArray<T>(items: T[], size: number): T[][] {
   return chunks
 }
 
-export async function getConcepts(podcastSlug: string) {
+export type GetConceptsPageOptions = {
+  limit?: number
+  offset?: number
+}
+
+export type ConceptsPageResult = {
+  items: Concept[]
+  total: number
+  limit: number
+  offset: number
+  hasMore: boolean
+}
+
+function sanitizeLimit(limit?: number) {
+  if (typeof limit !== 'number' || !Number.isFinite(limit)) return DEFAULT_CONCEPTS_PAGE_SIZE
+  return Math.min(MAX_CONCEPTS_PAGE_SIZE, Math.max(1, Math.floor(limit)))
+}
+
+function sanitizeOffset(offset?: number) {
+  if (typeof offset !== 'number' || !Number.isFinite(offset)) return 0
+  return Math.max(0, Math.floor(offset))
+}
+
+async function mapConceptRows(conceptRows: Array<{
+  id: string
+  title: string
+  slug: string
+  summary: string | null
+  body: string
+  category: string | null
+  theme_label: string | null
+  guest_count: number | null
+  episode_count: number | null
+  valuable_count: number | null
+  created_at: string
+}>) {
+  if (!conceptRows.length) return [] as Concept[]
+
   const supabase = createServerSupabase()
-  const { data: podcast, error: podcastError } = await supabase
-    .from('podcasts')
-    .select('id')
-    .eq('slug', podcastSlug)
-    .maybeSingle()
-  if (podcastError || !podcast) return []
-
-  const { data: conceptRows, error: conceptsError } = await supabase
-    .from('concepts')
-    .select(
-      'id,title,slug,summary,body,category,theme_label,guest_count,episode_count,valuable_count,created_at'
-    )
-    .eq('podcast_id', podcast.id)
-    .eq('status', 'published')
-    .order('created_at', { ascending: false })
-  if (conceptsError || !conceptRows?.length) return []
-
   const conceptIds = conceptRows.map((c) => c.id)
   const referenceBatches = await Promise.all(
     chunkArray(conceptIds, IN_BATCH_SIZE).map((ids) =>
@@ -86,7 +108,7 @@ export async function getConcepts(podcastSlug: string) {
     refsByConcept.set(ref.concept_id, existing)
   }
 
-  return conceptRows.map((row) => ({
+  return conceptRows.map((row): Concept => ({
     id: row.id,
     title: row.title,
     slug: row.slug,
@@ -100,6 +122,80 @@ export async function getConcepts(podcastSlug: string) {
     created_at: row.created_at,
     references: refsByConcept.get(row.id) ?? [],
   }))
+}
+
+export async function getConceptsPage(
+  podcastSlug: string,
+  options: GetConceptsPageOptions = {}
+): Promise<ConceptsPageResult> {
+  const limit = sanitizeLimit(options.limit)
+  const offset = sanitizeOffset(options.offset)
+  const supabase = createServerSupabase()
+
+  const { data: podcast, error: podcastError } = await supabase
+    .from('podcasts')
+    .select('id')
+    .eq('slug', podcastSlug)
+    .maybeSingle()
+  if (podcastError || !podcast) {
+    return { items: [], total: 0, limit, offset, hasMore: false }
+  }
+
+  const { count, error: countError } = await supabase
+    .from('concepts')
+    .select('id', { count: 'exact', head: true })
+    .eq('podcast_id', podcast.id)
+    .eq('status', 'published')
+
+  if (countError) {
+    return { items: [], total: 0, limit, offset, hasMore: false }
+  }
+
+  const total = count ?? 0
+  if (total === 0 || offset >= total) {
+    return { items: [], total, limit, offset, hasMore: false }
+  }
+
+  const rangeEnd = offset + limit - 1
+  const { data: conceptRows, error: conceptsError } = await supabase
+    .from('concepts')
+    .select(
+      'id,title,slug,summary,body,category,theme_label,guest_count,episode_count,valuable_count,created_at'
+    )
+    .eq('podcast_id', podcast.id)
+    .eq('status', 'published')
+    .order('created_at', { ascending: false })
+    .range(offset, rangeEnd)
+
+  if (conceptsError || !conceptRows?.length) {
+    return { items: [], total, limit, offset, hasMore: false }
+  }
+
+  const items = await mapConceptRows(conceptRows)
+  return {
+    items,
+    total,
+    limit,
+    offset,
+    hasMore: offset + items.length < total,
+  }
+}
+
+export async function getConcepts(podcastSlug: string) {
+  const pageSize = MAX_CONCEPTS_PAGE_SIZE
+  const allItems: Concept[] = []
+  let offset = 0
+  let total = 0
+
+  while (true) {
+    const page = await getConceptsPage(podcastSlug, { limit: pageSize, offset })
+    if (offset === 0) total = page.total
+    allItems.push(...page.items)
+    if (!page.hasMore || allItems.length >= total) break
+    offset += page.items.length
+  }
+
+  return allItems
 }
 
 export async function getConceptBySlug(slug: string, podcastSlug = 'lennys-podcast'): Promise<Concept | undefined> {

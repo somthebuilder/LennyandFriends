@@ -32,6 +32,8 @@ interface PodcastTabsProps {
   podcastSlug: string
   insights: Insight[]
   concepts: Concept[]
+  conceptsTotal?: number
+  conceptsPerPage?: number
   previewMode?: boolean
   initialTab?: TabId
 }
@@ -68,10 +70,17 @@ export default function PodcastTabs({
   podcastSlug,
   insights,
   concepts,
+  conceptsTotal = concepts.length,
+  conceptsPerPage = 10,
   previewMode = false,
   initialTab,
 }: PodcastTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>(initialTab ?? 'insights')
+  const [conceptItems, setConceptItems] = useState<Concept[]>(concepts)
+  const [conceptTotal, setConceptTotal] = useState(conceptsTotal)
+  const [conceptPage, setConceptPage] = useState(1)
+  const [isConceptsLoading, setIsConceptsLoading] = useState(false)
+  const [conceptsFetchAttempted, setConceptsFetchAttempted] = useState(false)
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [insightFilter, setInsightFilter] = useState<'all' | 'most_valuable'>('all')
@@ -81,7 +90,7 @@ export default function PodcastTabs({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const shuffledInsights = useMemo(() => shuffleArray(insights), [insights, shuffleKey])
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const shuffledConcepts = useMemo(() => shuffleArray(concepts), [concepts, shuffleKey])
+  const shuffledConcepts = useMemo(() => shuffleArray(conceptItems), [conceptItems, shuffleKey])
   // Track updated valuable counts from user interactions
   const [valuableCounts, setValuableCounts] = useState<Record<string, number>>({})
   // Track which insights this voter has already marked as valuable
@@ -153,6 +162,82 @@ export default function PodcastTabs({
     if (typeof window === 'undefined') return
     setHasAccount(localStorage.getItem('espresso_has_account') === '1')
   }, [])
+
+  useEffect(() => {
+    setConceptItems(concepts)
+    setConceptTotal(conceptsTotal)
+    setConceptPage(1)
+    setIsConceptsLoading(false)
+    setConceptsFetchAttempted(false)
+  }, [concepts, conceptsTotal, podcastSlug])
+
+  useEffect(() => {
+    setSelectedCategory(null)
+  }, [conceptPage, podcastSlug])
+
+  // Load concepts lazily by page when the tab is opened.
+  useEffect(() => {
+    if (previewMode || activeTab !== 'concepts') return
+    let cancelled = false
+    ;(async () => {
+      const offset = (conceptPage - 1) * conceptsPerPage
+      // Reuse SSR payload for the first page when available.
+      if (conceptPage === 1 && concepts.length > 0 && !conceptsFetchAttempted) {
+        setConceptItems(concepts)
+        setConceptTotal(conceptsTotal)
+        setConceptsFetchAttempted(true)
+        return
+      }
+      try {
+        if (!cancelled) setIsConceptsLoading(true)
+        const response = await fetch(
+          `/api/concepts?podcastSlug=${encodeURIComponent(podcastSlug)}&limit=${conceptsPerPage}&offset=${offset}`,
+          {
+          cache: 'no-store',
+          }
+        )
+        if (!response.ok) return
+        const payload = (await response.json()) as
+          | Concept[]
+          | { items?: Concept[]; total?: number }
+
+        if (cancelled) return
+
+        if (Array.isArray(payload)) {
+          setConceptItems(payload)
+          setConceptTotal(payload.length)
+        } else {
+          setConceptItems(Array.isArray(payload.items) ? payload.items : [])
+          setConceptTotal(
+            typeof payload.total === 'number'
+              ? payload.total
+              : Array.isArray(payload.items)
+                ? payload.items.length
+                : 0
+          )
+        }
+      } catch {
+        // Keep existing UI state if request fails.
+      } finally {
+        if (!cancelled) {
+          setIsConceptsLoading(false)
+          setConceptsFetchAttempted(true)
+        }
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [
+    activeTab,
+    conceptPage,
+    concepts,
+    conceptsFetchAttempted,
+    conceptsPerPage,
+    conceptsTotal,
+    podcastSlug,
+    previewMode,
+  ])
 
   function syncTabToUrl(tabId: TabId) {
     if (typeof window === 'undefined') return
@@ -437,6 +522,14 @@ export default function PodcastTabs({
     },
   ]
 
+  const totalConceptPages = Math.max(1, Math.ceil(conceptTotal / conceptsPerPage))
+
+  function handleConceptPageChange(nextPage: number) {
+    const bounded = Math.min(totalConceptPages, Math.max(1, nextPage))
+    if (bounded === conceptPage) return
+    setConceptPage(bounded)
+  }
+
   return (
     <div className="flex flex-col flex-1">
       {/* ── Sticky Tab Bar ── */}
@@ -665,6 +758,8 @@ export default function PodcastTabs({
           const filteredConcepts = selectedCategory
             ? shuffledConcepts.filter((c) => c.category === selectedCategory)
             : shuffledConcepts
+          const pageStart = conceptTotal === 0 ? 0 : (conceptPage - 1) * conceptsPerPage + 1
+          const pageEnd = Math.min(conceptPage * conceptsPerPage, conceptTotal)
 
           return (
             <div className="max-w-5xl mx-auto px-4 md:px-6 py-3 md:py-5">
@@ -674,14 +769,36 @@ export default function PodcastTabs({
                   are disabled in preview mode.
                 </div>
               )}
-              {shuffledConcepts.length === 0 ? (
+              {isConceptsLoading ? (
                 <div className="py-20 text-center">
                   <p className="text-charcoal-400 font-serif italic text-lg">
-                    Concepts are being generated…
+                    Loading concepts…
                   </p>
                   <p className="text-sm text-charcoal-400 mt-2">
-                    Check back soon as we extract insights from the transcripts.
+                    Fetching page {conceptPage} of {totalConceptPages}.
                   </p>
+                </div>
+              ) : shuffledConcepts.length === 0 ? (
+                <div className="py-20 text-center">
+                  {conceptsFetchAttempted ? (
+                    <>
+                      <p className="text-charcoal-400 font-serif italic text-lg">
+                        Concepts are being generated…
+                      </p>
+                      <p className="text-sm text-charcoal-400 mt-2">
+                        Check back soon as we extract insights from the transcripts.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-charcoal-400 font-serif italic text-lg">
+                        Loading concepts…
+                      </p>
+                      <p className="text-sm text-charcoal-400 mt-2">
+                        Retrying now.
+                      </p>
+                    </>
+                  )}
                 </div>
               ) : (
                 <>
@@ -698,7 +815,7 @@ export default function PodcastTabs({
                       >
                         All
                         <span className={`ml-1.5 ${selectedCategory === null ? 'text-charcoal-300' : 'text-charcoal-400'}`}>
-                          {shuffledConcepts.length}
+                          {selectedCategory === null ? conceptTotal : filteredConcepts.length}
                         </span>
                       </button>
                       {availableCategories.map((category) => {
@@ -741,7 +858,7 @@ export default function PodcastTabs({
                           <span className="flex items-center justify-between">
                             All
                             <span className={`text-xs ${selectedCategory === null ? 'text-charcoal-400' : 'text-charcoal-400'}`}>
-                              {shuffledConcepts.length}
+                              {selectedCategory === null ? conceptTotal : filteredConcepts.length}
                             </span>
                           </span>
                         </button>
@@ -772,6 +889,9 @@ export default function PodcastTabs({
 
                     {/* Concepts List */}
                     <div className="flex-1 min-w-0">
+                      <div className="mb-4 text-xs text-charcoal-500">
+                        Showing {pageStart}-{pageEnd} of {conceptTotal} concepts
+                      </div>
                       {filteredConcepts.length === 0 ? (
                         <div className="py-20 text-center">
                           <p className="text-charcoal-400 font-serif italic text-lg">
@@ -788,6 +908,28 @@ export default function PodcastTabs({
                               previewMode={previewMode}
                             />
                           ))}
+                        </div>
+                      )}
+
+                      {!selectedCategory && conceptTotal > conceptsPerPage && (
+                        <div className="mt-6 flex items-center justify-between border-t border-charcoal-200 pt-4">
+                          <button
+                            onClick={() => handleConceptPageChange(conceptPage - 1)}
+                            disabled={conceptPage <= 1 || isConceptsLoading}
+                            className="px-3 py-2 text-sm rounded-lg border border-charcoal-200 text-charcoal-600 hover:bg-cream-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Previous
+                          </button>
+                          <span className="text-sm text-charcoal-500">
+                            Page {conceptPage} of {totalConceptPages}
+                          </span>
+                          <button
+                            onClick={() => handleConceptPageChange(conceptPage + 1)}
+                            disabled={conceptPage >= totalConceptPages || isConceptsLoading}
+                            className="px-3 py-2 text-sm rounded-lg border border-charcoal-200 text-charcoal-600 hover:bg-cream-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Next
+                          </button>
                         </div>
                       )}
                     </div>
