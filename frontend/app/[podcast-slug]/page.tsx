@@ -1,5 +1,6 @@
 import Header from '@/components/Header'
 import PodcastTabs from '@/components/PodcastTabs'
+import Link from 'next/link'
 import { getConceptsPage } from '@/lib/api/concepts'
 import { getInsights } from '@/lib/api/insights'
 import { getDryRunPreview } from '@/lib/api/preview'
@@ -80,6 +81,7 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
   if (previewEnabled) {
     conceptsTotal = concepts.length
   }
+  const graphHref = initialTab ? `/${slug}/graph?tab=${encodeURIComponent(initialTab)}` : `/${slug}/graph`
 
   return (
     <div className="min-h-screen bg-cream-50 flex flex-col">
@@ -97,6 +99,24 @@ export default async function PodcastPage({ params, searchParams }: PodcastPageP
               </>
             )}
             {previewError && <span className="text-red-700">fallback to saved data: {previewError}</span>}
+          </div>
+        </div>
+      )}
+      {slug === 'lennys-podcast' && (
+        <div className="border-b border-charcoal-200/50 bg-cream-50/80">
+          <div className="max-w-5xl mx-auto px-4 md:px-6 py-2 flex justify-end">
+            <Link
+              href={graphHref}
+              className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-charcoal-200 text-charcoal-600 hover:text-accent-700 hover:border-accent-200 hover:bg-white transition-colors"
+            >
+              <span>Open Theme Graph</span>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="5" cy="6" r="2" />
+                <circle cx="19" cy="6" r="2" />
+                <circle cx="12" cy="18" r="2" />
+                <path d="M7 6h10M6.7 7.2l4.6 9.2M17.3 7.2l-4.6 9.2" />
+              </svg>
+            </Link>
           </div>
         </div>
       )}

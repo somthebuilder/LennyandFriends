@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import AuthModal from './AuthModal'
 
 export default function Header() {
   const [hasAccount, setHasAccount] = useState(false)
   const [showAuth, setShowAuth] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     if (typeof window === 'undefined') return
     setHasAccount(localStorage.getItem('espresso_has_account') === '1')
   }, [])
+
+  const parts = pathname.split('/').filter(Boolean)
+  const podcastSlug = parts[0] ?? ''
+  const showGraphButton = podcastSlug === 'lennys-podcast'
+  const graphHref = `/${podcastSlug}/graph`
 
   return (
     <>
@@ -27,6 +34,14 @@ export default function Header() {
 
           {/* Auth — only Sign In or user info */}
           <div className="flex items-center gap-3">
+            {showGraphButton && (
+              <Link
+                href={graphHref}
+                className="text-xs font-medium text-charcoal-500 hover:text-espresso-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-espresso-50/60"
+              >
+                Theme Graph
+              </Link>
+            )}
             <button
               onClick={() => setShowAuth(true)}
               className="text-xs font-medium text-charcoal-500 hover:text-espresso-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-espresso-50/60"
