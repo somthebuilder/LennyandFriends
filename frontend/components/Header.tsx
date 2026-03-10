@@ -17,8 +17,12 @@ export default function Header() {
 
   const parts = pathname.split('/').filter(Boolean)
   const podcastSlug = parts[0] ?? ''
-  const showGraphButton = podcastSlug === 'lennys-podcast'
-  const graphHref = `/${podcastSlug}/graph`
+  const isLennyRoute =
+    pathname === '/lennys-podcast' ||
+    pathname.startsWith('/lennys-podcast/') ||
+    podcastSlug === 'lennys-podcast'
+  const showGraphButton = pathname === '/' || isLennyRoute
+  const graphHref = '/lennys-podcast/graph'
 
   return (
     <>
