@@ -15,13 +15,7 @@ export default function Header() {
     setHasAccount(localStorage.getItem('espresso_has_account') === '1')
   }, [])
 
-  const parts = pathname.split('/').filter(Boolean)
-  const podcastSlug = parts[0] ?? ''
-  const isLennyRoute =
-    pathname === '/lennys-podcast' ||
-    pathname.startsWith('/lennys-podcast/') ||
-    podcastSlug === 'lennys-podcast'
-  const showGraphButton = pathname === '/' || isLennyRoute
+  const showGraphButton = true
   const graphHref = '/lennys-podcast/graph'
 
   return (
